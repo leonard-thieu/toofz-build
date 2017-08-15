@@ -1,3 +1,5 @@
+# https://github.com/appveyor/ci/issues/1702
+
 Write-Host "Installing Azure Storage Emulator..." -ForegroundColor Cyan
 Write-Host "Downloading..."
 $msiPath = "$($env:USERPROFILE)\MicrosoftAzureStorageEmulator.msi"
