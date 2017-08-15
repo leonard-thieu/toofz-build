@@ -19,6 +19,7 @@ if (Test-Path Env:\APPVEYOR) { $targetArgs = $targetArgs + ' /logger:AppVeyor' }
     "-register:user" `
     "-target:vstest.console.exe" `
     "-targetargs:$targetArgs" `
+    "-returntargetcode" `
     "-filter:+[$Assembly*]*" `
     "-excludebyattribute:*.ExcludeFromCodeCoverage*;*.GeneratedCodeAttribute*"
 if ($LASTEXITCODE -ne 0) { $Host.SetShouldExit($LASTEXITCODE) }
