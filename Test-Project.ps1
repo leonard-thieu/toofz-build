@@ -13,7 +13,7 @@ if ($configuration -eq $null) { $configuration = 'Debug' }
 $version = ($xml.packages.package | ? { $_.id -eq 'OpenCover' }).version
 
 $targetArgs = ".\$project.Tests\bin\$configuration\$project.Tests.dll"
-if (Test-Path Env:\APPVEYOR) { $targetArgs = $targetArgs + ' /logger:AppVeyor' }
+if (Test-Path Env:\APPVEYOR) { $targetArgs += ' /logger:AppVeyor' }
 
 & "packages\OpenCover.$version\tools\OpenCover.Console.exe" `
     "-register:user" `
