@@ -1,10 +1,4 @@
-[CmdletBinding()]
-param(
-    [Parameter(Mandatory=$true)]
-    [string]$Assembly
-)
-
-if (-Not(Test-Path Env:\PROJECT)) { throw 'The environment variable "PROJECT" is not set. Tests will not be run.' }
+if (-not(Test-Path Env:\PROJECT)) { throw 'The environment variable "PROJECT" is not set. Tests will not be run.' }
 $project = $env:PROJECT
 $configuration = $env:CONFIGURATION
 if ($configuration -eq $null) { $configuration = 'Debug' }
@@ -20,6 +14,6 @@ if (Test-Path Env:\APPVEYOR) { $targetArgs += ' /logger:AppVeyor' }
     "-target:vstest.console.exe" `
     "-targetargs:$targetArgs" `
     "-returntargetcode" `
-    "-filter:+[$Assembly*]*" `
+    "-filter:+[$project*]* -[$project.Tests*]*" `
     "-excludebyattribute:*.ExcludeFromCodeCoverage*;*.GeneratedCodeAttribute*"
-if ($LASTEXITCODE -ne 0) { $Host.SetShouldExit($LASTEXITCODE) }
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
