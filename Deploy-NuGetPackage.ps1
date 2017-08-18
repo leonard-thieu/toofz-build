@@ -17,7 +17,7 @@ if ($appveyor_repo_tag -ne 'true') {
         default { $platform = 'AnyCPU' }
     }
 
-    nuget pack "$appveyor_build_folder\$project\$project.nuspec" -Properties "Configuration=$configuration;Platform=$platform" -Symbols
+    nuget pack "$appveyor_build_folder\$project\$project.nuspec" -Properties "Configuration=$configuration;Platform=$platform"
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
     [xml]$nuspec = Get-Content -Path "$appveyor_build_folder\$project\$project.nuspec"
@@ -25,5 +25,4 @@ if ($appveyor_repo_tag -ne 'true') {
     $version = $nuspec.package.metadata.version
     
     Push-AppveyorArtifact "$appveyor_build_folder\$id.$version.nupkg"
-    Push-AppveyorArtifact "$appveyor_build_folder\$id.$version.symbols.nupkg"
 }
