@@ -7,7 +7,7 @@ if ($configuration -eq $null) { $configuration = 'Debug' }
 $targetArgs = ".\$project.Tests\bin\$configuration\$project.Tests.dll"
 if (Test-Path Env:\APPVEYOR) { $targetArgs += ' /logger:AppVeyor' }
 
-& "OpenCover.Console.exe" `
+OpenCover.Console.exe `
     "-register:user" `
     "-target:vstest.console.exe" `
     "-targetargs:$targetArgs" `

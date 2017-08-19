@@ -17,7 +17,10 @@ if ($appveyor_repo_tag -ne 'true') {
         default { $platform = 'AnyCPU' }
     }
 
-    nuget pack "$appveyor_build_folder\$project\$project.csproj" -Properties "Configuration=$configuration;Platform=$platform"
+    nuget pack "$appveyor_build_folder\$project\$project.csproj" `
+        -Properties "Configuration=$configuration;Platform=$platform" `
+        -Verbosity quiet `
+        -NonInteractive
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
     [xml]$nuspec = Get-Content -Path "$appveyor_build_folder\$project\$project.nuspec"
