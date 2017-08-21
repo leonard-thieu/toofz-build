@@ -6,6 +6,8 @@ param(
 
 if ($Project -eq '') { throw 'The environment variable "PROJECT" or the parameter "Project" is not set. Tests have not been run.' }
 
+Write-Verbose "`$Project = $Project"
+
 $configuration = $env:CONFIGURATION
 if ($configuration -eq $null) { $configuration = 'Debug' }
 
@@ -17,6 +19,8 @@ if ($Filter -ne $null) { $filter += " $Filter" }
 
 [Xml]$packagesConfig = Get-Content "$Project.Tests\packages.config"
 $version = ($packagesConfig.packages.package | ? { $_.id -eq 'OpenCover' }).version
+
+Write-Verbose "packages\OpenCover.$version\tools\OpenCover.Console.exe"
 
 & "packages\OpenCover.$version\tools\OpenCover.Console.exe" `
     "-register:user" `
