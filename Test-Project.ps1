@@ -15,7 +15,7 @@ if (Test-Path Env:\APPVEYOR) { $targetArgs += ' /logger:AppVeyor' }
 $filter = "-filter:+[$Project*]* -[$Project.Tests*]*";
 if ($Filter -ne $null) { $filter += " $Filter" }
 
-[Xml]$packagesConfig = Get-Content "$project.Tests\packages.config"
+[Xml]$packagesConfig = Get-Content "$Project.Tests\packages.config"
 $version = ($packagesConfig.packages.package | ? { $_.id -eq 'OpenCover' }).version
 
 & "packages\OpenCover.$version\tools\OpenCover.Console.exe" `
