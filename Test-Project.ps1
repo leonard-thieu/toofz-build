@@ -1,21 +1,24 @@
 [CmdletBinding()]
 param(
+    [String]$Project = $env:PROJECT,
     [String]$Filter
 )
 
-if (-not(Test-Path Env:\PROJECT)) { throw 'The environment variable "PROJECT" is not set. Tests will not be run.' }
+if ($Project -eq '') { throw 'The environment variable "PROJECT" or the parameter "Project" is not set. Tests will not be run.' }
 
-$project = $env:PROJECT
 $configuration = $env:CONFIGURATION
 if ($configuration -eq $null) { $configuration = 'Debug' }
 
-$targetArgs = ".\$project.Tests\bin\$configuration\$project.Tests.dll"
+$targetArgs = ".\$Project.Tests\bin\$configuration\$Project.Tests.dll"
 if (Test-Path Env:\APPVEYOR) { $targetArgs += ' /logger:AppVeyor' }
 
-$filter = "-filter:+[$project*]* -[$project.Tests*]*";
+$filter = "-filter:+[$Project*]* -[$Project.Tests*]*";
 if ($Filter -ne $null) { $filter += " $Filter" }
 
-OpenCover.Console.exe `
+[Xml]$packagesConfig = Get-Content "$project.Tests\packages.config"
+$version = ($packagesConfig.packages.package | ? { $_.id -eq 'OpenCover' }).version
+
+& "packages\OpenCover.$version\tools\OpenCover.Console.exe" `
     "-register:user" `
     "-target:vstest.console.exe" `
     "-targetargs:$targetArgs" `
