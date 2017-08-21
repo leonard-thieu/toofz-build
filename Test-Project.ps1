@@ -19,6 +19,7 @@ if ($Filter -ne $null) { $filter += " $Filter" }
 
 [Xml]$packagesConfig = Get-Content "$Project.Tests\packages.config"
 $version = ($packagesConfig.packages.package | ? { $_.id -eq 'OpenCover' }).version
+if ($version -eq $null) { throw "OpenCover is not instaled in '$Project.Tests'. Tests have not been run." }
 
 Write-Verbose "packages\OpenCover.$version\tools\OpenCover.Console.exe"
 
