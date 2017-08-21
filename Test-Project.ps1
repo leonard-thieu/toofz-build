@@ -4,7 +4,7 @@ param(
     [String]$Filter
 )
 
-if ($Project -eq '') { throw 'The environment variable "PROJECT" or the parameter "Project" is not set. Tests will not be run.' }
+if ($Project -eq '') { throw 'The environment variable "PROJECT" or the parameter "Project" is not set. Tests have not been run.' }
 
 $configuration = $env:CONFIGURATION
 if ($configuration -eq $null) { $configuration = 'Debug' }
