@@ -13,6 +13,6 @@ if ($version -eq $null) { throw "Codecov is not installed in '$Project.Tests'. C
 
 Write-Verbose "packages\Codecov.$version\tools\codecov.exe"
 
-& "packages\Codecov.$version\tools\codecov.exe" `
+& "packages\Codecov.$version\tools\codecov.exe " `
     "--file results.xml"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
