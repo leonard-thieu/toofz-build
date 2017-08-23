@@ -29,7 +29,7 @@ if ($RepoTag -ne 'true') {
     $id = $nuspec.package.metadata.id
     $version = $nuspec.package.metadata.version
     
-    nuget push $id.$version.nupkg `
+    nuget push "$id.$version.nupkg" `
         -Source https://www.myget.org/F/toofz/api/v2/package -ApiKey $MyGetApiKey `
         -SymbolSource https://www.myget.org/F/toofz/symbols/api/v2/package -SymbolApiKey $MyGetApiKey `
         -Verbosity quiet
