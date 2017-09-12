@@ -25,8 +25,6 @@ if ($version -eq $null) { throw "OpenCover is not installed in '$Project.Tests'.
 $openCover = Resolve-Path "packages\OpenCover.$version\tools\OpenCover.Console.exe"
 Write-Verbose $openCover
 
-# Copy environment variables to machine level so tools have access to them when running under LocalSystem
-Get-ChildItem Env: | % { [Environment]::SetEnvironmentVariable($_.Name, $_.Value, 'Machine') }
 $cd = Get-Location
 
 # Register profilers
@@ -36,6 +34,9 @@ $openCoverProfile_x64 = Resolve-Path "packages\OpenCover.$version\tools\x64\Open
 psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x64 2>&1 | % { "$_" }
 
 if ($AsLocalSystem -eq $true) {
+    # Copy environment variables to machine level so tools have access to them when running under LocalSystem
+    Get-ChildItem Env: | % { [Environment]::SetEnvironmentVariable($_.Name, $_.Value, 'Machine') }
+
     psexec -accepteula -nobanner -s -w $cd `
         $openCover `
             -target:vstest.console.exe `
