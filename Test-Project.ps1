@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [String]$Project = $Env:PROJECT,
+    [String]$Project = $env:PROJECT,
     [String]$Filter,
     [Switch]$AsLocalSystem
 )
@@ -9,7 +9,7 @@ if ($Project -eq '') { throw 'The environment variable "PROJECT" or the paramete
 
 Write-Debug "`$Project = $Project"
 
-$configuration = $Env:CONFIGURATION
+$configuration = $env:CONFIGURATION
 if ($configuration -eq $null) { $configuration = 'Debug' }
 
 [String]$targetArgs = Resolve-Path ".\$Project.Tests\bin\$configuration\$Project.Tests.dll"
