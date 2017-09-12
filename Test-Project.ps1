@@ -33,7 +33,7 @@ psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x86 2>&1 | 
 $openCoverProfile_x64 = Resolve-Path "packages\OpenCover.$version\tools\x64\OpenCover.Profiler.dll"
 psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x64 2>&1 | % { "$_" }
 
-if ($AsLocalSystem -eq $true) {
+if ($AsLocalSystem.IsPresent) {
     # Copy environment variables to machine level so tools have access to them when running under LocalSystem
     Get-ChildItem Env: | % { [Environment]::SetEnvironmentVariable($_.Name, $_.Value, 'Machine') }
 
