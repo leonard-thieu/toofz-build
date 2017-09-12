@@ -7,7 +7,7 @@ param(
 
 if ($Project -eq '') { throw 'The environment variable "PROJECT" or the parameter "Project" is not set. Tests have not been run.' }
 
-Write-Verbose "`$Project = $Project"
+Write-Debug "`$Project = $Project"
 
 $configuration = $Env:CONFIGURATION
 if ($configuration -eq $null) { $configuration = 'Debug' }
@@ -23,7 +23,7 @@ $version = ($packagesConfig.packages.package | ? { $_.id -eq 'OpenCover' }).vers
 if ($version -eq $null) { throw "OpenCover is not installed in '$Project.Tests'. Tests have not been run." }
 
 $openCover = Resolve-Path "packages\OpenCover.$version\tools\OpenCover.Console.exe"
-Write-Verbose $openCover
+Write-Debug "OpenCover path = $openCover"
 
 $cd = Get-Location
 
