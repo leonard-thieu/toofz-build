@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
-    [String]$Project = $Env:PROJECT
+    [String]$Project = $Env:PROJECT,
+    [String]$Token
 )
 
 if ($Project -eq '') { throw 'The environment variable "PROJECT" or the parameter "Project" is not set. Code coverage results have not been submitted.' }
@@ -14,5 +15,10 @@ if ($version -eq $null) { throw "Codecov is not installed in '$Project.Tests'. C
 $codecov = Resolve-Path "packages\Codecov.$version\tools\codecov.exe"
 Write-Verbose $codecov
 
-& $codecov "--file=results.xml"
-if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+if ($Token -ne $null) {
+    & $codecov "--file=results.xml --token=$Token"
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+} else {
+    & $codecov "--file=results.xml"
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
