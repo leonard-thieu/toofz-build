@@ -3,8 +3,7 @@ param(
     [String]$Configuration = $Env:CONFIGURATION,
     [String]$Platform = $Env:PLATFORM,
     [String]$Project = $Env:PROJECT,
-    [String]$MyGetApiKey = $Env:MYGET_API_KEY,
-    [Switch]$SymbolsOnly
+    [String]$MyGetApiKey = $Env:MYGET_API_KEY
 )
 
 if ($Env:APPVEYOR_REPO_TAG -ne 'true') {
@@ -29,18 +28,11 @@ if ($Env:APPVEYOR_REPO_TAG -ne 'true') {
     $id = $nuspec.package.metadata.id
     $version = $nuspec.package.metadata.version
     
-    if ($SymbolsOnly.IsPresent) {
-        nuget push "$id.$version.nupkg" `
-            -SymbolSource https://www.myget.org/F/toofz/symbols/api/v2/package -SymbolApiKey $MyGetApiKey `
-            -Verbosity quiet
-        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-    } else {
-        nuget push "$id.$version.nupkg" `
-            -Source https://www.myget.org/F/toofz/api/v2/package -ApiKey $MyGetApiKey `
-            -SymbolSource https://www.myget.org/F/toofz/symbols/api/v2/package -SymbolApiKey $MyGetApiKey `
-            -Verbosity quiet
-        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-    }
+    nuget push "$id.$version.nupkg" `
+        -Source https://www.myget.org/F/toofz/api/v2/package -ApiKey $MyGetApiKey `
+        -SymbolSource https://www.myget.org/F/toofz/symbols/api/v2/package -SymbolApiKey $MyGetApiKey `
+        -Verbosity quiet
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
     Push-AppveyorArtifact "$id.$version.nupkg"
     Push-AppveyorArtifact "$id.$version.symbols.nupkg"
