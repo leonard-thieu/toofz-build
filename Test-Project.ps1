@@ -43,7 +43,7 @@ if ($AsLocalSystem.IsPresent) {
             "-targetargs:$targetArgs" `
             -returntargetcode `
             "-filter:$filter" `
-            "-excludebyattribute:*.ExcludeFromCodeCoverage*;*.GeneratedCodeAttribute*" `
+            "-excludebyattribute:*.ExcludeFromCodeCoverage*" `
             2>&1 | % { "$_" }
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } else {
@@ -52,6 +52,6 @@ if ($AsLocalSystem.IsPresent) {
         "-targetargs:$targetArgs" `
         -returntargetcode `
         "-filter:$filter" `
-        "-excludebyattribute:*.ExcludeFromCodeCoverage*;*.GeneratedCodeAttribute*"
+        "-excludebyattribute:*.ExcludeFromCodeCoverage*"
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
