@@ -12,7 +12,15 @@ Write-Debug "`$Project = $Project"
 $configuration = $env:CONFIGURATION
 if ($configuration -eq $null) { $configuration = 'Debug' }
 
-[String]$targetArgs = Resolve-Path ".\$Project.Tests\bin\$configuration\$Project.Tests.dll"
+[Xml]$testProject = Get-Content ".\$Project.Tests\$Project.Tests.csproj"
+$targetFramework = $testProject.Project.PropertyGroup.TargetFramework
+
+if ($targetFramework.StartsWith('v')) { 
+    [String]$targetArgs = Resolve-Path ".\$Project.Tests\bin\$configuration\$Project.Tests.dll"
+} else {
+    [String]$targetArgs = Resolve-Path ".\$Project.Tests\bin\$configuration\$targetFramework\$Project.Tests.dll"
+}
+
 if (Test-Path Env:\APPVEYOR) { $targetArgs += ' /logger:AppVeyor' }
 
 $filter = "+[$Project*]* -[$Project.Tests*]*";
