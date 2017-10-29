@@ -26,6 +26,8 @@ psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x86 2>&1 | 
 $openCoverProfile_x64 = Join-Path $openCoverPath '.\tools\x64\OpenCover.Profiler.dll'
 psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x64 2>&1 | % { "$_" }
 
+$vstest = Get-VsTestPath $testProject
+
 [String]$targetArgs = Get-OutputPath $testProject $configuration
 if (Test-Path Env:\APPVEYOR) { $targetArgs += ' /logger:AppVeyor' }
 
@@ -38,7 +40,7 @@ if ($AsLocalSystem.IsPresent) {
 
     psexec -accepteula -nobanner -s -w $cd `
         $openCover `
-            -target:vstest.console.exe `
+            "-target:$vstest" `
             "-targetargs:$targetArgs" `
             -returntargetcode `
             "-filter:$filter" `
@@ -47,7 +49,7 @@ if ($AsLocalSystem.IsPresent) {
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } else {
     & $openCover `
-        -target:vstest.console.exe `
+        "-target:$vstest" `
         "-targetargs:$targetArgs" `
         -returntargetcode `
         "-filter:$filter" `

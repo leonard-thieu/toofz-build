@@ -4,12 +4,23 @@ function Get-Project($projectName) {
     return $project
 }
 
+function Get-TargetFramework($project) {
+    return $project.Project.PropertyGroup.TargetFramework
+}
+
 function Is-FrameworkVersion($version) {
     return $targetFramework.StartsWith('v')
 }
 
-function Get-TargetFramework($project) {
-    return $project.Project.PropertyGroup.TargetFramework
+function Get-VsTestPath($projectName) {
+    $project = Get-Project $projectName
+    $targetFramework = Get-TargetFramework $project
+
+    if (Is-FrameworkVersion $targetFramework) {
+        return 'vstest.console.exe'
+    } else {
+        return 'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Extensions\TestPlatform\'
+    }
 }
 
 function Get-PackageVersion($projectName, $packageName) {
