@@ -12,7 +12,7 @@ $testProject = "$Project.Tests"
 $configuration = $env:CONFIGURATION
 if ($configuration -eq $null) { $configuration = 'Debug' }
 
-. .\Includes.ps1
+. "$PSScriptRoot\Includes.ps1"
 
 $openCoverPath = Get-PackagePath $testProject 'OpenCover'
 $openCover = Join-Path $openCoverPath '.\tools\OpenCover.Console.exe'
