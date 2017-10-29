@@ -14,6 +14,8 @@ if ($configuration -eq $null) { $configuration = 'Debug' }
 
 . "$PSScriptRoot\Includes.ps1"
 
+dir
+
 # Enter solution directory
 Push-Location $Project
 
