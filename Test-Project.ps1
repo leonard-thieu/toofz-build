@@ -14,11 +14,6 @@ if ($configuration -eq $null) { $configuration = 'Debug' }
 
 . "$PSScriptRoot\Includes.ps1"
 
-dir
-
-# Enter solution directory
-Push-Location $Project
-
 $openCoverPath = Get-PackagePath $testProject 'OpenCover'
 $openCover = Join-Path $openCoverPath '.\tools\OpenCover.Console.exe'
 Write-Debug "OpenCover path = $openCover"
@@ -59,5 +54,3 @@ if ($AsLocalSystem.IsPresent) {
         "-excludebyattribute:*.ExcludeFromCodeCoverage*"
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
-
-Pop-Location
