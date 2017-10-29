@@ -19,7 +19,7 @@ function Get-VsTestPath($projectName) {
     if (Is-FrameworkVersion $targetFramework) {
         return 'vstest.console.exe'
     } else {
-        return 'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Extensions\TestPlatform\'
+        return 'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Extensions\TestPlatform\vstest.console.exe'
     }
 }
 
