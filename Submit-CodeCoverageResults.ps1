@@ -7,9 +7,9 @@ if ($Project -eq '') { throw 'The environment variable "PROJECT" or the paramete
 Write-Debug "`$Project = $Project"
 $testProject = "$Project.Tests"
 
-.\Includes.ps1
+. .\Includes.ps1
 
-$codecovPath = getPackagePath($testProject, 'Codecov')
+$codecovPath = Get-PackagePath $testProject 'Codecov'
 $codecov = Join-Path $codecovPath '.\tools\codecov.exe'
 Write-Debug "Codecov path = $codecov"
 

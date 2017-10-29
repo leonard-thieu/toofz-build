@@ -1,16 +1,16 @@
-function getProject($projectName) {
+function Get-Project($projectName) {
     [Xml]$project = Get-Content ".\$projectName\$projectName.csproj"
 
     return $project
 }
 
-function getTargetFramework($project) {
+function Get-TargetFramework($project) {
     return $project.Project.PropertyGroup.TargetFramework
 }
 
-function getPackageVersion($projectName, $packageName) {
-    $project = $getProject($projectName)
-    $targetFramework = getTargetFramework($project)
+function Get-PackageVersion($projectName, $packageName) {
+    $project = Get-Project $projectName
+    $targetFramework = Get-TargetFramework $project
 
     # .NET Framework projects
     if ($targetFramework.StartsWith('v')) { 
@@ -25,7 +25,7 @@ function getPackageVersion($projectName, $packageName) {
 }
 
 function getPackagePath($projectName, $packageName) {
-    $version = getPackageVersion($projectName, $packageName)
+    $version = Get-PackageVersion $projectName $packageName
 
     if ($version -eq $null) { throw "$packageName is not installed in '$projectName'." }
 
@@ -33,8 +33,8 @@ function getPackagePath($projectName, $packageName) {
 }
 
 function getOutputPath($projectName) {
-    $project = $getProject($projectName)
-    $targetFramework = getTargetFramework($project)
+    $project = Get-Project $projectName
+    $targetFramework = Get-TargetFramework $project
 
     # .NET Framework projects
     if ($targetFramework.StartsWith('v')) {

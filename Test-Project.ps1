@@ -12,9 +12,9 @@ $testProject = "$Project.Tests"
 $configuration = $env:CONFIGURATION
 if ($configuration -eq $null) { $configuration = 'Debug' }
 
-.\Includes.ps1
+. .\Includes.ps1
 
-$openCoverPath = getPackagePath($testProject, 'OpenCover')
+$openCoverPath = Get-PackagePath $testProject 'OpenCover'
 $openCover = Join-Path $openCoverPath '.\tools\OpenCover.Console.exe'
 Write-Debug "OpenCover path = $openCover"
 
@@ -26,7 +26,7 @@ psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x86 2>&1 | 
 $openCoverProfile_x64 = Join-Path $openCoverPath '.\tools\x64\OpenCover.Profiler.dll'
 psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x64 2>&1 | % { "$_" }
 
-[String]$targetArgs = getOutputPath($testProject, $configuration)
+[String]$targetArgs = Get-OutputPath $testProject $configuration
 if (Test-Path Env:\APPVEYOR) { $targetArgs += ' /logger:AppVeyor' }
 
 $filter = "+[$Project*]* -[$testProject*]*";
