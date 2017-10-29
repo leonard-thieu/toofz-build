@@ -43,7 +43,7 @@ function Get-PackagePath($projectName, $packageName) {
 
     switch ($targetFramework) {
         '.NET Framework' { $packageDirectory = "$packageName.$version" }
-        '.NET Core' { $packageDirectory = $packageName.ToLower() + ".$version" }
+        '.NET Core' { $packageDirectory = $packageName.ToLower() + "\$version" }
     }
     
     return Resolve-Path ".\packages\$packageDirectory"
