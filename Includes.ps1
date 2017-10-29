@@ -24,7 +24,7 @@ function Get-PackageVersion($projectName, $packageName) {
     }
 }
 
-function getPackagePath($projectName, $packageName) {
+function Get-PackagePath($projectName, $packageName) {
     $version = Get-PackageVersion $projectName $packageName
 
     if ($version -eq $null) { throw "$packageName is not installed in '$projectName'." }
@@ -32,7 +32,7 @@ function getPackagePath($projectName, $packageName) {
     return Resolve-Path ".\packages\$packageName.$version"
 }
 
-function getOutputPath($projectName) {
+function Get-OutputPath($projectName) {
     $project = Get-Project $projectName
     $targetFramework = Get-TargetFramework $project
 
