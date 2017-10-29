@@ -14,6 +14,9 @@ if ($configuration -eq $null) { $configuration = 'Debug' }
 
 . "$PSScriptRoot\Includes.ps1"
 
+dir
+nuget
+
 $openCoverPath = Get-PackagePath $testProject 'OpenCover'
 $openCover = Join-Path $openCoverPath '.\tools\OpenCover.Console.exe'
 Write-Debug "OpenCover path = $openCover"
