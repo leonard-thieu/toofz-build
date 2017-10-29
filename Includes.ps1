@@ -5,22 +5,31 @@ function Get-Project($projectName) {
 }
 
 function Get-TargetFramework($project) {
-    return $project.Project.PropertyGroup.TargetFramework
+    $targetFramework = $project.Project.PropertyGroup.TargetFramework
+
+    # .NET Framework projects
+    if ($targetFramework.StartsWith('v')) {
+        return '.NET Framework'
+    }
+    # .NET Standard/Core projects
+    else {
+        return '.NET Core'
+    }
 }
 
 function Get-PackageVersion($projectName, $packageName) {
     $project = Get-Project $projectName
     $targetFramework = Get-TargetFramework $project
 
-    # .NET Framework projects
-    if ($targetFramework.StartsWith('v')) { 
-        [Xml]$packagesConfig = Get-Content ".\$projectName\packages.config"
+    switch ($targetFramework) {
+        '.NET Framework' {
+            [Xml]$packagesConfig = Get-Content ".\$projectName\packages.config"
         
-        return ($packagesConfig.packages.package | ? { $_.id -eq $packageName }).version   
-    } 
-    # .NET Standard/Core projects
-    else {
-        return ($project.Project.ItemGroup.PackageReference | ? { $_.Include -eq $packageName }).Version
+            return ($packagesConfig.packages.package | ? { $_.id -eq $packageName }).version   
+        }
+        '.NET Core' {
+            return ($project.Project.ItemGroup.PackageReference | ? { $_.Include -eq $packageName }).Version
+        }
     }
 }
 
@@ -29,19 +38,23 @@ function Get-PackagePath($projectName, $packageName) {
 
     if ($version -eq $null) { throw "$packageName is not installed in '$projectName'." }
 
-    return Resolve-Path ".\packages\$packageName.$version"
+    $project = Get-Project $projectName
+    $targetFramework = Get-TargetFramework $project
+
+    switch ($targetFramework) {
+        '.NET Framework' { $packageDirectory = "$packageName.$version" }
+        '.NET Core' { $packageDirectory = $packageName.ToLower() + ".$version" }
+    }
+    
+    return Resolve-Path ".\packages\$packageDirectory"
 }
 
 function Get-OutputPath($projectName) {
     $project = Get-Project $projectName
     $targetFramework = Get-TargetFramework $project
 
-    # .NET Framework projects
-    if ($targetFramework.StartsWith('v')) {
-        return Resolve-Path ".\$projectName\bin\$configuration\$projectName.dll"
-    } 
-    # .NET Standard/Core projects
-    else {
-        return Resolve-Path ".\$projectName\bin\$configuration\$targetFramework\$projectName.dll"
+    switch ($targetFramework) {
+        '.NET Framework' { return Resolve-Path ".\$projectName\bin\$configuration\$projectName.dll" }
+        '.NET Core' { return Resolve-Path ".\$projectName\bin\$configuration\$targetFramework\$projectName.dll" }
     }
 }
