@@ -35,7 +35,7 @@ if ($projectObj.IsNetFramework) {
     $vstest = 'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Extensions\TestPlatform\vstest.console.exe'
 }
 
-$targetArgs = $package.GetOutPath($configuration)
+$targetArgs = $projectObj.GetOutPath($configuration)
 if (Test-Path Env:\APPVEYOR -and $projectObj.IsNetFramework) { $targetArgs += ' /logger:AppVeyor' }
 
 $filter = "+[$Project*]* -[$testProject*]*";
