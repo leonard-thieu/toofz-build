@@ -18,22 +18,41 @@ if ($Env:APPVEYOR_REPO_TAG -ne 'true') {
         default { $Platform = 'AnyCPU' }
     }
 
-    nuget pack "$Project\$Project.csproj" `
-        -Properties "Configuration=$Configuration;Platform=$Platform" `
-        -Symbols `
-        -Verbosity quiet
-    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    Import-Module "$PSScriptRoot\toofz.Build.dll"
 
-    [Xml]$nuspec = Get-Content -Path "$Project\$Project.nuspec"
-    $id = $nuspec.package.metadata.id
-    $version = $nuspec.package.metadata.version
+    $projectDir = Resolve-Path ".\$Project"
+    $projectPath = Join-Path $projectDir "$Project.csproj" | Resolve-Path
+    $projectObj = Get-Project $projectPath
+
+    if ($projectObj.IsNetFramework) {
+        nuget pack $projectPath `
+            -Properties "Configuration=$Configuration;Platform=$Platform" `
+            -Symbols `
+            -Verbosity quiet
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+        [Xml]$nuspec = Get-Content ".\$Project\$Project.nuspec"
+        $id = $nuspec.package.metadata.id
+        $version = $nuspec.package.metadata.version
+
+        $package = Resolve-Path ".\$id.$version.nupkg"
+        $symbols = Resolve-Path ".\$id.$version.symbols.nupkg"
+    } else {
+        msbuild /t:pack "/property:Configuration=$Configuration;Platform=$Platform;IncludeSymbols=true;IncludeSource=true" $projectPath
+
+        $outDir = Join-Path $projectDir 'bin' $Configuration | Resolve-Path
+        $package = Join-Path $outDir ".\$id.$version.nupkg" | Resolve-Path
+        $symbols = Join-Path $outDir ".\$id.$version.symbols.nupkg" | Resolve-Path
+    }
     
-    nuget push "$id.$version.nupkg" `
+    nuget push $package `
         -Source https://www.myget.org/F/toofz/api/v2/package -ApiKey $MyGetApiKey `
         -SymbolSource https://www.myget.org/F/toofz/symbols/api/v2/package -SymbolApiKey $MyGetApiKey `
         -Verbosity quiet
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-    Push-AppveyorArtifact "$id.$version.nupkg"
-    Push-AppveyorArtifact "$id.$version.symbols.nupkg"
+    if (Test-Path Env:\APPVEYOR) { 
+        Push-AppveyorArtifact $package
+        Push-AppveyorArtifact $symbols
+    }
 }
