@@ -7,12 +7,8 @@ if ($Project -eq '') { throw 'The environment variable "PROJECT" or the paramete
 Write-Debug "`$Project = $Project"
 $testProject = "$Project.Tests"
 
-Import-Module "$PSScriptRoot\toofz.Build.dll"
-
-$testProjectPath = Resolve-Path ".\$testProject\$testProject.csproj"
-$projectObj = Get-Project $testProjectPath
-
-$codecovPath = $projectObj.GetPackageDirectory('Codecov')
+nuget install Codecov -ExcludeVersion -SolutionDirectory .
+$codecovPath = Resolve-Path '.\packages\Codecov'
 $codecov = Join-Path $codecovPath '.\tools\codecov.exe'
 Write-Debug "Codecov path = $codecov"
 
