@@ -35,6 +35,7 @@ if ($projectObj.IsNetFramework) {
     $target = 'vstest.console.exe'
     if (Test-Path Env:\APPVEYOR) { $targetArgs += '/logger:AppVeyor ' }
 } else {
+    $env:PATH += [IO.Path]::PathSeparator + "$env:LocalAppData\Microsoft\dotnet"
     $target = 'dotnet'
     $targetArgs += 'vstest /Framework:FrameworkCore10 '
 }
