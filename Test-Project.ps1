@@ -14,8 +14,7 @@ if ($configuration -eq $null) { $configuration = 'Debug' }
 
 Import-Module "$PSScriptRoot\toofz.Build.dll"
 
-$testProjectPath = Resolve-Path ".\$testProject\$testProject.csproj"
-$project = Get-Project $testProjectPath
+$project = Resolve-Path ".\$testProject\$testProject.csproj" | Get-Project
 
 $openCoverPath = $project.GetPackageDirectory('OpenCover')
 $openCover = Join-Path $openCoverPath '.\tools\OpenCover.Console.exe'

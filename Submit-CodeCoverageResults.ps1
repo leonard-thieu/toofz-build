@@ -9,8 +9,7 @@ $testProject = "$Project.Tests"
 
 Import-Module "$PSScriptRoot\toofz.Build.dll"
 
-$testProjectPath = Resolve-Path ".\$testProject\$testProject.csproj"
-$project = Get-Project $testProjectPath
+$project = Resolve-Path ".\$testProject\$testProject.csproj" | Get-Project
 
 $codecovPath = $project.GetPackageDirectory('Codecov')
 $codecov = Join-Path $codecovPath '.\tools\codecov.exe'
