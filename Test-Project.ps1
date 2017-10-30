@@ -5,7 +5,7 @@ param(
     [Switch]$AsLocalSystem
 )
 
-$ErrorActionPreference = 'Stop'
+# $ErrorActionPreference = 'Stop'
 
 if ($Project -eq '') { throw 'The environment variable "PROJECT" or the parameter "Project" is not set. Tests have not been run.' }
 Write-Debug "`$Project = $Project"
@@ -19,7 +19,7 @@ Import-Module "$PSScriptRoot\toofz.Build.dll"
 $testProjectPath = Resolve-Path ".\$testProject\$testProject.csproj"
 $projectObj = Get-Project $testProjectPath
 
-nuget install OpenCover -ExcludeVersion -SolutionDirectory .
+nuget install OpenCover -ExcludeVersion -SolutionDirectory . -Verbosity quiet
 $openCoverPath = Resolve-Path '.\packages\OpenCover'
 $openCover = Join-Path $openCoverPath '.\tools\OpenCover.Console.exe'
 Write-Debug "OpenCover path = $openCover"

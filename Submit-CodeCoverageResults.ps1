@@ -7,7 +7,7 @@ if ($Project -eq '') { throw 'The environment variable "PROJECT" or the paramete
 Write-Debug "`$Project = $Project"
 $testProject = "$Project.Tests"
 
-nuget install Codecov -ExcludeVersion -SolutionDirectory .
+nuget install Codecov -ExcludeVersion -SolutionDirectory . -Verbosity quiet
 $codecovPath = Resolve-Path '.\packages\Codecov'
 $codecov = Join-Path $codecovPath '.\tools\codecov.exe'
 Write-Debug "Codecov path = $codecov"
