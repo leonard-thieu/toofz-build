@@ -36,7 +36,7 @@ if ($projectObj.IsNetFramework) {
 }
 
 $targetArgs = $projectObj.GetOutPath($configuration)
-if (Test-Path Env:\APPVEYOR -and $projectObj.IsNetFramework) { $targetArgs += ' /logger:AppVeyor' }
+if ((Test-Path Env:\APPVEYOR) -and $projectObj.IsNetFramework) { $targetArgs += ' /logger:AppVeyor' }
 
 $filter = "+[$Project*]* -[$testProject*]*";
 if ($Filter -ne $null) { $filter += " $Filter" }
