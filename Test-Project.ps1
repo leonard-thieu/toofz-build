@@ -14,11 +14,6 @@ $testProject = "$Project.Tests"
 $configuration = $env:CONFIGURATION
 if ($configuration -eq $null) { $configuration = 'Debug' }
 
-Import-Module "$PSScriptRoot\toofz.Build.dll"
-
-$testProjectPath = Resolve-Path ".\$testProject\$testProject.csproj"
-$projectObj = Get-Project $testProjectPath
-
 nuget install OpenCover -ExcludeVersion -SolutionDirectory . -Verbosity quiet
 $openCoverPath = Resolve-Path '.\packages\OpenCover'
 $openCover = Join-Path $openCoverPath '.\tools\OpenCover.Console.exe'
@@ -32,6 +27,11 @@ psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x86 2>&1 | 
 $openCoverProfile_x64 = Join-Path $openCoverPath '.\tools\x64\OpenCover.Profiler.dll'
 psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x64 2>&1 | % { "$_" }
 
+Import-Module "$PSScriptRoot\toofz.Build.dll"
+
+$testProjectPath = Resolve-Path ".\$testProject\$testProject.csproj"
+$projectObj = Get-Project $testProjectPath
+
 $targetArgs = ''
 # $vsinstalldir = Resolve-Path 'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\'
 if ($projectObj.IsNetFramework) {
@@ -42,7 +42,7 @@ if ($projectObj.IsNetFramework) {
     $target = 'dotnet'
     $targetArgs += 'vstest /Framework:FrameworkCore10 '
 }
-$targetArgs += "$projectObj.GetOutPath($configuration)"
+$targetArgs += $projectObj.GetOutPath($configuration)
 
 $filter = "+[$Project*]* -[$testProject*]*";
 if ($Filter -ne $null) { $filter += " $Filter" }
