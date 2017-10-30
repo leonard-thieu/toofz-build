@@ -42,8 +42,8 @@ if ($Env:APPVEYOR_REPO_TAG -ne 'true') {
     } else {
         msbuild /target:Pack "/property:Configuration=$Configuration;Platform=$Platform;IncludeSymbols=true;IncludeSource=true" /verbosity:quiet $projectPath
 
-        $id = $Project
-        $version = $projectObj.Version
+        $id = $projectObj.PackageId
+        $version = $projectObj.PackageVersion
 
         $outDir = [IO.Path]::Combine($projectDir, 'bin', $Configuration) | Resolve-Path
         $package = Join-Path $outDir ".\$id.$version.nupkg" | Resolve-Path

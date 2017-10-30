@@ -50,5 +50,13 @@ namespace toofz.Build
         #endregion
 
         public abstract string GetOutPath(string configuration);
+
+        protected IEnumerable<XElement> GetProperties(string localName)
+        {
+            return (from pg in Project.Root.ElementsByLocalName("PropertyGroup")
+                    from tf in pg.ElementsByLocalName(localName)
+                    select tf)
+                    .ToList();
+        }
     }
 }

@@ -9,13 +9,8 @@ namespace toofz.Build
     {
         public CoreProject(XDocument project) : base(project)
         {
-            var targetFramework = (from pg in Project.Root.Elements()
-                                   where pg.Name.LocalName == "PropertyGroup"
-                                   from tf in pg.Elements()
-                                   where tf.Name.LocalName == "TargetFramework"
-                                   select tf.Value)
-                                   .LastOrDefault();
-            TargetFramework = targetFramework ?? throw new InvalidDataException("Unable to determine target framework for project.");
+            TargetFramework = GetProperties("TargetFramework").LastOrDefault()?.Value ??
+                throw new InvalidDataException("Unable to determine target framework for project.");
 
             packagesDir = Path.Combine(ProjectDir, "..", "packages");
         }
@@ -23,6 +18,8 @@ namespace toofz.Build
         private readonly string packagesDir;
 
         public override string TargetFramework { get; }
+        public string PackageId { get; set; }
+        public string PackageVersion { get; set; }
 
         public override string GetPackageDirectory(Package package)
         {
@@ -40,6 +37,12 @@ namespace toofz.Build
         public override string GetOutPath(string configuration)
         {
             return Path.Combine(ProjectDir, "bin", configuration, TargetFramework, $"{Name}.dll");
+        }
+
+        private void ReadNuspec()
+        {
+            PackageId = GetProperties("PackageId").LastOrDefault()?.Value ?? Name;
+            PackageVersion = GetProperties("Version").LastOrDefault()?.Value ?? "1.0.0";
         }
     }
 }
