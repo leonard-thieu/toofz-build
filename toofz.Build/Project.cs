@@ -14,8 +14,13 @@ namespace toofz.Build
             name = Path.GetFileNameWithoutExtension(filePath);
 
             project = XDocument.Load(filePath);
-            var targetFramework = (from g in project.Root.Elements("PropertyGroup")
-                                   from t in g.Elements("TargetFramework").Concat(g.Elements("TargetFrameworkVersion"))
+            // Can't use Elements(XName name) because .NET framework projects have a namespace.
+            // .NET Framework uses "TargetFrameworkVersion"
+            // .NET Core/Standard uses "TargetFramework"
+            var targetFramework = (from g in project.Root.Elements()
+                                   where g.Name == "PropertyGroup"
+                                   from t in g.Elements()
+                                   where t.Name == "TargetFrameworkVersion" || t.Name == "TargetFramework"
                                    select t.Value)
                                    .LastOrDefault();
             TargetFramework = targetFramework ?? throw new InvalidDataException("Unable to determine target framework for project.");
