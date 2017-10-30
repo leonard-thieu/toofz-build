@@ -29,18 +29,16 @@ psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x86 2>&1 | 
 $openCoverProfile_x64 = Join-Path $openCoverPath '.\tools\x64\OpenCover.Profiler.dll'
 psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x64 2>&1 | % { "$_" }
 
+$targetArgs = ''
+# $vsinstalldir = Resolve-Path 'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\'
 if ($projectObj.IsNetFramework) {
-    $vstest = 'vstest.console.exe'
+    $target = 'vstest.console.exe'
+    if (Test-Path Env:\APPVEYOR) { $targetArgs += '/logger:AppVeyor ' }
 } else {
-    $vstest = 'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Extensions\TestPlatform\vstest.console.exe'
+    $target = 'dotnet'
+    $targetArgs += 'vstest /Framework:FrameworkCore10 '
 }
-
-$targetArgs = $projectObj.GetOutPath($configuration)
-if ($projectObj.IsNetFramework) {
-    if (Test-Path Env:\APPVEYOR) { $targetArgs += ' /logger:AppVeyor' }
-} else {
-    $targetArgs += ' /Framework:FrameworkCore10'
-}
+$targetArgs += "$projectObj.GetOutPath($configuration)"
 
 $filter = "+[$Project*]* -[$testProject*]*";
 if ($Filter -ne $null) { $filter += " $Filter" }
@@ -51,7 +49,7 @@ if ($AsLocalSystem.IsPresent) {
 
     psexec -accepteula -nobanner -s -w $cd `
         $openCover `
-            "-target:$vstest" `
+            "-target:$target" `
             "-targetargs:$targetArgs" `
             -returntargetcode `
             "-filter:$filter" `
@@ -60,7 +58,7 @@ if ($AsLocalSystem.IsPresent) {
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } else {
     & $openCover `
-        "-target:$vstest" `
+        "-target:$target" `
         "-targetargs:$targetArgs" `
         -returntargetcode `
         "-filter:$filter" `
