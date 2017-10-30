@@ -18,9 +18,9 @@ namespace toofz.Build
             // .NET Framework uses "TargetFrameworkVersion"
             // .NET Core/Standard uses "TargetFramework"
             var targetFramework = (from g in project.Root.Elements()
-                                   where g.Name == "PropertyGroup"
+                                   where g.Name.LocalName == "PropertyGroup"
                                    from t in g.Elements()
-                                   where t.Name == "TargetFrameworkVersion" || t.Name == "TargetFramework"
+                                   where t.Name.LocalName == "TargetFrameworkVersion" || t.Name.LocalName == "TargetFramework"
                                    select t.Value)
                                    .LastOrDefault();
             TargetFramework = targetFramework ?? throw new InvalidDataException("Unable to determine target framework for project.");
