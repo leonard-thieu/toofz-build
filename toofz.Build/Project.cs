@@ -14,12 +14,21 @@ namespace toofz.Build
             name = Path.GetFileNameWithoutExtension(filePath);
 
             project = XDocument.Load(filePath);
+
             // Can't use Elements(XName name) because .NET framework projects have a namespace.
+            var propertyGroups = (from g in project.Root.Elements()
+                                  where g.Name.LocalName == "PropertyGroup"
+                                  select g)
+                                  .ToList();
+
+            Version = (from v in propertyGroups
+                       where v.Name.LocalName == "Version"
+                       select v.Value)
+                       .LastOrDefault();
+
             // .NET Framework uses "TargetFrameworkVersion"
             // .NET Core/Standard uses "TargetFramework"
-            var targetFramework = (from g in project.Root.Elements()
-                                   where g.Name.LocalName == "PropertyGroup"
-                                   from t in g.Elements()
+            var targetFramework = (from t in propertyGroups
                                    where t.Name.LocalName == "TargetFrameworkVersion" || t.Name.LocalName == "TargetFramework"
                                    select t.Value)
                                    .LastOrDefault();
@@ -37,6 +46,7 @@ namespace toofz.Build
 
         public string TargetFramework { get; }
         public bool IsNetFramework { get; }
+        public string Version { get; }
 
         public IEnumerable<Package> Packages
         {
