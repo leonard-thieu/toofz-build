@@ -21,14 +21,14 @@ namespace toofz.Build
                                   select g)
                                   .ToList();
 
-            Version = (from v in propertyGroups
+            Version = (from v in propertyGroups.Elements()
                        where v.Name.LocalName == "Version"
                        select v.Value)
                        .LastOrDefault();
 
             // .NET Framework uses "TargetFrameworkVersion"
             // .NET Core/Standard uses "TargetFramework"
-            var targetFramework = (from t in propertyGroups
+            var targetFramework = (from t in propertyGroups.Elements()
                                    where t.Name.LocalName == "TargetFrameworkVersion" || t.Name.LocalName == "TargetFramework"
                                    select t.Value)
                                    .LastOrDefault();
