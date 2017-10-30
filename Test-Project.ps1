@@ -12,7 +12,7 @@ $testProject = "$Project.Tests"
 $configuration = $env:CONFIGURATION
 if ($configuration -eq $null) { $configuration = 'Debug' }
 
-Import-Module .\toofz.Build.dll
+Import-Module "$PSScriptRoot\toofz.Build.dll"
 
 $project = Get-Project ".\$testProject\$testProject.csproj"
 
@@ -35,7 +35,7 @@ if ($project.IsNetFramework) {
 }
 
 $targetArgs = $package.GetOutPath($configuration)
-if (Test-Path Env:\APPVEYOR) { $targetArgs += ' /logger:AppVeyor' }
+if (Test-Path Env:\APPVEYOR -and $project.IsNetFramework) { $targetArgs += ' /logger:AppVeyor' }
 
 $filter = "+[$Project*]* -[$testProject*]*";
 if ($Filter -ne $null) { $filter += " $Filter" }

@@ -7,7 +7,7 @@ if ($Project -eq '') { throw 'The environment variable "PROJECT" or the paramete
 Write-Debug "`$Project = $Project"
 $testProject = "$Project.Tests"
 
-Import-Module .\toofz.Build.dll
+Import-Module "$PSScriptRoot\toofz.Build.dll"
 
 $project = Get-Project ".\$testProject\$testProject.csproj"
 
