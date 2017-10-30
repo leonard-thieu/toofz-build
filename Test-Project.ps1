@@ -15,9 +15,9 @@ if ($configuration -eq $null) { $configuration = 'Debug' }
 Import-Module "$PSScriptRoot\toofz.Build.dll"
 
 $testProjectPath = Resolve-Path ".\$testProject\$testProject.csproj"
-$project = Get-Project $testProjectPath
+$projectObj = Get-Project $testProjectPath
 
-$openCoverPath = $project.GetPackageDirectory('OpenCover')
+$openCoverPath = $projectObj.GetPackageDirectory('OpenCover')
 $openCover = Join-Path $openCoverPath '.\tools\OpenCover.Console.exe'
 Write-Debug "OpenCover path = $openCover"
 
@@ -29,14 +29,14 @@ psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x86 2>&1 | 
 $openCoverProfile_x64 = Join-Path $openCoverPath '.\tools\x64\OpenCover.Profiler.dll'
 psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x64 2>&1 | % { "$_" }
 
-if ($project.IsNetFramework) {
+if ($projectObj.IsNetFramework) {
     $vstest = 'vstest.console.exe'
 } else {
     $vstest = 'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Extensions\TestPlatform\vstest.console.exe'
 }
 
 $targetArgs = $package.GetOutPath($configuration)
-if (Test-Path Env:\APPVEYOR -and $project.IsNetFramework) { $targetArgs += ' /logger:AppVeyor' }
+if (Test-Path Env:\APPVEYOR -and $projectObj.IsNetFramework) { $targetArgs += ' /logger:AppVeyor' }
 
 $filter = "+[$Project*]* -[$testProject*]*";
 if ($Filter -ne $null) { $filter += " $Filter" }
