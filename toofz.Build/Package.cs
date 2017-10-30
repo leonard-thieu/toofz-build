@@ -1,6 +1,6 @@
 ﻿namespace toofz.Build
 {
-    internal sealed class Package
+    public sealed class Package
     {
         public Package(string name, string version)
         {

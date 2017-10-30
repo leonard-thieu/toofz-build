@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace toofz.Build
 {
-    internal sealed class Project
+    public sealed class Project
     {
         public Project(string filePath)
         {
@@ -71,9 +71,9 @@ namespace toofz.Build
             }
             else
             {
-                return (from p in project.Root.Elements("ItemGroup")
-                        from r in p.Elements("PackageReference")
-                        select new Package(p.Attribute("Include").Value, p.Attribute("Version").Value))
+                return (from ig in project.Root.Elements("ItemGroup")
+                        from pr in ig.Elements("PackageReference")
+                        select new Package(pr.Attribute("Include").Value, pr.Attribute("Version").Value))
                         .ToList();
             }
         }
