@@ -6,6 +6,8 @@ param(
     [String]$MyGetApiKey = $Env:MYGET_API_KEY
 )
 
+$ErrorActionPreference = 'Stop'
+
 if ($Env:APPVEYOR_REPO_TAG -ne 'true') {
     Write-Warning ('The environment variable "APPVEYOR_REPO_TAG" is not set to "true". ' +
                    'NuGet package has not been deployed.')
@@ -24,7 +26,7 @@ if ($Env:APPVEYOR_REPO_TAG -ne 'true') {
     $projectPath = Join-Path $projectDir "$Project.csproj" | Resolve-Path
     $projectObj = Get-Project $projectPath
 
-    if ($projectObj.IsNetFramework) {
+    if ($projectObj -is [toofz.Build.FrameworkProject]) {
         nuget pack $projectPath `
             -Properties "Configuration=$Configuration;Platform=$Platform" `
             -Symbols `

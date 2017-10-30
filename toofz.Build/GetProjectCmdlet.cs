@@ -1,9 +1,10 @@
-﻿using System.Management.Automation;
+﻿using System.IO;
+using System.Management.Automation;
 
 namespace toofz.Build
 {
     [Cmdlet(VerbsCommon.Get, "Project")]
-    [OutputType(typeof(Project))]
+    [OutputType(typeof(ProjectBase))]
     public sealed class GetProjectCmdlet : PSCmdlet
     {
         [Parameter(
@@ -11,21 +12,21 @@ namespace toofz.Build
             Position = 0,
             ValueFromPipeline = true
         )]
-        public string Path
+        public string ProjectPath
         {
             get => path;
             set
             {
-                path = System.IO.Path.IsPathRooted(value) ?
+                path = Path.IsPathRooted(value) ?
                     value :
-                    System.IO.Path.Combine(CurrentProviderLocation("FileSystem").ProviderPath, value);
+                    Path.Combine(CurrentProviderLocation("FileSystem").ProviderPath, value);
             }
         }
         private string path;
 
         protected override void ProcessRecord()
         {
-            WriteObject(new Project(Path));
+            WriteObject(ProjectBase.Create(ProjectPath));
         }
     }
 }

@@ -34,7 +34,7 @@ $projectObj = Get-Project $testProjectPath
 
 $targetArgs = ''
 # $vsinstalldir = Resolve-Path 'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\'
-if ($projectObj.IsNetFramework) {
+if ($projectObj -is [toofz.Build.FrameworkProject]) {
     $target = 'vstest.console.exe'
     if (Test-Path Env:\APPVEYOR) { $targetArgs += '/logger:AppVeyor ' }
 } else {
