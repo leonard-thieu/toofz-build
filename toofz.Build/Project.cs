@@ -15,15 +15,10 @@ namespace toofz.Build
 
             project = XDocument.Load(filePath);
             var targetFramework = (from g in project.Root.Elements("PropertyGroup")
-                                   from t in g.Elements("TargetFramework")
+                                   from t in g.Elements("TargetFramework").Concat(g.Elements("TargetFrameworkVersion"))
                                    select t.Value)
                                    .LastOrDefault();
-            if (targetFramework == null)
-            {
-                throw new Exception();
-            }
-
-            TargetFramework = targetFramework;
+            TargetFramework = targetFramework ?? throw new InvalidDataException("Unable to determine target framework for project.");
             IsNetFramework = targetFramework.StartsWith("v");
 
             packagesPath = Path.Combine(path, "..", "packages");
