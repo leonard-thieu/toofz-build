@@ -7,12 +7,14 @@ namespace toofz.Build
 {
     public sealed class CoreProject : ProjectBase
     {
-        public CoreProject(XDocument project) : base(project)
+        public CoreProject(XDocument project, string filePath) : base(project, filePath)
         {
             TargetFramework = GetProperties("TargetFramework").LastOrDefault()?.Value ??
                 throw new InvalidDataException("Unable to determine target framework for project.");
 
             packagesDir = Path.Combine(ProjectDir, "..", "packages");
+
+            ReadNuspec();
         }
 
         private readonly string packagesDir;

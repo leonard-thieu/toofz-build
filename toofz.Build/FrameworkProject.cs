@@ -7,7 +7,7 @@ namespace toofz.Build
 {
     public sealed class FrameworkProject : ProjectBase
     {
-        public FrameworkProject(XDocument project) : base(project)
+        public FrameworkProject(XDocument project, string filePath) : base(project, filePath)
         {
             var targetFramework = (from pg in Project.Root.Elements()
                                    where pg.Name.LocalName == "PropertyGroup"

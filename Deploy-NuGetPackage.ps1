@@ -12,7 +12,7 @@ if ($Env:APPVEYOR_REPO_TAG -ne 'true') {
     Write-Warning ('The environment variable "APPVEYOR_REPO_TAG" is not set to "true". ' +
                    'NuGet package has not been deployed.')
 } else {
-    if ($Configuration -eq $null) { $Configuration = 'Debug' }
+    if ($Configuration -eq '') { $Configuration = 'Debug' }
 
     switch ($Platform) {
         'x86' { break }

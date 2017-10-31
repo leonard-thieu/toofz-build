@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -13,14 +14,16 @@ namespace toofz.Build
             var sdkAttr = project.Root.Attribute("Sdk");
             if (sdkAttr != null && sdkAttr.Value == "Microsoft.NET.Sdk")
             {
-                return new CoreProject(project);
+                return new CoreProject(project, filePath);
             }
-            return new FrameworkProject(project);
+            return new FrameworkProject(project, filePath);
         }
 
-        protected ProjectBase(XDocument project)
+        protected ProjectBase(XDocument project, string filePath)
         {
             Project = project;
+            ProjectDir = Path.GetDirectoryName(filePath);
+            Name = Path.GetFileNameWithoutExtension(filePath);
             packages = new Lazy<IEnumerable<Package>>(ReadPackages);
         }
 
@@ -54,8 +57,8 @@ namespace toofz.Build
         protected IEnumerable<XElement> GetProperties(string localName)
         {
             return (from pg in Project.Root.ElementsByLocalName("PropertyGroup")
-                    from tf in pg.ElementsByLocalName(localName)
-                    select tf)
+                    from p in pg.ElementsByLocalName(localName)
+                    select p)
                     .ToList();
         }
     }
