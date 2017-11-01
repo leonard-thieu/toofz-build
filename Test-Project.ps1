@@ -40,7 +40,7 @@ if ($projectObj -is [toofz.Build.FrameworkProject]) {
     $targetArgs += $projectObj.GetOutPath($configuration)
 } else {
     $target = "$env:ProgramFiles\dotnet\dotnet.exe"
-    $targetArgs += "test $testProjectPath"
+    $targetArgs += "test $testProjectPath /Framework:FrameworkCore10"
 }
 
 $filter = "+[$Project*]* -[$testProject*]*";
