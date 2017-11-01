@@ -5,7 +5,7 @@ param(
     [Switch]$AsLocalSystem
 )
 
-# $ErrorActionPreference = 'Stop'
+$ErrorActionPreference = 'Stop'
 
 if ($Project -eq '') { throw 'The environment variable "PROJECT" or the parameter "Project" is not set. Tests have not been run.' }
 Write-Debug "`$Project = $Project"
@@ -25,11 +25,10 @@ $testProjectPath = Resolve-Path ".\$testProject\$testProject.csproj"
 $projectObj = Get-Project $testProjectPath
 
 $targetArgs = ''
-# $vsinstalldir = Resolve-Path 'C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\'
 if ($projectObj -is [toofz.Build.FrameworkProject]) {
-    $target = 'vstest.console.exe'
-    if (Test-Path Env:\APPVEYOR) { $targetArgs += '/logger:AppVeyor ' }
-    $targetArgs += $projectObj.GetOutPath($configuration)
+    $target = Resolve-Path $env:xunit20 'xunit.console.exe'
+    $targetArgs += $projectObj.GetOutPath($configuration) + ' '
+    if (Test-Path Env:\APPVEYOR) { $targetArgs += '-appveyor ' }
 } else {
     $target = Resolve-Path "$env:ProgramFiles\dotnet\dotnet.exe"
     $targetArgs += "test $testProjectPath"
