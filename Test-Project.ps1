@@ -38,9 +38,8 @@ if ($projectObj -is [toofz.Build.FrameworkProject]) {
     $target = 'vstest.console.exe'
     if (Test-Path Env:\APPVEYOR) { $targetArgs += '/logger:AppVeyor ' }
 } else {
-    $env:PATH += [IO.Path]::PathSeparator + "$env:LocalAppData\Microsoft\dotnet"
-    $target = 'dotnet'
-    $targetArgs += 'vstest /Framework:FrameworkCore10 '
+    $target = Resolve-Path $env:xunit20 'xunit.console.exe'
+    if (Test-Path Env:\APPVEYOR) { $targetArgs += '-appveyor ' }
 }
 $targetArgs += $projectObj.GetOutPath($configuration)
 
