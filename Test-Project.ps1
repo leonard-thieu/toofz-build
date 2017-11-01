@@ -38,7 +38,7 @@ if ($projectObj -is [toofz.Build.FrameworkProject]) {
     $target = 'vstest.console.exe'
     if (Test-Path Env:\APPVEYOR) { $targetArgs += '/logger:AppVeyor ' }
 } else {
-    $target = Resolve-Path $env:xunit20 'xunit.console.exe'
+    $target = Join-Path $env:xunit20 'xunit.console.exe'
     if (Test-Path Env:\APPVEYOR) { $targetArgs += '-appveyor ' }
 }
 $targetArgs += $projectObj.GetOutPath($configuration)
