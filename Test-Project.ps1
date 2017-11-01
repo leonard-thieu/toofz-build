@@ -31,11 +31,11 @@ if ($projectObj -is [toofz.Build.FrameworkProject]) {
     if (Test-Path Env:\APPVEYOR) { $targetArgs += '/logger:AppVeyor ' }
     $targetArgs += $projectObj.GetOutPath($configuration)
 } else {
-    $target = "$env:ProgramFiles\dotnet\dotnet.exe"
+    $target = Resolve-Path "$env:ProgramFiles\dotnet\dotnet.exe"
     $targetArgs += "test $testProjectPath"
 }
 
-$filter = "+[$Project*]* -[$testProject*]*";
+$filter = "+[$Project*]* -[$testProject*]*"
 if ($Filter -ne $null) { $filter += " $Filter" }
 
 if ($AsLocalSystem.IsPresent) {
@@ -66,6 +66,7 @@ if ($AsLocalSystem.IsPresent) {
         "-targetargs:$targetArgs" `
         "-returntargetcode" `
         "-filter:$filter" `
-        "-excludebyattribute:*.ExcludeFromCodeCoverage*"
+        "-excludebyattribute:*.ExcludeFromCodeCoverage*" `
+        "-oldstyle"
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
