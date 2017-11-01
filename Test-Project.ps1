@@ -5,8 +5,6 @@ param(
     [Switch]$AsLocalSystem
 )
 
-$ErrorActionPreference = 'Stop'
-
 if ($Project -eq '') { throw 'The environment variable "PROJECT" or the parameter "Project" is not set. Tests have not been run.' }
 Write-Debug "`$Project = $Project"
 $testProject = "$Project.Tests"
