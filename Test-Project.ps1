@@ -19,14 +19,6 @@ $openCoverPath = Resolve-Path '.\packages\OpenCover'
 $openCover = Join-Path $openCoverPath '.\tools\OpenCover.Console.exe'
 Write-Debug "OpenCover path = $openCover"
 
-$cd = Get-Location
-
-# Register profilers
-$openCoverProfile_x86 = Join-Path $openCoverPath '.\tools\x86\OpenCover.Profiler.dll'
-psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x86 2>&1 | % { "$_" }
-$openCoverProfile_x64 = Join-Path $openCoverPath '.\tools\x64\OpenCover.Profiler.dll'
-psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x64 2>&1 | % { "$_" }
-
 Import-Module "$PSScriptRoot\toofz.Build.dll"
 
 $testProjectPath = Resolve-Path ".\$testProject\$testProject.csproj"
@@ -40,13 +32,21 @@ if ($projectObj -is [toofz.Build.FrameworkProject]) {
     $targetArgs += $projectObj.GetOutPath($configuration)
 } else {
     $target = "$env:ProgramFiles\dotnet\dotnet.exe"
-    $targetArgs += "test $testProjectPath /Framework:FrameworkCore10"
+    $targetArgs += "test $testProjectPath"
 }
 
 $filter = "+[$Project*]* -[$testProject*]*";
 if ($Filter -ne $null) { $filter += " $Filter" }
 
 if ($AsLocalSystem.IsPresent) {
+    $cd = Get-Location
+
+    # Register profilers
+    $openCoverProfile_x86 = Join-Path $openCoverPath '.\tools\x86\OpenCover.Profiler.dll'
+    psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x86 2>&1 | % { "$_" }
+    $openCoverProfile_x64 = Join-Path $openCoverPath '.\tools\x64\OpenCover.Profiler.dll'
+    psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x64 2>&1 | % { "$_" }
+
     # Copy environment variables to machine level so tools have access to them when running under LocalSystem
     Get-ChildItem Env: | % { [Environment]::SetEnvironmentVariable($_.Name, $_.Value, 'Machine') }
 
@@ -54,16 +54,17 @@ if ($AsLocalSystem.IsPresent) {
         $openCover `
             "-target:$target" `
             "-targetargs:$targetArgs" `
-            -returntargetcode `
+            "-returntargetcode" `
             "-filter:$filter" `
             "-excludebyattribute:*.ExcludeFromCodeCoverage*" `
             2>&1 | % { "$_" }
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } else {
     & $openCover `
+        "-register:user" `
         "-target:$target" `
         "-targetargs:$targetArgs" `
-        -returntargetcode `
+        "-returntargetcode" `
         "-filter:$filter" `
         "-excludebyattribute:*.ExcludeFromCodeCoverage*"
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
