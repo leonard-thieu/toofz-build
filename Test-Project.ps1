@@ -37,12 +37,11 @@ $targetArgs = ''
 if ($projectObj -is [toofz.Build.FrameworkProject]) {
     $target = 'vstest.console.exe'
     if (Test-Path Env:\APPVEYOR) { $targetArgs += '/logger:AppVeyor ' }
-    $targetArgs += $projectObj.GetOutPath($configuration)
 } else {
-    $target = Join-Path $env:xunit20 'xunit.console.exe'
-    $targetArgs += $projectObj.GetOutPath($configuration) + ' '
-    if (Test-Path Env:\APPVEYOR) { $targetArgs += '-appveyor ' }
+    $target = "$env:ProgramFiles\dotnet\dotnet.exe"
+    $targetArgs += 'test '
 }
+$targetArgs += $projectObj.GetOutPath($configuration) + ' '
 
 $filter = "+[$Project*]* -[$testProject*]*";
 if ($Filter -ne $null) { $filter += " $Filter" }
