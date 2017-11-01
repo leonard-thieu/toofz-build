@@ -16,7 +16,7 @@ if ($configuration -eq $null) { $configuration = 'Debug' }
 
 nuget install OpenCover -ExcludeVersion -SolutionDirectory . -Verbosity quiet
 $openCoverPath = Resolve-Path '.\packages\OpenCover'
-$openCover = Join-Path $openCoverPath '.\tools\OpenCover.Console.exe'
+$openCover = Resolve-Path "$openCoverPath\tools\OpenCover.Console.exe"
 Write-Debug "OpenCover path = $openCover"
 
 Import-Module "$PSScriptRoot\toofz.Build.dll"
@@ -26,7 +26,7 @@ $projectObj = Get-Project $testProjectPath
 
 $targetArgs = ''
 if ($projectObj -is [toofz.Build.FrameworkProject]) {
-    $target = Resolve-Path $env:xunit20 'xunit.console.exe'
+    $target = Resolve-Path "$env:xunit20\xunit.console.exe" 
     $targetArgs += $projectObj.GetOutPath($configuration) + ' '
     if (Test-Path Env:\APPVEYOR) { $targetArgs += '-appveyor ' }
 } else {
@@ -41,9 +41,9 @@ if ($AsLocalSystem.IsPresent) {
     $cd = Get-Location
 
     # Register profilers
-    $openCoverProfile_x86 = Join-Path $openCoverPath '.\tools\x86\OpenCover.Profiler.dll'
+    $openCoverProfile_x86 = Resolve-Path "$openCoverPath\tools\x86\OpenCover.Profiler.dll"
     psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x86 2>&1 | % { "$_" }
-    $openCoverProfile_x64 = Join-Path $openCoverPath '.\tools\x64\OpenCover.Profiler.dll'
+    $openCoverProfile_x64 = Resolve-Path "$openCoverPath\tools\x64\OpenCover.Profiler.dll"
     psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x64 2>&1 | % { "$_" }
 
     # Copy environment variables to machine level so tools have access to them when running under LocalSystem
