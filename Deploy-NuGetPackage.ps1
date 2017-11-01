@@ -23,7 +23,7 @@ if ($Env:APPVEYOR_REPO_TAG -ne 'true') {
     Import-Module "$PSScriptRoot\toofz.Build.dll"
 
     $projectDir = Resolve-Path ".\$Project"
-    $projectPath = Join-Path $projectDir "$Project.csproj" | Resolve-Path
+    $projectPath = Resolve-Path "$projectDir\$Project.csproj"
     $projectObj = Get-Project $projectPath
 
     if ($projectObj -is [toofz.Build.FrameworkProject]) {
@@ -33,7 +33,7 @@ if ($Env:APPVEYOR_REPO_TAG -ne 'true') {
             -Verbosity quiet
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-        [Xml]$nuspec = Get-Content ".\$Project\$Project.nuspec"
+        [Xml]$nuspec = Resolve-Path ".\$Project\$Project.nuspec" | Get-Content
         $id = $nuspec.package.metadata.id
         $version = $nuspec.package.metadata.version
 
@@ -45,9 +45,9 @@ if ($Env:APPVEYOR_REPO_TAG -ne 'true') {
         $id = $projectObj.PackageId
         $version = $projectObj.PackageVersion
 
-        $outDir = [IO.Path]::Combine($projectDir, 'bin', $Configuration) | Resolve-Path
-        $package = Join-Path $outDir ".\$id.$version.nupkg" | Resolve-Path
-        $symbols = Join-Path $outDir ".\$id.$version.symbols.nupkg" | Resolve-Path
+        $outDir = Resolve-Path "$projectDir\bin\$Configuration"
+        $package = Resolve-Path "$outDir\$id.$version.nupkg"
+        $symbols = Resolve-Path "$outDir\$id.$version.symbols.nupkg"
     }
     
     nuget push $package `
