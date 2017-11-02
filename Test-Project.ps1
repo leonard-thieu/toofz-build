@@ -63,7 +63,6 @@ if ($AsLocalSystem.IsPresent) {
         "-targetargs:$targetArgs" `
         "-returntargetcode" `
         "-filter:$filter" `
-        "-excludebyattribute:*.ExcludeFromCodeCoverage*" `
-        "-oldstyle"
+        "-excludebyattribute:*.ExcludeFromCodeCoverage*"
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
