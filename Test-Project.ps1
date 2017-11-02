@@ -64,6 +64,7 @@ if ($AsLocalSystem.IsPresent) {
         "-returntargetcode" `
         "-filter:$filter" `
         "-excludebyattribute:*.ExcludeFromCodeCoverage*" `
-        "-oldstyle"
+        "-oldstyle" `
+        "-searchdirs:$($projectObj.GetOutPath($configuration))"
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
