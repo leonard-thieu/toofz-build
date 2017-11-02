@@ -37,24 +37,18 @@ $filterArg = "+[$Project*]* -[$testProject*]*"
 if ($Filter -ne $null) { $filterArg += " $Filter" }
 
 if ($AsLocalSystem.IsPresent) {
-    $cd = Get-Location
-
-    # Register profilers
-    $openCoverProfile_x86 = Resolve-Path "$openCoverPath\tools\x86\OpenCover.Profiler.dll"
-    psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x86 2>&1 | % { "$_" }
-    $openCoverProfile_x64 = Resolve-Path "$openCoverPath\tools\x64\OpenCover.Profiler.dll"
-    psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x64 2>&1 | % { "$_" }
-
     # Copy environment variables to machine level so tools have access to them when running under LocalSystem
     Get-ChildItem Env: | % { [Environment]::SetEnvironmentVariable($_.Name, $_.Value, 'Machine') }
 
     psexec -accepteula -nobanner -s -w $cd `
         $openCover `
+            "-register:Path64" `
             "-target:$target" `
             "-targetargs:$targetArgs" `
+            "-targetdir:$testOutDir" `
             "-returntargetcode" `
             "-filter:$filterArg" `
-            "-excludebyattribute:*.ExcludeFromCodeCoverage*" `
+            "-excludebyattribute:*.ExcludeFromCodeCoverage*"
             2>&1 | % { "$_" }
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } else {
@@ -63,10 +57,10 @@ if ($AsLocalSystem.IsPresent) {
         "-register:user" `
         "-target:$target" `
         "-targetargs:$targetArgs" `
+        "-targetdir:$testOutDir" `
         "-returntargetcode" `
         "-filter:$filterArg" `
         "-excludebyattribute:*.ExcludeFromCodeCoverage*" `
-        "-oldstyle" `
-        "-targetdir:$testOutDir"
+        "-oldstyle"
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
