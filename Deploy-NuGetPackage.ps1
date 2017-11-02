@@ -6,8 +6,6 @@ param(
     [String]$MyGetApiKey = $Env:MYGET_API_KEY
 )
 
-$ErrorActionPreference = 'Stop'
-
 if ($Env:APPVEYOR_REPO_TAG -ne 'true') {
     Write-Warning ('The environment variable "APPVEYOR_REPO_TAG" is not set to "true". ' +
                    'NuGet package has not been deployed.')
