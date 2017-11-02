@@ -32,7 +32,7 @@ if ($projectObj -is [toofz.Build.FrameworkProject]) {
     $targetArgs += "test $testProjectPath"
 }
 
-$filter = "+[$Project*]* -[$testProject*]*"
+$filter = "+[$Project*]*"
 if ($Filter -ne $null) { $filter += " $Filter" }
 
 if ($AsLocalSystem.IsPresent) {
@@ -63,6 +63,6 @@ if ($AsLocalSystem.IsPresent) {
         "-targetargs:$targetArgs" `
         "-returntargetcode" `
         "-filter:$filter" `
-        "-excludebyattribute:*.ExcludeFromCodeCoverage*"
+        "-oldstyle"
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
