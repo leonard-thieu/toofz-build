@@ -33,6 +33,8 @@ if ($testProjectObj -is [toofz.Build.FrameworkProject]) {
 }
 $targetArgs = $targetArgs.Trim()
 
+$testOutDir = Split-Path $testProjectObj.GetOutPath($configuration)
+
 $filterArg = "+[$Project*]* -[$testProject*]*"
 if ($Filter -ne $null) { $filterArg += " $Filter" }
 
@@ -59,7 +61,6 @@ if ($AsLocalSystem.IsPresent) {
             2>&1 | % { "$_" }
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } else {
-    $testOutDir = Split-Path $testProjectObj.GetOutPath($configuration)
     & $openCover `
         "-register:user" `
         "-target:$target" `
