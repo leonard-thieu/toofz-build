@@ -48,7 +48,7 @@ if ($AsLocalSystem.IsPresent) {
             "-targetdir:$testOutDir" `
             "-returntargetcode" `
             "-filter:$filterArg" `
-            "-excludebyattribute:*.ExcludeFromCodeCoverage*"
+            "-excludebyattribute:*.ExcludeFromCodeCoverage*" `
             2>&1 | % { "$_" }
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } else {
