@@ -24,9 +24,9 @@ $testProjectObj = Get-Project $testProjectPath
 
 $targetArgs = ''
 if ($testProjectObj -is [toofz.Build.FrameworkProject]) {
-    $target = Resolve-Path "$env:xunit20\xunit.console.exe" 
+    $target = 'vstest.console.exe'
     $targetArgs += $testProjectObj.GetOutPath($configuration) + ' '
-    if (Test-Path Env:\APPVEYOR) { $targetArgs += '-appveyor ' }
+    if (Test-Path Env:\APPVEYOR) { $targetArgs += '/logger:AppVeyor ' }
 } else {
     $target = Resolve-Path "$env:ProgramFiles\dotnet\dotnet.exe"
     $targetArgs += "test $testProjectPath"
@@ -57,6 +57,7 @@ if ($AsLocalSystem.IsPresent) {
             2>&1 | % { "$_" }
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } else {
+    $filter
     $test = "$openCover -register:user -target:$target -targetargs:$targetArgs -returntargetcode -filter:$filter -excludebyattribute:*.ExcludeFromCodeCoverage* -oldstyle -searchdirs:$($testProjectObj.GetOutPath($configuration))"
     $test
     & $openCover `
