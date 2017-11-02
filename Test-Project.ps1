@@ -41,9 +41,15 @@ if ($AsLocalSystem.IsPresent) {
     Get-ChildItem Env: | % { [Environment]::SetEnvironmentVariable($_.Name, $_.Value, 'Machine') }
 
     $cd = Get-Location
+
+    # Register profilers
+    $openCoverProfile_x86 = Resolve-Path "$openCoverPath\tools\x86\OpenCover.Profiler.dll"
+    psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x86 2>&1 | % { "$_" }
+    $openCoverProfile_x64 = Resolve-Path "$openCoverPath\tools\x64\OpenCover.Profiler.dll"
+    psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x64 2>&1 | % { "$_" }
+
     psexec -accepteula -nobanner -s -w $cd `
         $openCover `
-            "-register:Path64" `
             "-target:$target" `
             "-targetargs:$targetArgs" `
             "-targetdir:$testOutDir" `
