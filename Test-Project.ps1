@@ -25,12 +25,13 @@ $testProjectObj = Get-Project $testProjectPath
 $targetArgs = ''
 if ($testProjectObj -is [toofz.Build.FrameworkProject]) {
     $target = 'vstest.console.exe'
-    $targetArgs += $testProjectObj.GetOutPath($configuration) + ' '
+    $targetArgs += "$($testProjectObj.GetOutPath($configuration)) "
     if (Test-Path Env:\APPVEYOR) { $targetArgs += '/logger:AppVeyor ' }
 } else {
     $target = Resolve-Path "$env:ProgramFiles\dotnet\dotnet.exe"
-    $targetArgs += "test $testProjectPath"
+    $targetArgs += "test $testProjectPath "
 }
+$targetArgs = $targetArgs.Trim()
 
 $filterArg = "+[$Project*]* -[$testProject*]*"
 if ($Filter -ne $null) { $filterArg += " $Filter" }
@@ -57,8 +58,7 @@ if ($AsLocalSystem.IsPresent) {
             2>&1 | % { "$_" }
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } else {
-    $outDir = Split-Path $testProjectObj.GetOutPath($configuration)
-    "$openCover -register:user -target:$target -targetargs:$targetArgs -returntargetcode -filter:$filterArg -excludebyattribute:*.ExcludeFromCodeCoverage* -oldstyle -targetdir:$outDir"
+    $testOutDir = Split-Path $testProjectObj.GetOutPath($configuration)
     & $openCover `
         "-register:user" `
         "-target:$target" `
@@ -67,6 +67,6 @@ if ($AsLocalSystem.IsPresent) {
         "-filter:$filterArg" `
         "-excludebyattribute:*.ExcludeFromCodeCoverage*" `
         "-oldstyle" `
-        "-targetdir:$outDir"
+        "-targetdir:$testOutDir"
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
