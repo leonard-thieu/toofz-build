@@ -40,6 +40,7 @@ if ($AsLocalSystem.IsPresent) {
     # Copy environment variables to machine level so tools have access to them when running under LocalSystem
     Get-ChildItem Env: | % { [Environment]::SetEnvironmentVariable($_.Name, $_.Value, 'Machine') }
 
+    $cd = Get-Location
     psexec -accepteula -nobanner -s -w $cd `
         $openCover `
             "-register:Path64" `
