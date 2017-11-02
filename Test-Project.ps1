@@ -57,7 +57,8 @@ if ($AsLocalSystem.IsPresent) {
             2>&1 | % { "$_" }
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } else {
-    "$openCover -register:user -target:$target -targetargs:$targetArgs -returntargetcode -filter:$filterArg -excludebyattribute:*.ExcludeFromCodeCoverage* -oldstyle -targetdir:$($testProjectObj.GetOutPath($configuration))"
+    $outDir = Split-Path $testProjectObj.GetOutPath($configuration)
+    "$openCover -register:user -target:$target -targetargs:$targetArgs -returntargetcode -filter:$filterArg -excludebyattribute:*.ExcludeFromCodeCoverage* -oldstyle -targetdir:$outDir"
     & $openCover `
         "-register:user" `
         "-target:$target" `
@@ -66,6 +67,6 @@ if ($AsLocalSystem.IsPresent) {
         "-filter:$filterArg" `
         "-excludebyattribute:*.ExcludeFromCodeCoverage*" `
         "-oldstyle" `
-        "-targetdir:$($testProjectObj.GetOutPath($configuration))"
+        "-targetdir:$outDir"
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
