@@ -57,7 +57,7 @@ if ($AsLocalSystem.IsPresent) {
             2>&1 | % { "$_" }
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } else {
-    $test = $openCover + "-register:user" + "-target:$target" + "-targetargs:$targetArgs" + "-returntargetcode" + "-filter:$filter" + "-excludebyattribute:*.ExcludeFromCodeCoverage*" + "-oldstyle" + "-searchdirs:$($testProjectObj.GetOutPath($configuration).Path)"
+    $test = "$openCover -register:user -target:$target -targetargs:$targetArgs -returntargetcode -filter:$filter -excludebyattribute:*.ExcludeFromCodeCoverage* -oldstyle -searchdirs:$($testProjectObj.GetOutPath($configuration))"
     $test
     & $openCover `
         "-register:user" `
