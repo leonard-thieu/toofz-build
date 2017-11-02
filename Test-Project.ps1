@@ -32,8 +32,8 @@ if ($testProjectObj -is [toofz.Build.FrameworkProject]) {
     $targetArgs += "test $testProjectPath"
 }
 
-$filter = "+[$Project*]* -[$testProject*]*"
-if ($Filter -ne $null) { $filter += " $Filter" }
+$filterArg = "+[$Project*]* -[$testProject*]*"
+if ($Filter -ne $null) { $filterArg += " $Filter" }
 
 if ($AsLocalSystem.IsPresent) {
     $cd = Get-Location
@@ -52,22 +52,20 @@ if ($AsLocalSystem.IsPresent) {
             "-target:$target" `
             "-targetargs:$targetArgs" `
             "-returntargetcode" `
-            "-filter:$filter" `
+            "-filter:$filterArg" `
             "-excludebyattribute:*.ExcludeFromCodeCoverage*" `
             2>&1 | % { "$_" }
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } else {
-    $filter
-    $test = "$openCover -register:user -target:$target -targetargs:$targetArgs -returntargetcode -filter:$filter -excludebyattribute:*.ExcludeFromCodeCoverage* -oldstyle -searchdirs:$($testProjectObj.GetOutPath($configuration))"
-    $test
+    "$openCover -register:user -target:$target -targetargs:$targetArgs -returntargetcode -filter:$filterArg -excludebyattribute:*.ExcludeFromCodeCoverage* -oldstyle -targetdir:$($testProjectObj.GetOutPath($configuration))"
     & $openCover `
         "-register:user" `
         "-target:$target" `
         "-targetargs:$targetArgs" `
         "-returntargetcode" `
-        "-filter:$filter" `
+        "-filter:$filterArg" `
         "-excludebyattribute:*.ExcludeFromCodeCoverage*" `
         "-oldstyle" `
-        "-searchdirs:$($testProjectObj.GetOutPath($configuration))"
+        "-targetdir:$($testProjectObj.GetOutPath($configuration))"
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
