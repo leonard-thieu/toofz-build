@@ -25,6 +25,8 @@ namespace toofz.Build
             ProjectDir = Path.GetDirectoryName(filePath);
             Name = Path.GetFileNameWithoutExtension(filePath);
             packages = new Lazy<IEnumerable<Package>>(ReadPackages);
+            PackageId = GetProperties("PackageId").LastOrDefault()?.Value ?? Name;
+            PackageVersion = GetProperties("Version").LastOrDefault()?.Value ?? "1.0.0";
         }
 
         private readonly Lazy<IEnumerable<Package>> packages;
@@ -34,6 +36,8 @@ namespace toofz.Build
         public string ProjectDir { get; }
         public string Name { get; }
         public abstract string TargetFramework { get; }
+        public string PackageId { get; set; }
+        public string PackageVersion { get; set; }
 
         #region Packages
 

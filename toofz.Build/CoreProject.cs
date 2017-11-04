@@ -13,15 +13,11 @@ namespace toofz.Build
                 throw new InvalidDataException("Unable to determine target framework for project.");
 
             packagesDir = Path.Combine(ProjectDir, "..", "packages");
-
-            ReadNuspec();
         }
 
         private readonly string packagesDir;
 
         public override string TargetFramework { get; }
-        public string PackageId { get; set; }
-        public string PackageVersion { get; set; }
 
         public override string GetPackageDirectory(Package package)
         {
@@ -39,12 +35,6 @@ namespace toofz.Build
         public override string GetOutPath(string configuration)
         {
             return Path.Combine(ProjectDir, "bin", configuration, TargetFramework, $"{Name}.dll");
-        }
-
-        private void ReadNuspec()
-        {
-            PackageId = GetProperties("PackageId").LastOrDefault()?.Value ?? Name;
-            PackageVersion = GetProperties("Version").LastOrDefault()?.Value ?? "1.0.0";
         }
     }
 }
