@@ -26,7 +26,7 @@ namespace toofz.Build
             Name = Path.GetFileNameWithoutExtension(filePath);
             packages = new Lazy<IEnumerable<Package>>(ReadPackages);
             PackageId = GetProperties("PackageId").LastOrDefault()?.Value ?? Name;
-            PackageVersion = GetProperties("Version").LastOrDefault()?.Value ?? "1.0.0";
+            PackageVersion = GetProperties("PackageVersion").LastOrDefault()?.Value ?? "1.0.0";
         }
 
         private readonly Lazy<IEnumerable<Package>> packages;
