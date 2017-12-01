@@ -1,12 +1,12 @@
 [CmdletBinding()]
 param(
-    [String]$Configuration = $Env:CONFIGURATION,
-    [String]$Platform = $Env:PLATFORM,
-    [String]$Project = $Env:PROJECT,
-    [String]$MyGetApiKey = $Env:MYGET_API_KEY
+    [String]$Configuration = $env:CONFIGURATION,
+    [String]$Platform = $env:PLATFORM,
+    [String]$Project = $env:PROJECT,
+    [String]$MyGetApiKey = $env:MYGET_API_KEY
 )
 
-if ($Env:APPVEYOR_REPO_TAG -ne 'true') {
+if ($env:APPVEYOR_REPO_TAG -ne 'true') {
     Write-Warning ('The environment variable "APPVEYOR_REPO_TAG" is not set to "true". ' +
                    'NuGet package has not been deployed.')
 } else {

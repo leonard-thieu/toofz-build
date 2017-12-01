@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [String]$Project = $Env:PROJECT
+    [String]$Project = $env:PROJECT
 )
 
 if ($Project -eq '') { throw 'The environment variable "PROJECT" or the parameter "Project" is not set. Code coverage results have not been submitted.' }
