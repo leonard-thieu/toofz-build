@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
     [String]$Project = $env:PROJECT,
+    [String]$Configuration = $env:CONFIGURATION,
     [String]$Filter,
     [Switch]$AsLocalSystem
 )
@@ -9,8 +10,7 @@ if ($Project -eq '') { throw 'The environment variable "PROJECT" or the paramete
 Write-Debug "`$Project = $Project"
 $testProject = "$Project.Tests"
 
-$configuration = $env:CONFIGURATION
-if ($configuration -eq $null) { $configuration = 'Debug' }
+if ($Configuration -eq '') { $Configuration = 'Debug' }
 
 nuget install OpenCover -ExcludeVersion -SolutionDirectory . -Verbosity quiet
 $openCoverPath = Resolve-Path '.\packages\OpenCover'
@@ -25,7 +25,7 @@ $testProjectObj = Get-Project $testProjectPath
 $targetArgs = ''
 if ($testProjectObj -is [toofz.Build.FrameworkProject]) {
     $target = 'vstest.console.exe'
-    $targetArgs += "$($testProjectObj.GetOutPath($configuration)) "
+    $targetArgs += "$($testProjectObj.GetOutPath($Configuration)) "
     if (Test-Path Env:\APPVEYOR) { $targetArgs += '/logger:AppVeyor ' }
 } else {
     $target = Resolve-Path "$env:ProgramFiles\dotnet\dotnet.exe"
@@ -33,7 +33,7 @@ if ($testProjectObj -is [toofz.Build.FrameworkProject]) {
 }
 $targetArgs = $targetArgs.Trim()
 
-$testOutDir = Split-Path $testProjectObj.GetOutPath($configuration)
+$testOutDir = Split-Path $testProjectObj.GetOutPath($Configuration)
 
 $filterArg = "+[$Project*]* -[$testProject*]*"
 if ($Filter -ne $null) { $filterArg += " $Filter" }
