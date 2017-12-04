@@ -38,7 +38,7 @@ if ($env:APPVEYOR_REPO_TAG -ne 'true') {
         $package = Resolve-Path ".\$id.$version.nupkg"
         $symbols = Resolve-Path ".\$id.$version.symbols.nupkg"
     } else {
-        msbuild /target:Pack "/property:Configuration=$Configuration;Platform=$Platform;IncludeSymbols=true;IncludeSource=true" /verbosity:quiet $projectPath
+        msbuild /target:Pack "/property:Configuration=$Configuration;Platform=$Platform;IncludeSymbols=true;IncludeSource=true" $projectPath
 
         $id = $projectObj.PackageId
         $version = $projectObj.PackageVersion
