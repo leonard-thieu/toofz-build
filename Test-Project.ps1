@@ -26,7 +26,6 @@ $targetArgs = ''
 if ($testProjectObj -is [toofz.Build.FrameworkProject]) {
     $target = 'vstest.console.exe'
     $targetArgs += "$($testProjectObj.GetOutPath($Configuration)) "
-    if (Test-Path Env:\APPVEYOR) { $targetArgs += '/logger:AppVeyor ' }
 } else {
     $target = Resolve-Path "$env:ProgramFiles\dotnet\dotnet.exe"
     $targetArgs += "test $testProjectPath "
