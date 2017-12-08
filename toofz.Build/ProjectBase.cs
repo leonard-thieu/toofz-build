@@ -12,7 +12,7 @@ namespace toofz.Build
         {
             var project = XDocument.Load(filePath);
             var sdkAttr = project.Root.Attribute("Sdk");
-            if (sdkAttr != null && sdkAttr.Value == "Microsoft.NET.Sdk")
+            if (sdkAttr?.Value == "Microsoft.NET.Sdk")
             {
                 return new CoreProject(project, filePath);
             }

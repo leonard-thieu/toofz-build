@@ -9,15 +9,18 @@ namespace toofz.Build
     {
         public CoreProject(XDocument project, string filePath) : base(project, filePath)
         {
-            TargetFramework = GetProperties("TargetFramework").LastOrDefault()?.Value ??
-                throw new InvalidDataException("Unable to determine target framework for project.");
+            targetFramework = GetProperties("TargetFramework").LastOrDefault()?.Value;
+            TargetFrameworks = GetProperties("TargetFrameworks").LastOrDefault()?.Value.Split(';');
 
             packagesDir = Path.Combine(ProjectDir, "..", "packages");
         }
 
         private readonly string packagesDir;
 
-        public override string TargetFramework { get; }
+        public override string TargetFramework => targetFramework ?? TargetFrameworks.FirstOrDefault();
+        private readonly string targetFramework;
+
+        public IEnumerable<string> TargetFrameworks { get; }
 
         public override string GetPackageDirectory(Package package)
         {
