@@ -23,30 +23,15 @@ if ($env:APPVEYOR_REPO_TAG -ne 'true') {
     $projectDir = Resolve-Path ".\$Project"
     $projectPath = Resolve-Path "$projectDir\$Project.csproj"
     $projectObj = Get-Project $projectPath
+    
+    msbuild /target:Pack "/property:Configuration=$Configuration;Platform=$Platform;IncludeSymbols=true;IncludeSource=true" $projectPath
 
-    if (Test-Path ".\$Project\$Project.nuspec") {
-        nuget pack $projectPath `
-            -Properties "Configuration=$Configuration;Platform=$Platform" `
-            -Symbols `
-            -Verbosity quiet
-        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    $id = $projectObj.PackageId
+    $version = $projectObj.PackageVersion
 
-        [Xml]$nuspec = Resolve-Path ".\$Project\$Project.nuspec" | Get-Content
-        $id = $nuspec.package.metadata.id
-        $version = $nuspec.package.metadata.version
-
-        $package = Resolve-Path ".\$id.$version.nupkg"
-        $symbols = Resolve-Path ".\$id.$version.symbols.nupkg"
-    } else {
-        msbuild /target:Pack "/property:Configuration=$Configuration;Platform=$Platform;IncludeSymbols=true;IncludeSource=true" $projectPath
-
-        $id = $projectObj.PackageId
-        $version = $projectObj.PackageVersion
-
-        $outDir = Resolve-Path "$projectDir\bin\$Configuration"
-        $package = Resolve-Path "$outDir\$id.$version.nupkg"
-        $symbols = Resolve-Path "$outDir\$id.$version.symbols.nupkg"
-    }
+    $outDir = Resolve-Path "$projectDir\bin\$Configuration"
+    $package = Resolve-Path "$outDir\$id.$version.nupkg"
+    $symbols = Resolve-Path "$outDir\$id.$version.symbols.nupkg"
     
     nuget push $package `
         -Source https://www.myget.org/F/toofz/api/v2/package -ApiKey $MyGetApiKey `
