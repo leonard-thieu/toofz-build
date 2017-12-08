@@ -2,8 +2,7 @@
 param(
     [String]$Project = $env:PROJECT,
     [String]$Configuration = $env:CONFIGURATION,
-    [String]$Filter,
-    [Switch]$AsLocalSystem
+    [String]$Filter
 )
 
 if ($Project -eq '') { throw 'The environment variable "PROJECT" or the parameter "Project" is not set. Tests have not been run.' }
@@ -37,37 +36,13 @@ $testOutDir = Split-Path $testProjectObj.GetOutPath($Configuration)
 $filterArg = "+[$Project*]* -[$testProject*]*"
 if ($Filter -ne $null) { $filterArg += " $Filter" }
 
-if ($AsLocalSystem.IsPresent) {
-    # Copy environment variables to machine level so tools have access to them when running under LocalSystem
-    Get-ChildItem Env: | % { [Environment]::SetEnvironmentVariable($_.Name, $_.Value, 'Machine') }
-
-    $cd = Get-Location
-
-    # Register profilers
-    $openCoverProfile_x86 = Resolve-Path "$openCoverPath\tools\x86\OpenCover.Profiler.dll"
-    psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x86 2>&1 | % { "$_" }
-    $openCoverProfile_x64 = Resolve-Path "$openCoverPath\tools\x64\OpenCover.Profiler.dll"
-    psexec -accepteula -nobanner -s -w $cd regsvr32 /s $openCoverProfile_x64 2>&1 | % { "$_" }
-
-    psexec -accepteula -nobanner -s -w $cd `
-        $openCover `
-            "-target:$target" `
-            "-targetargs:$targetArgs" `
-            "-targetdir:$testOutDir" `
-            "-returntargetcode" `
-            "-filter:$filterArg" `
-            "-excludebyattribute:*.ExcludeFromCodeCoverage*" `
-            2>&1 | % { "$_" }
-    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-} else {
-    & $openCover `
-        "-register:user" `
-        "-target:$target" `
-        "-targetargs:$targetArgs" `
-        "-targetdir:$testOutDir" `
-        "-returntargetcode" `
-        "-filter:$filterArg" `
-        "-excludebyattribute:*.ExcludeFromCodeCoverage*" `
-        "-oldstyle"
-    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-}
+& $openCover `
+    "-register:user" `
+    "-target:$target" `
+    "-targetargs:$targetArgs" `
+    "-targetdir:$testOutDir" `
+    "-returntargetcode" `
+    "-filter:$filterArg" `
+    "-excludebyattribute:*.ExcludeFromCodeCoverage*" `
+    "-oldstyle"
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
