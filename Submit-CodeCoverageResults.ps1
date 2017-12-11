@@ -12,5 +12,7 @@ $codecovPath = Resolve-Path '.\packages\Codecov'
 $codecov = Resolve-Path "$codecovPath\tools\codecov.exe"
 Write-Debug "Codecov path = $codecov"
 
-& $codecov "--file=results.xml"
+$resultsPath = Resolve-Path "$Project.results.xml"
+
+& $codecov "--file=$resultsPath"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

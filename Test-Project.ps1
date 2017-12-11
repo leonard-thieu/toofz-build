@@ -36,6 +36,8 @@ $testOutDir = Split-Path $testProjectObj.GetOutPath($Configuration)
 $filterArg = "+[$Project*]* -[$testProject*]*"
 if ($Filter -ne $null) { $filterArg += " $Filter" }
 
+$outputFile = "$Project.results.xml"
+
 & $openCover `
     "-register:user" `
     "-target:$target" `
@@ -44,5 +46,6 @@ if ($Filter -ne $null) { $filterArg += " $Filter" }
     "-returntargetcode" `
     "-filter:$filterArg" `
     "-excludebyattribute:*.ExcludeFromCodeCoverage*" `
+    "-output:$outputFile" `
     "-oldstyle"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
