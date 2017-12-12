@@ -24,7 +24,10 @@ if ($env:APPVEYOR_REPO_TAG -ne 'true') {
     $projectPath = Resolve-Path "$projectDir\$Project.csproj"
     $projectObj = Get-Project $projectPath
     
-    msbuild /target:Pack "/property:Configuration=$Configuration;Platform=$Platform;IncludeSymbols=true;IncludeSource=true" $projectPath
+    msbuild /target:Pack `
+        "/property:Configuration=$Configuration;Platform=$Platform;IncludeSymbols=true;IncludeSource=true" `
+        -verbosity:quiet `
+        $projectPath
 
     $id = $projectObj.PackageId
     $version = $projectObj.PackageVersion
