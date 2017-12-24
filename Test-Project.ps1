@@ -21,15 +21,8 @@ Import-Module "$PSScriptRoot\toofz.Build.dll"
 $testProjectPath = Resolve-Path ".\$testProject\$testProject.csproj"
 $testProjectObj = Get-Project $testProjectPath
 
-$targetArgs = ''
-if ($testProjectObj -is [toofz.Build.FrameworkProject]) {
-    $target = 'vstest.console.exe'
-    $targetArgs += "$($testProjectObj.GetOutPath($Configuration)) "
-} else {
-    $target = Resolve-Path "$env:ProgramFiles\dotnet\dotnet.exe"
-    $targetArgs += "test $testProjectPath "
-}
-$targetArgs = $targetArgs.Trim()
+$target = 'vstest.console.exe'
+$targetArgs = $testProjectObj.GetOutPath($Configuration)
 
 $testOutDir = Split-Path $testProjectObj.GetOutPath($Configuration)
 
