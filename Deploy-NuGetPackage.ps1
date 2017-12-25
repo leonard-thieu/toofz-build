@@ -3,7 +3,8 @@ param(
     [String]$Configuration = $env:CONFIGURATION,
     [String]$Platform = $env:PLATFORM,
     [String]$Project = $env:PROJECT,
-    [String]$MyGetApiKey = $env:MYGET_API_KEY
+    [String]$MyGetApiKey = $env:MYGET_API_KEY,
+    [Switch]$NoPush
 )
 
 if ($env:APPVEYOR_REPO_TAG -ne 'true') {
@@ -36,11 +37,13 @@ if ($env:APPVEYOR_REPO_TAG -ne 'true') {
     $package = Resolve-Path "$outDir\$id.$version.nupkg"
     $symbols = Resolve-Path "$outDir\$id.$version.symbols.nupkg"
     
-    nuget push $package `
-        -Source https://www.myget.org/F/toofz/api/v2/package -ApiKey $MyGetApiKey `
-        -SymbolSource https://www.myget.org/F/toofz/symbols/api/v2/package -SymbolApiKey $MyGetApiKey `
-        -Verbosity quiet
-    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    if (!$NoPush) {
+        nuget push $package `
+            -Source https://www.myget.org/F/toofz/api/v2/package -ApiKey $MyGetApiKey `
+            -SymbolSource https://www.myget.org/F/toofz/symbols/api/v2/package -SymbolApiKey $MyGetApiKey `
+            -Verbosity quiet
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+     }
 
     if (Test-Path Env:\APPVEYOR) { 
         Push-AppveyorArtifact $package
