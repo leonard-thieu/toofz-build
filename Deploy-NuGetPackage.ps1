@@ -7,7 +7,7 @@ param(
     [Switch]$NoPush
 )
 
-if ($env:APPVEYOR_REPO_TAG -ne 'true' -or $NoPush) {
+if (!($env:APPVEYOR_REPO_TAG -eq 'true' -or $NoPush)) {
     Write-Warning ('The environment variable "APPVEYOR_REPO_TAG" is not set to "true". ' +
                    'NuGet package has not been deployed.')
 } else {
