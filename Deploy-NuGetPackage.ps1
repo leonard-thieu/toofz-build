@@ -7,7 +7,7 @@ param(
     [Switch]$NoPush
 )
 
-if ($env:APPVEYOR_REPO_TAG -ne 'true') {
+if ($env:APPVEYOR_REPO_TAG -ne 'true' -or $NoPush) {
     Write-Warning ('The environment variable "APPVEYOR_REPO_TAG" is not set to "true". ' +
                    'NuGet package has not been deployed.')
 } else {
@@ -43,8 +43,8 @@ if ($env:APPVEYOR_REPO_TAG -ne 'true') {
             -SymbolSource https://www.myget.org/F/toofz/symbols/api/v2/package -SymbolApiKey $MyGetApiKey `
             -Verbosity quiet
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-     }
-
+    }
+    
     if (Test-Path Env:\APPVEYOR) { 
         Push-AppveyorArtifact $package
         Push-AppveyorArtifact $symbols
