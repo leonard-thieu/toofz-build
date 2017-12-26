@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <Import Project="$(ToolsDir)Common.targets" />
-  <Import Project="$(ToolsDir)TestProject.targets" />
-  <Import Project="$(ToolsDir)SubmitCodeCoverage.targets" />
-  <Import Project="$(ToolsDir)DeployNuGetPackage.targets" />
+  <Import Project="$(ToolsDir)Coverage.targets" />
+  <Import Project="$(ToolsDir)PublishCoverage.targets" />
+  <Import Project="$(ToolsDir)PublishPackage.targets" />
 
 </Project>

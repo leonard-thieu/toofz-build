@@ -4,7 +4,7 @@ using Microsoft.Build.Utilities;
 
 namespace toofz.Build.Tasks
 {
-    public class PushPackage : ToolTask
+    public class NuGetPush : ToolTask
     {
         [Required]
         public ITaskItem Package { get; set; }

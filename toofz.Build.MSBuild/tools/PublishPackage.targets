@@ -1,7 +1,5 @@
 <Project>
 
-  <UsingTask AssemblyFile="$(toofzMSBuildTasksLib)" TaskName="toofz.Build.Tasks.PushPackage" />
-
   <PropertyGroup>
     <IncludeSymbols Condition=" '$(IncludeSymbols)' == '' ">true</IncludeSymbols>
     <IncludeSource Condition=" '$(IncludeSource)' == '' ">true</IncludeSource>
@@ -11,8 +9,10 @@
     <PackageSymbolSource Condition=" '$(PackageSymbolSource)' == '' ">https://www.myget.org/F/toofz/symbols/api/v2/package</PackageSymbolSource>
     <PackageSymbolApiKey Condition=" '$(PackageSymbolApiKey)' == '' ">$(MYGET_API_KEY)</PackageSymbolApiKey>
   </PropertyGroup>
+
+  <UsingTask AssemblyFile="$(BuildTasksAssemblyFile)" TaskName="toofz.Build.Tasks.NuGetPush" />
   
-  <Target Name="DeployNuGetPackage" DependsOnTargets="Pack">
+  <Target Name="PublishPackage" DependsOnTargets="Pack">
     <PropertyGroup>
       <PackagePath Condition=" '$(PackagePath)' == '' ">$(PackageOutputAbsolutePath)$(PackageId).$(PackageVersion).nupkg</PackagePath>
     </PropertyGroup>

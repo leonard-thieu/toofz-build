@@ -4,9 +4,9 @@
     <CodeCoverageResultsPath>$(ProjectDir)$(IntermediateOutputPath)$(TargetName).results.xml</CodeCoverageResultsPath>
   </PropertyGroup>
 
-  <UsingTask AssemblyFile="$(toofzMSBuildTasksLib)" TaskName="toofz.Build.Tasks.OpenCover" />
+  <UsingTask AssemblyFile="$(BuildTasksAssemblyFile)" TaskName="toofz.Build.Tasks.OpenCover" />
 
-  <Target Name="TestProject">
+  <Target Name="Coverage">
     <OpenCover ToolPath="$(MSBuildThisFileDirectory)OpenCover\tools"
                Register="True"
                Target="$(VsInstallRoot)\Common7\IDE\Extensions\TestPlatform\vstest.console.exe"

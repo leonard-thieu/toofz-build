@@ -4,9 +4,9 @@
     <CodeCoverageResultsPath>$(ProjectDir)$(IntermediateOutputPath)$(TargetName).results.xml</CodeCoverageResultsPath>
   </PropertyGroup>
 
-  <UsingTask AssemblyFile="$(toofzMSBuildTasksLib)" TaskName="toofz.Build.Tasks.Codecov" />
+  <UsingTask AssemblyFile="$(BuildTasksAssemblyFile)" TaskName="toofz.Build.Tasks.Codecov" />
 
-  <Target Name="SubmitCodeCoverage">
+  <Target Name="PublishCoverage">
     <Codecov ToolPath="$(MSBuildThisFileDirectory)Codecov\tools"
              File="$(CodeCoverageResultsPath)" />
   </Target>

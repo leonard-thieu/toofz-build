@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <toofzMSBuildTasksLib>$(MSBuildThisFileDirectory)toofz.Build.Tasks.dll</toofzMSBuildTasksLib>
+    <BuildTasksAssemblyFile>$(MSBuildThisFileDirectory)toofz.Build.Tasks.dll</BuildTasksAssemblyFile>
   </PropertyGroup>
 
 </Project>
