@@ -11,7 +11,7 @@ configuration:
 environment:
   PROJECT: toofz.Build
   VERSION: 0.1.0
-  VERSION_SUFFIX: dev
+  VERSION_SUFFIX: dev.1
   MYGET_API_KEY:
     secure: XZmbJDCK5oiqhbLt1y7UXM6aCYPpF2tm/bJMUJzBsCe1fd2TuwXyaz99RN+bDpHw
 notifications:
