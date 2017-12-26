@@ -1,0 +1,14 @@
+<Project>
+
+  <PropertyGroup>
+    <CodeCoverageResultsPath>$(ProjectDir)$(IntermediateOutputPath)$(TargetName).results.xml</CodeCoverageResultsPath>
+  </PropertyGroup>
+
+  <UsingTask AssemblyFile="$(toofzMSBuildTasksLib)" TaskName="toofz.Build.Tasks.Codecov" />
+
+  <Target Name="SubmitCodeCoverage">
+    <Codecov ToolPath="$(MSBuildThisFileDirectory)Codecov\tools"
+             File="$(CodeCoverageResultsPath)" />
+  </Target>
+
+</Project>

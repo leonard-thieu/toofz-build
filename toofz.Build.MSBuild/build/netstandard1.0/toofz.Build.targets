@@ -1,5 +1,11 @@
 <Project>
 
-  <Import Project="$(MSBuildThisFileDirectory)..\..\tools\TestProject.targets" />
+  <PropertyGroup>
+    <ToolsDir>$(MSBuildThisFileDirectory)..\..\tools\</ToolsDir>
+  </PropertyGroup>
+
+  <Import Project="$(ToolsDir)Common.targets" />
+  <Import Project="$(ToolsDir)TestProject.targets" />
+  <Import Project="$(ToolsDir)SubmitCodeCoverage.targets" />
 
 </Project>
