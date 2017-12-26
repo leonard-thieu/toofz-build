@@ -22,6 +22,7 @@
     <PackageIconUrl>https://user-images.githubusercontent.com/5265970/29717713-27e1a95c-897e-11e7-9d28-dae64be705b5.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/leonard-thieu/toofz-build.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
