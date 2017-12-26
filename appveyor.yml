@@ -28,7 +28,11 @@ assembly_info:
 init:
   - git config --global core.autocrlf input
 install:
-  - ps: $env:PACKAGEVERSION = $env:VERSION + @{ $true = "-$env:VERSION_SUFFIX"; $false = '' }[(Test-Path Env:\VERSION_SUFFIX)]
+  - ps: |
+      $env:PACKAGEVERSION = $env:VERSION
+      if (Test-Path Env:\VERSION_SUFFIX) {
+          $env:PACKAGEVERSION += "-$env:VERSION_SUFFIX"
+      }
   - nuget update -Self
   
 before_build:
@@ -40,6 +44,6 @@ build:
 deploy_script:
   - ps: |
       if ($env:APPVEYOR_REPO_TAG -eq 'true') {
-        $projectPath = Resolve-Path .\src\$env:PROJECT\$env:PROJECT.csproj
-        msbuild $projectPath /target:PublishPackage /property:Dogfood=true
+          $projectPath = Resolve-Path .\src\$env:PROJECT\$env:PROJECT.csproj
+          msbuild $projectPath /target:PublishPackage /property:Dogfood=true
       }
