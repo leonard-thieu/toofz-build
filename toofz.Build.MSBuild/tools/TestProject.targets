@@ -1,0 +1,26 @@
+<Project>
+
+  <PropertyGroup>
+    <OpenCoverPath>$(MSBuildThisFileDirectory)OpenCover\</OpenCoverPath>
+    <OpenCoverMSBuildTasksPath>$(OpenCoverPath)MSBuild\</OpenCoverMSBuildTasksPath>
+    <OpenCoverMSBuildTasksLib>$(OpenCoverMSBuildTasksPath)toofz.OpenCover.MSBuild.dll</OpenCoverMSBuildTasksLib>
+  </PropertyGroup>
+
+  <UsingTask AssemblyFile="$(OpenCoverMSBuildTasksLib)" TaskName="OpenCover.MSBuild.OpenCover" />
+
+  <Target Name="TestProject">
+    <OpenCover ToolPath="$(OpenCoverPath)tools"
+               Register="True"
+               Target="$(VsInstallRoot)\Common7\IDE\Extensions\TestPlatform\vstest.console.exe"
+               TargetArgs="$(TargetPath)"
+               TargetWorkingDir="$(TargetDir)"
+               ReturnTargetCode="True"
+               Filter="+[$(TargetName.Replace(&quot;.Tests&quot;, &quot;&quot;))]* -[$(TargetName)]*"
+               ExcludeByAttribute="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute"
+               Output="$(ProjectDir)$(IntermediateOutputPath)$(TargetName).results.xml"
+               OldStyle="True">
+      <Output TaskParameter="ExitCode" PropertyName="TestExitCode" />
+    </OpenCover>
+  </Target>
+
+</Project>

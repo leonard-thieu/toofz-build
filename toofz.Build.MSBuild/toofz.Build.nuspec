@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>toofz.Build</id>
+    <version>0.0.0-dev</version>
+    <authors>Leonard Thieu</authors>
+    <licenseUrl>https://github.com/leonard-thieu/toofz-build/blob/57201674fbdc1eb1e3b79d4828ec7941e4b0355e/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/leonard-thieu/toofz-build</projectUrl>
+    <iconUrl>https://user-images.githubusercontent.com/5265970/29717713-27e1a95c-897e-11e7-9d28-dae64be705b5.png</iconUrl>
+    <description>toofz Build</description>
+    <copyright>Copyright © Leonard Thieu 2017</copyright>
+  </metadata>
+</package>
