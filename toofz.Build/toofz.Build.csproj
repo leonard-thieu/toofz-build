@@ -19,7 +19,10 @@
 
   <Target Name="SetPackageProperties" BeforeTargets="GenerateNuspec">
     <PropertyGroup>
-      <NuspecProperties>version=$(PackageVersion);configuration=$(Configuration)</NuspecProperties>
+      <NuspecProperties>
+        version=$(PackageVersion);
+        configuration=$(Configuration)
+      </NuspecProperties>
     </PropertyGroup>
   </Target>
 
