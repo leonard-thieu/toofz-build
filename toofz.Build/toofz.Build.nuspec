@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>toofz.Build</id>
-    <version>0.0.0-dev</version>
+    <version>$version$</version>
     <authors>Leonard Thieu</authors>
     <licenseUrl>https://github.com/leonard-thieu/toofz-build/blob/57201674fbdc1eb1e3b79d4828ec7941e4b0355e/LICENSE</licenseUrl>
     <projectUrl>https://github.com/leonard-thieu/toofz-build</projectUrl>
@@ -10,4 +10,10 @@
     <description>toofz Build</description>
     <copyright>Copyright © Leonard Thieu 2017</copyright>
   </metadata>
+  <files>
+    <file src="build/**/*" target="" />
+    <file src="lib/**/*" target="" />
+    <file src="tools/**/*" target="" />
+    <file src="../toofz.Build.Tasks/bin/$configuration$/toofz.Build.Tasks.dll" target="tools/" />
+  </files>
 </package>

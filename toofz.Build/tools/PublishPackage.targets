@@ -17,12 +17,12 @@
       <PackagePath Condition=" '$(PackagePath)' == '' ">$(PackageOutputAbsolutePath)$(PackageId).$(PackageVersion).nupkg</PackagePath>
     </PropertyGroup>
 
-    <PushPackage ToolPath="$(MSBuildThisFileDirectory)NuGet\tools"
-                 Package="$(PackagePath)"
-                 Source="$(PackageSource)"
-                 ApiKey="$(PackageApiKey)"
-                 SymbolSource="$(PackageSymbolSource)"
-                 SymbolApiKey="$(PackageSymbolApiKey)" />
+    <NuGetPush ToolPath="$(MSBuildThisFileDirectory)NuGet\tools"
+               Package="$(PackagePath)"
+               Source="$(PackageSource)"
+               ApiKey="$(PackageApiKey)"
+               SymbolSource="$(PackageSymbolSource)"
+               SymbolApiKey="$(PackageSymbolApiKey)" />
   </Target>
 
 </Project>
