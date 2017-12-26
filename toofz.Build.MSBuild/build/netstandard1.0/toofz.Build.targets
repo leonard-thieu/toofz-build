@@ -7,5 +7,6 @@
   <Import Project="$(ToolsDir)Common.targets" />
   <Import Project="$(ToolsDir)TestProject.targets" />
   <Import Project="$(ToolsDir)SubmitCodeCoverage.targets" />
+  <Import Project="$(ToolsDir)DeployNuGetPackage.targets" />
 
 </Project>

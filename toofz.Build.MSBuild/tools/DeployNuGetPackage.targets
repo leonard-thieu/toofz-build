@@ -1,0 +1,28 @@
+<Project>
+
+  <UsingTask AssemblyFile="$(toofzMSBuildTasksLib)" TaskName="toofz.Build.Tasks.PushPackage" />
+
+  <PropertyGroup>
+    <IncludeSymbols Condition=" '$(IncludeSymbols)' == '' ">true</IncludeSymbols>
+    <IncludeSource Condition=" '$(IncludeSource)' == '' ">true</IncludeSource>
+
+    <PackageSource Condition=" '$(PackageSource)' == '' ">https://www.myget.org/F/toofz/api/v2/package</PackageSource>
+    <PackageApiKey Condition=" '$(PackageApiKey)' == '' ">$(MYGET_API_KEY)</PackageApiKey>
+    <PackageSymbolSource Condition=" '$(PackageSymbolSource)' == '' ">https://www.myget.org/F/toofz/symbols/api/v2/package</PackageSymbolSource>
+    <PackageSymbolApiKey Condition=" '$(PackageSymbolApiKey)' == '' ">$(MYGET_API_KEY)</PackageSymbolApiKey>
+  </PropertyGroup>
+  
+  <Target Name="DeployNuGetPackage" DependsOnTargets="Pack">
+    <PropertyGroup>
+      <PackagePath Condition=" '$(PackagePath)' == '' ">$(PackageOutputAbsolutePath)$(PackageId).$(PackageVersion).nupkg</PackagePath>
+    </PropertyGroup>
+
+    <PushPackage ToolPath="$(MSBuildThisFileDirectory)NuGet\tools"
+                 Package="$(PackagePath)"
+                 Source="$(PackageSource)"
+                 ApiKey="$(PackageApiKey)"
+                 SymbolSource="$(PackageSymbolSource)"
+                 SymbolApiKey="$(PackageSymbolApiKey)" />
+  </Target>
+
+</Project>

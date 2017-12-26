@@ -38,9 +38,10 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Codecov.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Codecov.cs" />
     <Compile Include="OpenCover.cs" />
+    <Compile Include="PushPackage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
