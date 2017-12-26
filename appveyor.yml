@@ -38,4 +38,13 @@ build:
   verbosity: minimal
 
 deploy_script:
-  - ps: if ($env:APPVEYOR_REPO_TAG -eq 'true') { msbuild .\src\$env:PROJECT\$env:PROJECT.csproj /target:PublishPackage }
+  - ps: |
+      if ($env:APPVEYOR_REPO_TAG -eq 'true') {
+        msbuild .\src\$env:PROJECT\$env:PROJECT.csproj /target:Pack
+        $package = Resolve-Path ".\src\$env:PROJECT\bin\$env:CONFIGURATION\$env:PROJECT.$env:PACKAGEVERSION.nupkg"
+        nuget push $package `
+          -Source https://www.myget.org/F/toofz/api/v2/package `
+          -ApiKey $env:MYGET_API_KEY `
+          -SymbolSource https://www.myget.org/F/toofz/symbols/api/v2/package `
+          -SymbolApiKey $env:MYGET_API_KEY
+      }
