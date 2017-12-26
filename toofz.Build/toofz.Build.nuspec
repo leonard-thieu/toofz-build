@@ -14,6 +14,6 @@
     <file src="build/**/*" target="" />
     <file src="lib/**/*" target="" />
     <file src="tools/**/*" target="" />
-    <file src="../toofz.Build.Tasks/bin/$configuration$/toofz.Build.Tasks.dll" target="tools/" />
+    <file src="../toofz.Build.Tasks/bin/$configuration$/netstandard1.3/toofz.Build.Tasks.dll" target="tools/" />
   </files>
 </package>

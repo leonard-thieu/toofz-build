@@ -1,13 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project ToolsVersion="15.0">
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
 
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile>
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
-    <RuntimeMetadataVersion>0</RuntimeMetadataVersion>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <NoWarn>$(NoWarn);CS2008</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -27,9 +27,10 @@
     </PropertyGroup>
   </Target>
 
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+
   <Target Name="Compile" />
   <Target Name="CopyFilesToOutputDirectory" />
-
-  <Import Project="build\netstandard1.0\toofz.Build.targets" />
+  <Target Name="GenerateBuildDependencyFile" />
 
 </Project>
