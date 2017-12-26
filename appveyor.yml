@@ -33,4 +33,4 @@ build:
   verbosity: minimal
 
 deploy_script:
-  - ps: msbuild .\src\$env:PROJECT\$env:PROJECT.csproj /target:PublishPackage
+  - ps: if ($env:APPVEYOR_REPO_TAG -eq 'true') { msbuild .\src\$env:PROJECT\$env:PROJECT.csproj /target:PublishPackage }
