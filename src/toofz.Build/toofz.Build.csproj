@@ -51,7 +51,7 @@
     </None>
   </ItemGroup>
 
-  <Import Project="build\netstandard1.3\toofz.Build.props" Condition=" '$(Dogfood)' == 'true' " />
-  <Import Project="build\netstandard1.3\toofz.Build.targets" Condition=" '$(Dogfood)' == 'true' " />
+  <Import Project="build\netstandard1.3\toofz.Build.props" />
+  <Import Project="build\netstandard1.3\toofz.Build.targets" />
 
 </Project>

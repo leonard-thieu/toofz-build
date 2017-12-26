@@ -40,6 +40,9 @@ build:
 deploy_script:
   - ps: |
       if ($env:APPVEYOR_REPO_TAG -eq 'true') {
-        $projectPath = Resolve-Path .\src\$env:PROJECT\$env:PROJECT.csproj
-        msbuild $projectPath /target:PublishPackage /property:Dogfood=true
+          $projectPath = Resolve-Path .\src\$env:PROJECT\$env:PROJECT.csproj
+          msbuild `
+              $projectPath `
+              /target:PublishPackage `
+              /verbosity:quiet
       }

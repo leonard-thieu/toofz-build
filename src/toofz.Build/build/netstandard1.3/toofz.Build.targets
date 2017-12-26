@@ -1,11 +1,17 @@
 <Project>
-  <UsingTask AssemblyFile="$(BuildToolsPath)toofz.Build.dll" TaskName="toofz.Build.OpenCover" Condition=" '$(Dogfood)' != 'true' " />
-  <UsingTask AssemblyFile="$(BuildToolsPath)toofz.Build.dll" TaskName="toofz.Build.Codecov" Condition=" '$(Dogfood)' != 'true' " />
-  <UsingTask AssemblyFile="$(BuildToolsPath)toofz.Build.dll" TaskName="toofz.Build.NuGetPush" Condition=" '$(Dogfood)' != 'true' " />
-
-  <UsingTask AssemblyFile="$(TargetPath)" TaskName="toofz.Build.OpenCover" Condition=" '$(Dogfood)' == 'true' " />
-  <UsingTask AssemblyFile="$(TargetPath)" TaskName="toofz.Build.Codecov" Condition=" '$(Dogfood)' == 'true' " />
-  <UsingTask AssemblyFile="$(TargetPath)" TaskName="toofz.Build.NuGetPush" Condition=" '$(Dogfood)' == 'true' " />
+  <PropertyGroup>
+    <TasksAssemblyFileName>toofz.Build.dll</TasksAssemblyFileName>
+    <TasksAssemblyFilePath>$(BuildToolsPath)$(TasksAssemblyFileName)</TasksAssemblyFilePath>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <TasksAssemblyFile Include="$(TasksAssemblyFilePath)" Condition=" Exists('$(TasksAssemblyFilePath)') " />
+    <TasksAssemblyFile Include="$(TargetPath)" Condition=" !Exists('$(TasksAssemblyFilePath)') " />
+  </ItemGroup>
+  
+  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.OpenCover" />
+  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.Codecov" />
+  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.NuGetPush" />
 
   <Target Name="Coverage">
     <PropertyGroup>
