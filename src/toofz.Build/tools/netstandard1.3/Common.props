@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <BuildTasksAssemblyFile>toofz.Build.dll</BuildTasksAssemblyFile>
+    <BuildTasksAssemblyPath Condition=" '$(Dogfood)' != 'true' ">$(MSBuildThisFileDirectory)$(BuildTasksAssemblyFile)</BuildTasksAssemblyPath>
+    <BuildTasksAssemblyPath Condition=" '$(Dogfood)' == 'true' ">$(TargetPath)</BuildTasksAssemblyPath>
+
+    <CodeCoverageResultsPath>$(ProjectDir)$(IntermediateOutputPath)$(TargetName).results.xml</CodeCoverageResultsPath>
+  </PropertyGroup>
+</Project>

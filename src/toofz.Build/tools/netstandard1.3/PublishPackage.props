@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
+
+    <NuGetPushToolPath>$(MSBuildThisFileDirectory)NuGet\tools</NuGetPushToolPath>
+    <NuGetPushSource>https://www.myget.org/F/toofz/api/v2/package</NuGetPushSource>
+    <NuGetPushApiKey>$(MYGET_API_KEY)</NuGetPushApiKey>
+    <SymbolPackageServer>https://www.myget.org/F/toofz/symbols/api/v2/package</SymbolPackageServer>
+    <SymbolPackageServerApiKey>$(MYGET_API_KEY)</SymbolPackageServerApiKey>
+  </PropertyGroup>
+</Project>

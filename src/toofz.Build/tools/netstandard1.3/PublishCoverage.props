@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup>
+    <CodecovToolPath>$(MSBuildThisFileDirectory)Codecov\tools</CodecovToolPath>
+  </PropertyGroup>
+</Project>

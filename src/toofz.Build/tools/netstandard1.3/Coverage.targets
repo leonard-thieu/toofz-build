@@ -1,0 +1,16 @@
+<Project>
+  <UsingTask AssemblyFile="$(BuildTasksAssemblyPath)" TaskName="toofz.Build.OpenCover" />
+
+  <Target Name="Coverage">
+    <OpenCover ToolPath="$(OpenCoverToolPath)"
+               Register="true"
+               Target="$(VsTestPath)"
+               TargetArgs="$(VsTestArgs)"
+               TargetWorkingDir="$(VsTestWorkingDir)"
+               ReturnTargetCode="true"
+               Filter="$(OpenCoverFilter)"
+               ExcludeByAttribute="$(OpenCoverExcludeByAttribute)"
+               Output="$(CodeCoverageResultsPath)"
+               OldStyle="$(OpenCoverOldStyle)" />
+  </Target>
+</Project>

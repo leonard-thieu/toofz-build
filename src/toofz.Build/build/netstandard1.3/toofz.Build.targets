@@ -1,0 +1,5 @@
+<Project>
+  <Import Project="$(ToolsDir)Coverage.targets" />
+  <Import Project="$(ToolsDir)PublishCoverage.targets" />
+  <Import Project="$(ToolsDir)PublishPackage.targets" />
+</Project>

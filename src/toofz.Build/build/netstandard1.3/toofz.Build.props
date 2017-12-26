@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <ToolsDir>$(MSBuildThisFileDirectory)..\..\tools\netstandard1.3\</ToolsDir>
+  </PropertyGroup>
+
+  <Import Project="$(ToolsDir)Common.props" />
+  <Import Project="$(ToolsDir)Coverage.props" />
+  <Import Project="$(ToolsDir)PublishCoverage.props" />
+  <Import Project="$(ToolsDir)PublishPackage.props" />
+</Project>
