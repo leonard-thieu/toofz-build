@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <ToolsDir>$(MSBuildProjectDirectory)tools\netstandard1.3\</ToolsDir>
+    <ToolsDir>$(MSBuildProjectDirectory)\tools\netstandard1.3\</ToolsDir>
   </PropertyGroup>
 
   <PropertyGroup>
