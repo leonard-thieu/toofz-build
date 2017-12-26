@@ -4,13 +4,33 @@ using Microsoft.Build.Utilities;
 
 namespace toofz.Build
 {
+    /// <summary>
+    /// Executes the NuGet push command as a task.
+    /// </summary>
     public sealed class NuGetPush : ToolTask
     {
+        /// <summary>
+        /// Path to the package.
+        /// </summary>
         [Required]
         public ITaskItem Package { get; set; }
+        /// <summary>
+        /// Specifies the server URL. If not specified, nuget.org is used unless 
+        /// DefaultPushSource config value is set in the NuGet config file.
+        /// </summary>
         public string Source { get; set; }
+        /// <summary>
+        /// The API key for the server.
+        /// </summary>
         public string ApiKey { get; set; }
+        /// <summary>
+        /// Specifies the symbol server URL. If not specified, 
+        /// nuget.smbsrc.net is used when pushing to nuget.org.
+        /// </summary>
         public string SymbolSource { get; set; }
+        /// <summary>
+        /// The API key for the symbol server.
+        /// </summary>
         public string SymbolApiKey { get; set; }
 
         protected override string ToolName => "NuGet.exe";

@@ -5,8 +5,14 @@ using Microsoft.Build.Utilities;
 
 namespace toofz.Build
 {
+    /// <summary>
+    /// Executes the Codecov tool as a task.
+    /// </summary>
     public sealed class Codecov : ToolTask
     {
+        /// <summary>
+        /// Path to coverage report.
+        /// </summary>
         [Required]
         public ITaskItem File { get; set; }
 
