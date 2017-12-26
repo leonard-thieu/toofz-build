@@ -3,8 +3,35 @@
     <ToolsDir>$(MSBuildThisFileDirectory)..\..\tools\netstandard1.3\</ToolsDir>
   </PropertyGroup>
 
-  <Import Project="$(ToolsDir)Common.props" />
-  <Import Project="$(ToolsDir)Coverage.props" />
-  <Import Project="$(ToolsDir)PublishCoverage.props" />
-  <Import Project="$(ToolsDir)PublishPackage.props" />
+  <PropertyGroup>
+    <CodeCoverageResultsPath>$(ProjectDir)$(IntermediateOutputPath)$(TargetName).results.xml</CodeCoverageResultsPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VsTestPath>$(VsInstallRoot)\Common7\IDE\Extensions\TestPlatform\vstest.console.exe</VsTestPath>
+    <VsTestArgs>$(TargetPath)</VsTestArgs>
+    <VsTestWorkingDir>$(TargetDir)</VsTestWorkingDir>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OpenCoverToolPath>$(ToolsDir)OpenCover\tools</OpenCoverToolPath>
+    <OpenCoverFilter>+[$(TargetName.Replace(&quot;.Tests&quot;, &quot;&quot;))]* -[$(TargetName)]*</OpenCoverFilter>
+    <OpenCoverExcludeByAttribute>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</OpenCoverExcludeByAttribute>
+    <OpenCoverOldStyle>true</OpenCoverOldStyle>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CodecovToolPath>$(ToolsDir)Codecov\tools</CodecovToolPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
+
+    <NuGetPushToolPath>$(ToolsDir)NuGet\tools</NuGetPushToolPath>
+    <PackageServer>https://www.myget.org/F/toofz/api/v2/package</PackageServer>
+    <PackageServerApiKey>$(MYGET_API_KEY)</PackageServerApiKey>
+    <SymbolPackageServer>https://www.myget.org/F/toofz/symbols/api/v2/package</SymbolPackageServer>
+    <SymbolPackageServerApiKey>$(MYGET_API_KEY)</SymbolPackageServerApiKey>
+  </PropertyGroup>
 </Project>

@@ -1,5 +1,40 @@
 <Project>
-  <Import Project="$(ToolsDir)Coverage.targets" />
-  <Import Project="$(ToolsDir)PublishCoverage.targets" />
-  <Import Project="$(ToolsDir)PublishPackage.targets" />
+  <UsingTask AssemblyFile="$(ToolDir)toofz.Build.dll" TaskName="toofz.Build.OpenCover" Condition=" '$(Dogfood)' != 'true' " />
+  <UsingTask AssemblyFile="$(TargetPath)" TaskName="toofz.Build.OpenCover" Condition=" '$(Dogfood)' == 'true' " />
+  <UsingTask AssemblyFile="$(ToolDir)toofz.Build.dll" TaskName="toofz.Build.Codecov" Condition=" '$(Dogfood)' != 'true' " />
+  <UsingTask AssemblyFile="$(TargetPath)" TaskName="toofz.Build.Codecov" Condition=" '$(Dogfood)' == 'true' " />
+  <UsingTask AssemblyFile="$(ToolDir)toofz.Build.dll" TaskName="toofz.Build.NuGetPush" Condition=" '$(Dogfood)' != 'true' " />
+  <UsingTask AssemblyFile="$(TargetPath)" TaskName="toofz.Build.NuGetPush" Condition=" '$(Dogfood)' == 'true' " />
+
+  <Target Name="Coverage">
+    <OpenCover ToolPath="$(OpenCoverToolPath)"
+               Register="true"
+               Target="$(VsTestPath)"
+               TargetArgs="$(VsTestArgs)"
+               TargetWorkingDir="$(VsTestWorkingDir)"
+               ReturnTargetCode="true"
+               Filter="$(OpenCoverFilter)"
+               ExcludeByAttribute="$(OpenCoverExcludeByAttribute)"
+               Output="$(CodeCoverageResultsPath)"
+               OldStyle="$(OpenCoverOldStyle)" />
+  </Target>
+
+  <Target Name="PublishCoverage">
+    <Codecov ToolPath="$(CodecovToolPath)"
+             File="$(CodeCoverageResultsPath)" />
+  </Target>
+
+  <Target Name="PublishPackage" DependsOnTargets="Pack">
+    <PropertyGroup>
+      <!-- PackageOutputAbsolutePath is set by Pack. -->
+      <PackagePath>$(PackageOutputAbsolutePath)$(PackageId).$(PackageVersion).nupkg</PackagePath>
+    </PropertyGroup>
+
+    <NuGetPush ToolPath="$(NuGetPushToolPath)"
+               Package="$(PackagePath)"
+               Source="$(PackageServer)"
+               ApiKey="$(PackageServerApiKey)"
+               SymbolSource="$(SymbolPackageServer)"
+               SymbolApiKey="$(SymbolPackageServerApiKey)" />
+  </Target>
 </Project>
