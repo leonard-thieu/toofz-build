@@ -48,6 +48,5 @@ deploy_script:
           msbuild `
               $projectPath `
               /target:PublishPackage `
-              /verbosity:quiet `
-              /property:Dogfood=true
+              /verbosity:quiet
       }
