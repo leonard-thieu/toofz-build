@@ -32,10 +32,6 @@
   <ItemGroup>
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
-    <Reference Include="OpenCover.MSBuild, Version=4.6.519.0, Culture=neutral, PublicKeyToken=6c3e253cbe0fb495, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\OpenCover\OpenCover.MSBuild.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
