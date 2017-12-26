@@ -7,6 +7,7 @@
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
     <RuntimeMetadataVersion>0</RuntimeMetadataVersion>
     <IncludeBuildOutput>false</IncludeBuildOutput>
+    <NoWarn>$(NoWarn);CS2008</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
