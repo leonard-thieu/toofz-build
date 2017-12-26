@@ -1,12 +1,20 @@
 <Project>
-  <UsingTask AssemblyFile="$(ToolDir)toofz.Build.dll" TaskName="toofz.Build.OpenCover" Condition=" '$(Dogfood)' != 'true' " />
+  <UsingTask AssemblyFile="$(BuildToolsPath)toofz.Build.dll" TaskName="toofz.Build.OpenCover" Condition=" '$(Dogfood)' != 'true' " />
+  <UsingTask AssemblyFile="$(BuildToolsPath)toofz.Build.dll" TaskName="toofz.Build.Codecov" Condition=" '$(Dogfood)' != 'true' " />
+  <UsingTask AssemblyFile="$(BuildToolsPath)toofz.Build.dll" TaskName="toofz.Build.NuGetPush" Condition=" '$(Dogfood)' != 'true' " />
+
   <UsingTask AssemblyFile="$(TargetPath)" TaskName="toofz.Build.OpenCover" Condition=" '$(Dogfood)' == 'true' " />
-  <UsingTask AssemblyFile="$(ToolDir)toofz.Build.dll" TaskName="toofz.Build.Codecov" Condition=" '$(Dogfood)' != 'true' " />
   <UsingTask AssemblyFile="$(TargetPath)" TaskName="toofz.Build.Codecov" Condition=" '$(Dogfood)' == 'true' " />
-  <UsingTask AssemblyFile="$(ToolDir)toofz.Build.dll" TaskName="toofz.Build.NuGetPush" Condition=" '$(Dogfood)' != 'true' " />
   <UsingTask AssemblyFile="$(TargetPath)" TaskName="toofz.Build.NuGetPush" Condition=" '$(Dogfood)' == 'true' " />
 
   <Target Name="Coverage">
+    <PropertyGroup>
+      <VsTestArgs>$(TargetPath)</VsTestArgs>
+      <VsTestWorkingDir>$(TargetDir)</VsTestWorkingDir>
+      <OpenCoverFilter>+[$(TargetName.Replace(&quot;.Tests&quot;, &quot;&quot;))]* -[$(TargetName)]*</OpenCoverFilter>
+      <CodeCoverageResultsPath>$(ProjectDir)$(IntermediateOutputPath)$(TargetName).results.xml</CodeCoverageResultsPath>
+    </PropertyGroup>
+
     <OpenCover ToolPath="$(OpenCoverToolPath)"
                Register="true"
                Target="$(VsTestPath)"
@@ -20,6 +28,10 @@
   </Target>
 
   <Target Name="PublishCoverage">
+    <PropertyGroup>
+      <CodeCoverageResultsPath>$(ProjectDir)$(IntermediateOutputPath)$(TargetName).results.xml</CodeCoverageResultsPath>
+    </PropertyGroup>
+
     <Codecov ToolPath="$(CodecovToolPath)"
              File="$(CodeCoverageResultsPath)" />
   </Target>
