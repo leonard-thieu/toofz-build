@@ -2,6 +2,10 @@ version: $(VERSION).{build}
 image: Visual Studio 2017
 
 skip_branch_with_pr: true
+skip_commits:
+  files:
+    - LICENSE
+    - README.md
 configuration:
   - Release
 environment:
