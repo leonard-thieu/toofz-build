@@ -15,7 +15,7 @@
     <PackageVersion Condition=" '$(PackageVersion)' == '' ">0.0.0-dev</PackageVersion>
     <Authors>Leonard Thieu</Authors>
     <Title>toofz Build</Title>
-    <Description>.NET library designed for retrieving leaderboards, players, and user-generated content from Steam.</Description>
+    <Description>Supports the build system for toofz projects.</Description>
     <Copyright>Copyright © Leonard Thieu 2017</Copyright>
     <PackageLicenseUrl>https://github.com/leonard-thieu/toofz-build/blob/57201674fbdc1eb1e3b79d4828ec7941e4b0355e/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/leonard-thieu/toofz-build</PackageProjectUrl>
