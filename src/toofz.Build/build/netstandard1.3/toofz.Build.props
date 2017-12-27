@@ -27,9 +27,8 @@
     <IncludeSource>true</IncludeSource>
 
     <NuGetPushToolPath>$(BuildToolsPath)NuGet\tools\</NuGetPushToolPath>
-    <PackageServer>https://www.myget.org/F/toofz/api/v2/package</PackageServer>
-    <PackageServerApiKey>$(MYGET_API_KEY)</PackageServerApiKey>
-    <SymbolPackageServer>https://www.myget.org/F/toofz/symbols/api/v2/package</SymbolPackageServer>
-    <SymbolPackageServerApiKey>$(MYGET_API_KEY)</SymbolPackageServerApiKey>
+    <PackageServer Condition="'$(PackageServer)' == ''">https://www.myget.org/F/toofz/api/v2/package</PackageServer>
+    <SymbolPackageServer Condition="'$(SymbolPackageServer)' == ''">https://www.myget.org/F/toofz/symbols/api/v2/package</SymbolPackageServer>
+    <SymbolPackageServerApiKey Condition="'$(SymbolPackageServerApiKey)' == ''">$(PackageServerApiKey)</SymbolPackageServerApiKey>
   </PropertyGroup>
 </Project>
