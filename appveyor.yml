@@ -40,6 +40,8 @@ build:
   project: toofz.Build.sln
   verbosity: quiet
 
+test: off
+
 deploy_script:
   - ps: |
       if ($env:APPVEYOR_REPO_TAG -eq 'true') {
