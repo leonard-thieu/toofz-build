@@ -55,4 +55,22 @@
                SymbolSource="$(SymbolPackageServer)"
                SymbolApiKey="$(SymbolPackageServerApiKey)" />
   </Target>
+
+  <PropertyGroup>
+    <Product Condition="'$(Product)' == ''">toofz</Product>
+    <VersionPrefix Condition="'$(VersionPrefix)' == ''">0.0.0</VersionPrefix>
+    <VersionSuffix Condition="'$(VersionPrefix)' == '0.0.0' and '$(VersionSuffix)' == ''">dev</VersionSuffix>
+
+    <CompileDependsOn>
+      BeforeGetAssemblyAttributes;
+      $(CompileDependsOn)
+    </CompileDependsOn>
+  </PropertyGroup>
+
+  <Target Name="BeforeGetAssemblyAttributes"
+          BeforeTargets="GetAssemblyAttributes">
+    <PropertyGroup>
+      <AssemblyTitle Condition="'$(Title)' != ''">$(Title)</AssemblyTitle>
+    </PropertyGroup>
+  </Target>
 </Project>

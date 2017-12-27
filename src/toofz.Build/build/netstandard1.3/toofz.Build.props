@@ -1,14 +1,5 @@
 <Project>
   <PropertyGroup>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>
-      $(AllowedOutputExtensionsInPackageBuildOutputFolder);
-      .pdb;
-      .xml
-    </AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <PackageVersion Condition="'$(PackageVersion)' == ''">0.0.0-dev</PackageVersion>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <BuildToolsPath>$(MSBuildThisFileDirectory)..\..\tools\netstandard1.3\</BuildToolsPath>
   </PropertyGroup>
 
@@ -27,6 +18,11 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>
+      $(AllowedOutputExtensionsInPackageBuildOutputFolder);
+      .pdb;
+      .xml
+    </AllowedOutputExtensionsInPackageBuildOutputFolder>
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>true</IncludeSource>
 
