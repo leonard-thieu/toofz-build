@@ -32,6 +32,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Framework" Version="15.5.180" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.5.180" />
+    <PackageReference Include="SourceLink.Embed.AllSourceFiles" Version="2.6.1" />
   </ItemGroup>
 
   <ItemGroup>
