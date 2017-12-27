@@ -9,7 +9,6 @@ skip_commits:
 configuration:
   - Release
 environment:
-  PROJECT: toofz.Build
   VERSION: 0.0.0
   VERSION_SUFFIX: dev
   MYGET_API_KEY:
@@ -38,15 +37,12 @@ install:
 before_build:
   - appveyor-retry nuget restore -Verbosity quiet
 build:
-  project: $(PROJECT).sln
+  project: toofz.Build.sln
   verbosity: quiet
 
 deploy_script:
   - ps: |
       if ($env:APPVEYOR_REPO_TAG -eq 'true') {
-          $projectPath = Resolve-Path .\src\$env:PROJECT\$env:PROJECT.csproj
-          msbuild `
-              $projectPath `
-              /target:PublishPackage `
-              /verbosity:quiet
+          $projectPath = Resolve-Path .\src\toofz.Build\toofz.Build.csproj
+          msbuild $projectPath /verbosity:quiet /target:PublishPackage
       }
