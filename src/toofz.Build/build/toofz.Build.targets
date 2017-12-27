@@ -40,7 +40,9 @@
              File="@(CodeCoverageResults)" />
   </Target>
 
-  <Target Name="PublishPackage" DependsOnTargets="Pack">
+  <Target Name="PublishPackage"
+          DependsOnTargets="Pack"
+          Condition="'$(IsPackagePublishable)' == 'true'">
     <ItemGroup>
       <NuGetPackage Include="$(PackageOutputAbsolutePath)$(PackageId).$(PackageVersion).nupkg" />
     </ItemGroup>
