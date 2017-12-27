@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="build\netstandard1.3\toofz.Build.props" />
+  <Import Project="build\toofz.Build.props" />
 
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
@@ -38,15 +38,11 @@
       <Pack>true</Pack>
       <PackagePath>build\</PackagePath>
     </None>
-    <None Include="lib\**">
-      <Pack>true</Pack>
-      <PackagePath>lib\</PackagePath>
-    </None>
     <None Include="tools\**">
       <Pack>true</Pack>
       <PackagePath>tools\</PackagePath>
     </None>
   </ItemGroup>
 
-  <Import Project="build\netstandard1.3\toofz.Build.targets" />
+  <Import Project="build\toofz.Build.targets" />
 </Project>

@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <BuildToolsPath>$(MSBuildThisFileDirectory)..\..\tools\netstandard1.3\</BuildToolsPath>
+    <BuildToolsPath>$(MSBuildThisFileDirectory)..\tools\</BuildToolsPath>
   </PropertyGroup>
 
   <PropertyGroup>
