@@ -1,7 +1,6 @@
 <Project>
   <PropertyGroup>
-    <TasksAssemblyFileName>toofz.Build.dll</TasksAssemblyFileName>
-    <TasksAssemblyFilePath>$(BuildToolsPath)$(TasksAssemblyFileName)</TasksAssemblyFilePath>
+    <TasksAssemblyFilePath>$(BuildToolsPath)$(MSBuildThisFileName).dll</TasksAssemblyFilePath>
   </PropertyGroup>
 
   <ItemGroup>
