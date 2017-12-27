@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="build\netstandard1.3\toofz.Build.props" />
 
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
@@ -6,12 +7,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>
-      $(AllowedOutputExtensionsInPackageBuildOutputFolder);
-      .pdb;
-      .xml
-    </AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <PackageVersion Condition="'$(PackageVersion)' == ''">0.0.0-dev</PackageVersion>
     <Authors>Leonard Thieu</Authors>
     <Title>toofz Build</Title>
     <Description>Supports the build system for toofz projects.</Description>
@@ -57,7 +52,5 @@
     </None>
   </ItemGroup>
 
-  <Import Project="build\netstandard1.3\toofz.Build.props" />
   <Import Project="build\netstandard1.3\toofz.Build.targets" />
-
 </Project>
