@@ -128,6 +128,13 @@ namespace toofz.Build
         /// </summary>
         public int TargetCodeOffset { get; set; }
 
+        /// <summary>
+        /// Use old style instrumentation.
+        /// The instrumentation is not Silverlight friendly and is provided to support environments where mscorlib 
+        /// instrumentation is not working. ONLY use this option if you are encountering MissingMethodException like 
+        /// errors when the code is run under OpenCover. The issue could be down to ngen /Profile of the mscorlib which 
+        /// then interferes with the instrumentation.
+        /// </summary>
         public bool OldStyle { get; set; }
 
         /// <summary>

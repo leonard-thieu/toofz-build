@@ -33,8 +33,17 @@ namespace toofz.Build
         /// </summary>
         public string SymbolApiKey { get; set; }
 
+        /// <summary>
+        /// The name of the NuGet tool.
+        /// </summary>
         protected override string ToolName => "NuGet.exe";
 
+        /// <summary>
+        /// Generates the full path to the NuGet tool.
+        /// </summary>
+        /// <returns>
+        /// The full path to the NuGet tool.
+        /// </returns>
         protected override string GenerateFullPathToTool()
         {
             var path = ToolPath;
@@ -43,6 +52,12 @@ namespace toofz.Build
             return Path.GetFullPath(Path.Combine(path, exe));
         }
 
+        /// <summary>
+        /// Generates command line arguments for the NuGet tool.
+        /// </summary>
+        /// <returns>
+        /// Command line arguments for the NuGet tool.
+        /// </returns>
         protected override string GenerateCommandLineCommands()
         {
             var builder = new CommandLineBuilder();

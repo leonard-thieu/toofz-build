@@ -16,8 +16,17 @@ namespace toofz.Build
         [Required]
         public ITaskItem File { get; set; }
 
+        /// <summary>
+        /// Gets the name of the Codecov tool.
+        /// </summary>
         protected override string ToolName => "codecov.exe";
 
+        /// <summary>
+        /// Generates the full path to the Codecov tool.
+        /// </summary>
+        /// <returns>
+        /// The full path to the Codecov tool.
+        /// </returns>
         protected override string GenerateFullPathToTool()
         {
             var path = ToolPath;
@@ -26,6 +35,12 @@ namespace toofz.Build
             return Path.GetFullPath(Path.Combine(path, exe));
         }
 
+        /// <summary>
+        /// Generates command line arguments for the Codecov tool.
+        /// </summary>
+        /// <returns>
+        /// Command line arguments for the Codecov tool.
+        /// </returns>
         protected override string GenerateCommandLineCommands()
         {
             var builder = new CommandLineBuilder();
@@ -37,6 +52,11 @@ namespace toofz.Build
             return builder.ToString();
         }
 
+        /// <summary>
+        /// Adapts a line of output from the Codecov tool for the MSBuild log.
+        /// </summary>
+        /// <param name="singleLine">The line of output to parse.</param>
+        /// <param name="messageImportance">The original importance of the message.</param>
         protected override void LogEventsFromTextOutput(string singleLine, MessageImportance messageImportance)
         {
             if (string.IsNullOrWhiteSpace(singleLine)) { return; }
