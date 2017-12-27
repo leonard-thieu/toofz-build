@@ -42,17 +42,17 @@
   <ItemGroup>
     <None Include="build\**">
       <Pack>true</Pack>
-      <PackagePath>build</PackagePath>
+      <PackagePath>build\</PackagePath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="lib\**">
       <Pack>true</Pack>
-      <PackagePath>lib</PackagePath>
+      <PackagePath>lib\</PackagePath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="tools\**">
       <Pack>true</Pack>
-      <PackagePath>tools</PackagePath>
+      <PackagePath>tools\</PackagePath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
