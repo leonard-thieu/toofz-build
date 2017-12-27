@@ -12,12 +12,15 @@
   <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.Codecov" />
   <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.NuGetPush" />
 
+  <ItemGroup>
+    <CodeCoverageResults Include="$(ProjectDir)$(IntermediateOutputPath)$(TargetName).results.xml" />
+  </ItemGroup>
+
   <Target Name="Coverage">
     <PropertyGroup>
       <VsTestArgs>$(TargetPath)</VsTestArgs>
       <VsTestWorkingDir>$(TargetDir)</VsTestWorkingDir>
       <OpenCoverFilter>+[$(TargetName.Replace(&quot;.Tests&quot;, &quot;&quot;))]* -[$(TargetName)]*</OpenCoverFilter>
-      <CodeCoverageResultsPath>$(ProjectDir)$(IntermediateOutputPath)$(TargetName).results.xml</CodeCoverageResultsPath>
     </PropertyGroup>
 
     <OpenCover ToolPath="$(OpenCoverToolPath)"
@@ -28,27 +31,22 @@
                ReturnTargetCode="true"
                Filter="$(OpenCoverFilter)"
                ExcludeByAttribute="$(OpenCoverExcludeByAttribute)"
-               Output="$(CodeCoverageResultsPath)"
+               Output="@(CodeCoverageResults)"
                OldStyle="$(OpenCoverOldStyle)" />
   </Target>
 
   <Target Name="PublishCoverage">
-    <PropertyGroup>
-      <CodeCoverageResultsPath>$(ProjectDir)$(IntermediateOutputPath)$(TargetName).results.xml</CodeCoverageResultsPath>
-    </PropertyGroup>
-
     <Codecov ToolPath="$(CodecovToolPath)"
-             File="$(CodeCoverageResultsPath)" />
+             File="@(CodeCoverageResults)" />
   </Target>
 
   <Target Name="PublishPackage" DependsOnTargets="Pack">
-    <PropertyGroup>
-      <!-- PackageOutputAbsolutePath is set by Pack. -->
-      <PackagePath>$(PackageOutputAbsolutePath)$(PackageId).$(PackageVersion).nupkg</PackagePath>
-    </PropertyGroup>
+    <ItemGroup>
+      <NuGetPackage Include="$(PackageOutputAbsolutePath)$(PackageId).$(PackageVersion).nupkg" />
+    </ItemGroup>
 
     <NuGetPush ToolPath="$(NuGetPushToolPath)"
-               Package="$(PackagePath)"
+               Package="@(NuGetPackage)"
                Source="$(PackageServer)"
                ApiKey="$(PackageServerApiKey)"
                SymbolSource="$(SymbolPackageServer)"
