@@ -12,7 +12,7 @@
       .xml
     </AllowedOutputExtensionsInPackageBuildOutputFolder>
     <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
-    <PackageVersion Condition=" '$(PackageVersion)' == '' ">0.0.0-dev</PackageVersion>
+    <PackageVersion Condition="'$(PackageVersion)' == ''">0.0.0-dev</PackageVersion>
     <Authors>Leonard Thieu</Authors>
     <Title>toofz Build</Title>
     <Description>Supports the build system for toofz projects.</Description>
@@ -25,7 +25,7 @@
     <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.3\toofz.Build.xml</DocumentationFile>
   </PropertyGroup>
 

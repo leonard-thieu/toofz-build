@@ -3,12 +3,12 @@
     <TasksAssemblyFileName>toofz.Build.dll</TasksAssemblyFileName>
     <TasksAssemblyFilePath>$(BuildToolsPath)$(TasksAssemblyFileName)</TasksAssemblyFilePath>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <TasksAssemblyFile Include="$(TasksAssemblyFilePath)" Condition=" Exists('$(TasksAssemblyFilePath)') " />
-    <TasksAssemblyFile Include="$(TargetPath)" Condition=" !Exists('$(TasksAssemblyFilePath)') " />
+    <TasksAssemblyFile Include="$(TasksAssemblyFilePath)" Condition="Exists('$(TasksAssemblyFilePath)')" />
+    <TasksAssemblyFile Include="$(TargetPath)" Condition="!Exists('$(TasksAssemblyFilePath)')" />
   </ItemGroup>
-  
+
   <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.OpenCover" />
   <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.Codecov" />
   <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.NuGetPush" />
