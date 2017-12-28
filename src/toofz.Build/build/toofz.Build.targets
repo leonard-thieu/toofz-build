@@ -44,11 +44,13 @@
           DependsOnTargets="Pack"
           Condition="'$(IsPackagePublishable)' == 'true'">
     <ItemGroup>
-      <NuGetPackage Include="$(PackageOutputAbsolutePath)$(PackageId).$(PackageVersion).nupkg" />
+      <_PublishPackageInput Include="@(NuGetPackOutput)"
+                            Condition="'%(Extension)' == '.nupkg' AND 
+                                       !$([System.String]::new('%(Filename)').EndsWith('.symbols'))" />
     </ItemGroup>
 
     <NuGetPush ToolPath="$(NuGetPushToolPath)"
-               Package="@(NuGetPackage)"
+               Package="%(_PublishPackageInput.FullPath)"
                Source="$(PackageServer)"
                ApiKey="$(PackageServerApiKey)"
                SymbolSource="$(SymbolPackageServer)"
