@@ -18,6 +18,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <Product Condition="'$(Product)' == ''">toofz</Product>
+    <VersionPrefix Condition="'$(VersionPrefix)' == ''">0.0.0</VersionPrefix>
+    <VersionSuffix Condition="'$(VersionPrefix)' == '0.0.0' AND '$(VersionSuffix)' == ''">dev</VersionSuffix>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>
       $(AllowedOutputExtensionsInPackageBuildOutputFolder);
       .pdb;
@@ -25,14 +31,8 @@
     </AllowedOutputExtensionsInPackageBuildOutputFolder>
 
     <NuGetPushToolPath>$([MSBuild]::NormalizeDirectory($(BuildToolsPath), 'NuGet', 'tools'))</NuGetPushToolPath>
-    <PackageServer Condition="'$(PackageServer)' == ''">https://www.myget.org/F/toofz/api/v2/package</PackageServer>
-    <SymbolPackageServer Condition="'$(SymbolPackageServer)' == ''">https://www.myget.org/F/toofz/symbols/api/v2/package</SymbolPackageServer>
+    <PackageServer Condition="'$(PackageServer)' == ''">https://www.myget.org/F/$(Product)/api/v2/package</PackageServer>
+    <SymbolPackageServer Condition="'$(SymbolPackageServer)' == ''">https://www.myget.org/F/$(Product)/symbols/api/v2/package</SymbolPackageServer>
     <SymbolPackageServerApiKey Condition="'$(SymbolPackageServerApiKey)' == ''">$(PackageServerApiKey)</SymbolPackageServerApiKey>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <Product Condition="'$(Product)' == ''">toofz</Product>
-    <VersionPrefix Condition="'$(VersionPrefix)' == ''">0.0.0</VersionPrefix>
-    <VersionSuffix Condition="'$(VersionPrefix)' == '0.0.0' AND '$(VersionSuffix)' == ''">dev</VersionSuffix>
   </PropertyGroup>
 </Project>

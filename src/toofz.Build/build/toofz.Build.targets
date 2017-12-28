@@ -41,6 +41,13 @@
              File="@(CodeCoverageResults)" />
   </Target>
 
+  <Target Name="BeforeGetAssemblyAttributes"
+          BeforeTargets="GetAssemblyAttributes">
+    <PropertyGroup>
+      <AssemblyTitle Condition="'$(Title)' != ''">$(Title)</AssemblyTitle>
+    </PropertyGroup>
+  </Target>
+
   <Target Name="PublishPackage"
           DependsOnTargets="Pack"
           Condition="'$(IsPackagePublishable)' == 'true'">
@@ -56,13 +63,6 @@
                ApiKey="$(PackageServerApiKey)"
                SymbolSource="$(SymbolPackageServer)"
                SymbolApiKey="$(SymbolPackageServerApiKey)" />
-  </Target>
-
-  <Target Name="BeforeGetAssemblyAttributes"
-          BeforeTargets="GetAssemblyAttributes">
-    <PropertyGroup>
-      <AssemblyTitle Condition="'$(Title)' != ''">$(Title)</AssemblyTitle>
-    </PropertyGroup>
   </Target>
 
   <!--
