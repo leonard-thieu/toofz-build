@@ -31,6 +31,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <Product Condition="'$(Product)' == ''">toofz</Product>
     <VersionPrefix Condition="'$(VersionPrefix)' == ''">0.0.0</VersionPrefix>
     <VersionSuffix Condition="'$(VersionPrefix)' == '0.0.0' AND '$(VersionSuffix)' == ''">dev</VersionSuffix>
   </PropertyGroup>
