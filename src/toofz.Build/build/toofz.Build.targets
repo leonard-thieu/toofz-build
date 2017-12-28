@@ -20,7 +20,7 @@
     <PropertyGroup>
       <VsTestArgs>$(TargetPath)</VsTestArgs>
       <VsTestWorkingDir>$(TargetDir)</VsTestWorkingDir>
-      <OpenCoverFilter>+[$(TargetName.Replace(&quot;.Tests&quot;, &quot;&quot;))]* -[$(TargetName)]*</OpenCoverFilter>
+      <OpenCoverFilter>+[$(TargetName.Replace('.Tests', ''))]* -[$(TargetName)]*</OpenCoverFilter>
     </PropertyGroup>
 
     <OpenCover ToolPath="$(OpenCoverToolPath)"
