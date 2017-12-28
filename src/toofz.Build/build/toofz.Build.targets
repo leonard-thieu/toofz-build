@@ -14,7 +14,7 @@
   <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.CompareVersion" />
 
   <ItemGroup>
-    <CodeCoverageResults Include="$(ProjectDir)$(IntermediateOutputPath)$(TargetName).results.xml" />
+    <CodeCoverageResults Include="$([MSBuild]::NormalizeDirectory($(ProjectDir), $(IntermediateOutputPath)))$(TargetName).results.xml" />
   </ItemGroup>
 
   <Target Name="Coverage">
@@ -76,7 +76,7 @@
                      '$(DebugType)' == 'embedded' OR
                      '$(_CanEmbedSourceFilesInWindowsPDBs)' == 'true'">
     <ItemGroup>
-      <EmbeddedFiles Include="$([System.IO.Path]::GetFullPath('%(Compile.Identity)'))" />
+      <EmbeddedFiles Include="%(Compile.FullPath)" />
     </ItemGroup>
   </Target>
 

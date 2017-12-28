@@ -1,20 +1,20 @@
 <Project>
   <PropertyGroup>
-    <BuildToolsPath>$(MSBuildThisFileDirectory)..\tools\</BuildToolsPath>
+    <BuildToolsPath>$([MSBuild]::NormalizeDirectory($(MSBuildThisFileDirectory), '..', 'tools'))</BuildToolsPath>
   </PropertyGroup>
 
   <PropertyGroup>
-    <VSTestPath>$(VSInstallRoot)\Common7\IDE\Extensions\TestPlatform\vstest.console.exe</VSTestPath>
+    <VSTestPath>$([MSBuild]::NormalizeDirectory($(VSInstallRoot), 'Common7', 'IDE', 'Extensions', 'TestPlatform'))vstest.console.exe</VSTestPath>
   </PropertyGroup>
 
   <PropertyGroup>
-    <OpenCoverToolPath>$(BuildToolsPath)OpenCover\tools\</OpenCoverToolPath>
+    <OpenCoverToolPath>$([MSBuild]::NormalizeDirectory($(BuildToolsPath), 'OpenCover', 'tools'))</OpenCoverToolPath>
     <OpenCoverExcludeByAttribute>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</OpenCoverExcludeByAttribute>
     <OpenCoverOldStyle>true</OpenCoverOldStyle>
   </PropertyGroup>
 
   <PropertyGroup>
-    <CodecovToolPath>$(BuildToolsPath)Codecov\tools\</CodecovToolPath>
+    <CodecovToolPath>$([MSBuild]::NormalizeDirectory($(BuildToolsPath), 'Codecov', 'tools'))</CodecovToolPath>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -24,7 +24,7 @@
       .xml
     </AllowedOutputExtensionsInPackageBuildOutputFolder>
 
-    <NuGetPushToolPath>$(BuildToolsPath)NuGet\tools\</NuGetPushToolPath>
+    <NuGetPushToolPath>$([MSBuild]::NormalizeDirectory($(BuildToolsPath), 'NuGet', 'tools'))</NuGetPushToolPath>
     <PackageServer Condition="'$(PackageServer)' == ''">https://www.myget.org/F/toofz/api/v2/package</PackageServer>
     <SymbolPackageServer Condition="'$(SymbolPackageServer)' == ''">https://www.myget.org/F/toofz/symbols/api/v2/package</SymbolPackageServer>
     <SymbolPackageServerApiKey Condition="'$(SymbolPackageServerApiKey)' == ''">$(PackageServerApiKey)</SymbolPackageServerApiKey>
