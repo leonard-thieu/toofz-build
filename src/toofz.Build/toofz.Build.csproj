@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="build\toofz.Build.props" />
+  <Import Project="build\$(AssemblyName).props" />
 
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
@@ -44,5 +44,5 @@
     </None>
   </ItemGroup>
 
-  <Import Project="build\toofz.Build.targets" />
+  <Import Project="build\$(AssemblyName).targets" />
 </Project>
