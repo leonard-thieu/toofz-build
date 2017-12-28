@@ -11,6 +11,7 @@
   <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.OpenCover" />
   <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.Codecov" />
   <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.NuGetPush" />
+  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.CompareVersion" />
 
   <ItemGroup>
     <CodeCoverageResults Include="$(ProjectDir)$(IntermediateOutputPath)$(TargetName).results.xml" />
@@ -71,5 +72,38 @@
     <PropertyGroup>
       <AssemblyTitle Condition="'$(Title)' != ''">$(Title)</AssemblyTitle>
     </PropertyGroup>
+  </Target>
+
+  <!--
+    BeforeTargets runs this target _after_ the specified target (???). Because of this, BeforeTargets is set to 
+    BeforeCompile instead of Compile to ensure that it runs before the Compile target.
+  -->
+  <Target Name="EmbedAllSourceFiles"
+          DependsOnTargets="_DetectCanEmbedSourceFilesInWindowsPDBs"
+          BeforeTargets="BeforeCompile"
+          Condition="'$(DebugType)' == 'portable' OR
+                     '$(DebugType)' == 'embedded' OR
+                     '$(_CanEmbedSourceFilesInWindowsPDBs)' == 'true'">
+    <ItemGroup>
+      <EmbeddedFiles Include="$([System.IO.Path]::GetFullPath('%(Compile.Identity)'))" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_DetectCanEmbedSourceFilesInWindowsPDBs"
+          DependsOnTargets="_GetRoslynCompilerVersion"
+          Condition="'$(DebugType)' == 'full' OR
+                     '$(DebugType)' == 'pdbonly'">
+    <CompareVersion Version="$(_RoslynCompilerVersion.Split(' ')[0])"
+                    CompareTo="2.6.0">
+      <Output TaskParameter="IsGreaterThanOrEqualTo" PropertyName="_CanEmbedSourceFilesInWindowsPDBs" />
+    </CompareVersion>
+  </Target>
+
+  <Target Name="_GetRoslynCompilerVersion">
+    <!-- Assumes all installed Roslyn compilers are the same version. -->
+    <Exec Command="csc -version" ConsoleToMSBuild="true">
+      <!-- Example: 2.6.0.62329 (5429b35d) -->
+      <Output TaskParameter="ConsoleOutput" PropertyName="_RoslynCompilerVersion" />
+    </Exec>
   </Target>
 </Project>
