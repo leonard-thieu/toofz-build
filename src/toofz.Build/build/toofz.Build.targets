@@ -19,16 +19,16 @@
 
   <Target Name="Coverage">
     <PropertyGroup>
-      <VsTestArgs>$(TargetPath)</VsTestArgs>
-      <VsTestWorkingDir>$(TargetDir)</VsTestWorkingDir>
+      <VSTestArgs>$(TargetPath)</VSTestArgs>
+      <VSTestWorkingDir>$(TargetDir)</VSTestWorkingDir>
       <OpenCoverFilter>+[$(TargetName.Replace('.Tests', ''))]* -[$(TargetName)]*</OpenCoverFilter>
     </PropertyGroup>
 
     <OpenCover ToolPath="$(OpenCoverToolPath)"
                Register="true"
-               Target="$(VsTestPath)"
-               TargetArgs="$(VsTestArgs)"
-               TargetWorkingDir="$(VsTestWorkingDir)"
+               Target="$(VSTestPath)"
+               TargetArgs="$(VSTestArgs)"
+               TargetWorkingDir="$(VSTestWorkingDir)"
                ReturnTargetCode="true"
                Filter="$(OpenCoverFilter)"
                ExcludeByAttribute="$(OpenCoverExcludeByAttribute)"
