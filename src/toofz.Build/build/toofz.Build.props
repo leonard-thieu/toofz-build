@@ -23,8 +23,6 @@
       .pdb;
       .xml
     </AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <IncludeSymbols>true</IncludeSymbols>
-    <IncludeSource>true</IncludeSource>
 
     <NuGetPushToolPath>$(BuildToolsPath)NuGet\tools\</NuGetPushToolPath>
     <PackageServer Condition="'$(PackageServer)' == ''">https://www.myget.org/F/toofz/api/v2/package</PackageServer>
