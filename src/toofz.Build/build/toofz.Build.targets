@@ -57,7 +57,7 @@
                                        !$([System.String]::new('%(Filename)').EndsWith('.symbols'))" />
     </ItemGroup>
 
-    <NuGetPush ToolPath="$(NuGetPushToolPath)"
+    <NuGetPush ToolPath="$(NuGetToolPath)"
                Package="%(_PublishPackageInput.FullPath)"
                Source="$(PackageServer)"
                ApiKey="$(PackageServerApiKey)"
