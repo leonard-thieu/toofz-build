@@ -60,11 +60,6 @@
 
   <PropertyGroup>
     <Product Condition="'$(Product)' == ''">toofz</Product>
-
-    <CompileDependsOn>
-      BeforeGetAssemblyAttributes;
-      $(CompileDependsOn)
-    </CompileDependsOn>
   </PropertyGroup>
 
   <Target Name="BeforeGetAssemblyAttributes"
