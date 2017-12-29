@@ -13,7 +13,6 @@ namespace toofz.Build
         /// <summary>
         /// Path to coverage report.
         /// </summary>
-        [Required]
         public ITaskItem File { get; set; }
 
         /// <summary>
