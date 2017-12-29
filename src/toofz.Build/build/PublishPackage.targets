@@ -1,0 +1,28 @@
+﻿<Project>
+  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.NuGetPush" />
+
+  <Target Name="PublishPackage"
+          DependsOnTargets="Pack"
+          Condition="'$(IsPackagePublishable)' == 'true'">
+    <ItemGroup>
+      <_NuGetPushPackage Include="@(NuGetPackOutput)"
+                         Condition="'%(Extension)' == '.nupkg' AND 
+                                    !$([System.String]::new('%(Filename)').EndsWith('.symbols'))" />
+    </ItemGroup>
+
+    <FormatUrl InputUrl="$(PackageServer)">
+      <Output PropertyName="PackageServer" TaskParameter="OutputUrl" />
+    </FormatUrl>
+
+    <FormatUrl InputUrl="$(SymbolPackageServer)">
+      <Output PropertyName="SymbolPackageServer" TaskParameter="OutputUrl" />
+    </FormatUrl>
+
+    <NuGetPush ToolPath="$(NuGetToolPath)"
+               Package="%(_NuGetPushPackage.FullPath)"
+               Source="$(PackageServer)"
+               ApiKey="$(PackageServerApiKey)"
+               SymbolSource="$(SymbolPackageServer)"
+               SymbolApiKey="$(SymbolPackageServerApiKey)" />
+  </Target>
+</Project>

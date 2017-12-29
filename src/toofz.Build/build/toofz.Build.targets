@@ -8,39 +8,6 @@
     <TasksAssemblyFile Include="$(TargetPath)" Condition="!Exists('$(TasksAssemblyFilePath)')" />
   </ItemGroup>
 
-  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.OpenCover" />
-  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.Codecov" />
-  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.NuGetPush" />
-  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.CompareVersion" />
-
-  <ItemGroup>
-    <CodeCoverageResults Include="$([MSBuild]::NormalizeDirectory($(ProjectDir), $(IntermediateOutputPath)))$(TargetName).results.xml" />
-  </ItemGroup>
-
-  <Target Name="Coverage">
-    <PropertyGroup>
-      <VSTestArgs>$(TargetPath)</VSTestArgs>
-      <VSTestWorkingDir>$(TargetDir)</VSTestWorkingDir>
-      <OpenCoverFilter>+[$(TargetName.Replace('.Tests', ''))]* -[$(TargetName)]*</OpenCoverFilter>
-    </PropertyGroup>
-
-    <OpenCover ToolPath="$(OpenCoverToolPath)"
-               Register="true"
-               Target="$(VSTestPath)"
-               TargetArgs="$(VSTestArgs)"
-               TargetWorkingDir="$(VSTestWorkingDir)"
-               ReturnTargetCode="true"
-               Filter="$(OpenCoverFilter)"
-               ExcludeByAttribute="$(OpenCoverExcludeByAttribute)"
-               Output="@(CodeCoverageResults)"
-               OldStyle="$(OpenCoverOldStyle)" />
-  </Target>
-
-  <Target Name="PublishCoverage">
-    <Codecov ToolPath="$(CodecovToolPath)"
-             File="@(CodeCoverageResults)" />
-  </Target>
-
   <Target Name="BeforeGetAssemblyAttributes"
           BeforeTargets="GetAssemblyAttributes">
     <PropertyGroup>
@@ -48,61 +15,12 @@
     </PropertyGroup>
   </Target>
 
-  <Target Name="PublishPackage"
-          DependsOnTargets="Pack"
-          Condition="'$(IsPackagePublishable)' == 'true'">
-    <ItemGroup>
-      <_NuGetPushPackage Include="@(NuGetPackOutput)"
-                         Condition="'%(Extension)' == '.nupkg' AND 
-                                    !$([System.String]::new('%(Filename)').EndsWith('.symbols'))" />
-    </ItemGroup>
+  <ItemGroup>
+    <CodeCoverageResults Include="$([MSBuild]::NormalizeDirectory($(ProjectDir), $(IntermediateOutputPath)))$(TargetName).results.xml" />
+  </ItemGroup>
 
-    <FormatUrl InputUrl="$(PackageServer)">
-      <Output PropertyName="PackageServer" TaskParameter="OutputUrl" />
-    </FormatUrl>
-
-    <FormatUrl InputUrl="$(SymbolPackageServer)">
-      <Output PropertyName="SymbolPackageServer" TaskParameter="OutputUrl" />
-    </FormatUrl>
-
-    <NuGetPush ToolPath="$(NuGetToolPath)"
-               Package="%(_NuGetPushPackage.FullPath)"
-               Source="$(PackageServer)"
-               ApiKey="$(PackageServerApiKey)"
-               SymbolSource="$(SymbolPackageServer)"
-               SymbolApiKey="$(SymbolPackageServerApiKey)" />
-  </Target>
-
-  <!--
-    BeforeTargets runs this target _after_ the specified target (???). Because of this, BeforeTargets is set to 
-    BeforeCompile instead of Compile to ensure that it runs before the Compile target.
-  -->
-  <Target Name="EmbedAllSourceFiles"
-          DependsOnTargets="_DetectCanEmbedSourceFilesInWindowsPDBs"
-          BeforeTargets="BeforeCompile"
-          Condition="'$(DebugType)' == 'portable' OR
-                     '$(DebugType)' == 'embedded' OR
-                     '$(_CanEmbedSourceFilesInWindowsPDBs)' == 'true'">
-    <ItemGroup>
-      <EmbeddedFiles Include="%(Compile.FullPath)" />
-    </ItemGroup>
-  </Target>
-
-  <Target Name="_DetectCanEmbedSourceFilesInWindowsPDBs"
-          DependsOnTargets="_GetRoslynCompilerVersion"
-          Condition="'$(DebugType)' == 'full' OR
-                     '$(DebugType)' == 'pdbonly'">
-    <CompareVersion Version="$(_RoslynCompilerVersion.Split(' ')[0])"
-                    CompareTo="2.6.0">
-      <Output TaskParameter="IsGreaterThanOrEqualTo" PropertyName="_CanEmbedSourceFilesInWindowsPDBs" />
-    </CompareVersion>
-  </Target>
-
-  <Target Name="_GetRoslynCompilerVersion">
-    <!-- Assumes all installed Roslyn compilers are the same version. -->
-    <Exec Command="csc -version" ConsoleToMSBuild="true">
-      <!-- Example: 2.6.0.62329 (5429b35d) -->
-      <Output TaskParameter="ConsoleOutput" PropertyName="_RoslynCompilerVersion" />
-    </Exec>
-  </Target>
+  <Import Project="Coverage.targets" />
+  <Import Project="PublishCoverage.targets" />
+  <Import Project="PublishPackage.targets" />
+  <Import Project="EmbedSourceFiles.targets" />
 </Project>

@@ -4,35 +4,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <VSTestPath>$([MSBuild]::NormalizeDirectory($(VSInstallRoot), 'Common7', 'IDE', 'Extensions', 'TestPlatform'))vstest.console.exe</VSTestPath>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <OpenCoverToolPath>$([MSBuild]::NormalizeDirectory($(BuildToolsPath), 'OpenCover', 'tools'))</OpenCoverToolPath>
-    <OpenCoverExcludeByAttribute>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</OpenCoverExcludeByAttribute>
-    <OpenCoverOldStyle>true</OpenCoverOldStyle>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <CodecovToolPath>$([MSBuild]::NormalizeDirectory($(BuildToolsPath), 'Codecov', 'tools'))</CodecovToolPath>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <Product Condition="'$(Product)' == ''">toofz</Product>
     <VersionPrefix Condition="'$(VersionPrefix)' == ''">0.0.0</VersionPrefix>
     <VersionSuffix Condition="'$(VersionPrefix)' == '0.0.0' AND '$(VersionSuffix)' == ''">dev</VersionSuffix>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>
-      $(AllowedOutputExtensionsInPackageBuildOutputFolder);
-      .pdb;
-      .xml
-    </AllowedOutputExtensionsInPackageBuildOutputFolder>
-
-    <NuGetToolPath>$([MSBuild]::NormalizeDirectory($(BuildToolsPath), 'NuGet', 'tools'))</NuGetToolPath>
-    <PackageServer Condition="'$(PackageServer)' == ''">https://www.myget.org/F/$(Product)/api/v2/package</PackageServer>
-    <SymbolPackageServer Condition="'$(SymbolPackageServer)' == ''">https://www.myget.org/F/$(Product)/symbols/api/v2/package</SymbolPackageServer>
-    <SymbolPackageServerApiKey Condition="'$(SymbolPackageServerApiKey)' == ''">$(PackageServerApiKey)</SymbolPackageServerApiKey>
-  </PropertyGroup>
+  <Import Project="Coverage.props" />
+  <Import Project="PublishCoverage.props" />
+  <Import Project="PublishPackage.props" />
 </Project>

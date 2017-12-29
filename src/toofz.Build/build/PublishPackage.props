@@ -1,0 +1,16 @@
+﻿<Project>
+  <PropertyGroup>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>
+      $(AllowedOutputExtensionsInPackageBuildOutputFolder);
+      .pdb;
+      .xml
+    </AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NuGetToolPath>$([MSBuild]::NormalizeDirectory($(BuildToolsPath), 'NuGet', 'tools'))</NuGetToolPath>
+    <PackageServer Condition="'$(PackageServer)' == ''">https://www.myget.org/F/$(Product)/api/v2/package</PackageServer>
+    <SymbolPackageServer Condition="'$(SymbolPackageServer)' == ''">https://www.myget.org/F/$(Product)/symbols/api/v2/package</SymbolPackageServer>
+    <SymbolPackageServerApiKey Condition="'$(SymbolPackageServerApiKey)' == ''">$(PackageServerApiKey)</SymbolPackageServerApiKey>
+  </PropertyGroup>
+</Project>

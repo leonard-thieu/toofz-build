@@ -1,0 +1,8 @@
+﻿<Project>
+  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.Codecov" />
+
+  <Target Name="PublishCoverage">
+    <Codecov ToolPath="$(CodecovToolPath)"
+             File="@(CodeCoverageResults)" />
+  </Target>
+</Project>
