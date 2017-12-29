@@ -1,0 +1,23 @@
+﻿<Project>
+  <PropertyGroup>
+    <VSTestPath>$([MSBuild]::NormalizeDirectory($(VSInstallRoot), 'Common7', 'IDE', 'Extensions', 'TestPlatform'))</VSTestPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <VSTestConsole Include="$(VSTestPath)vstest.console.exe" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OpenCoverToolPath>$([MSBuild]::NormalizeDirectory($(BuildToolsPath), 'OpenCover', 'tools'))</OpenCoverToolPath>
+    <OpenCoverExcludeByAttribute>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</OpenCoverExcludeByAttribute>
+    <OpenCoverOldStyle>true</OpenCoverOldStyle>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PublishCoverage Condition="'$(PublishCoverage)' == ''">$(CI)</PublishCoverage>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CodecovToolPath>$([MSBuild]::NormalizeDirectory($(BuildToolsPath), 'Codecov', 'tools'))</CodecovToolPath>
+  </PropertyGroup>
+</Project>

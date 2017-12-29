@@ -1,0 +1,36 @@
+﻿<Project>
+  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.OpenCover" />
+  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.Codecov" />
+
+  <Target Name="Test">
+    <PropertyGroup>
+      <VSTestArgs>$(TargetPath)</VSTestArgs>
+      <VSTestWorkingDir>$(TargetDir)</VSTestWorkingDir>
+      <OpenCoverFilter>
+        +[$(TargetName.Replace('.Tests', ''))]*;
+        -[$(TargetName)]*
+      </OpenCoverFilter>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <CodeCoverageResults Include="$([MSBuild]::NormalizeDirectory($(ProjectDir), $(IntermediateOutputPath)))$(TargetName).results.xml" />
+    </ItemGroup>
+
+    <OpenCover ToolPath="$(OpenCoverToolPath)"
+               Target="%(VSTestConsole.Identity)"
+               TargetArgs="$(VSTestArgs)"
+               TargetWorkingDir="$(VSTestWorkingDir)"
+               ReturnTargetCode="true"
+               Filter="$(OpenCoverFilter)"
+               ExcludeByAttribute="$(OpenCoverExcludeByAttribute)"
+               Output="@(CodeCoverageResults)"
+               OldStyle="$(OpenCoverOldStyle)" />
+  </Target>
+
+  <Target Name="_PublishCoverage"
+          AfterTargets="Test"
+          Condition="'$(PublishCoverage)' == 'true'">
+    <Codecov ToolPath="$(CodecovToolPath)"
+             File="@(CodeCoverageResults)" />
+  </Target>
+</Project>

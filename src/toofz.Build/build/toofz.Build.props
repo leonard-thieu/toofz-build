@@ -9,7 +9,6 @@
     <VersionSuffix Condition="'$(VersionPrefix)' == '0.0.0' AND '$(VersionSuffix)' == ''">dev</VersionSuffix>
   </PropertyGroup>
 
-  <Import Project="Coverage.props" />
-  <Import Project="PublishCoverage.props" />
+  <Import Project="Test.props" />
   <Import Project="PublishPackage.props" />
 </Project>

@@ -1,5 +1,0 @@
-﻿<Project>
-  <PropertyGroup>
-    <CodecovToolPath>$([MSBuild]::NormalizeDirectory($(BuildToolsPath), 'Codecov', 'tools'))</CodecovToolPath>
-  </PropertyGroup>
-</Project>

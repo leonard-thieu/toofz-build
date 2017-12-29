@@ -15,12 +15,7 @@
     </PropertyGroup>
   </Target>
 
-  <ItemGroup>
-    <CodeCoverageResults Include="$([MSBuild]::NormalizeDirectory($(ProjectDir), $(IntermediateOutputPath)))$(TargetName).results.xml" />
-  </ItemGroup>
-
-  <Import Project="Coverage.targets" />
-  <Import Project="PublishCoverage.targets" />
+  <Import Project="Test.targets" />
   <Import Project="PublishPackage.targets" />
   <Import Project="EmbedSourceFiles.targets" />
 </Project>
