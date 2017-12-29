@@ -57,6 +57,14 @@
                                     !$([System.String]::new('%(Filename)').EndsWith('.symbols'))" />
     </ItemGroup>
 
+    <FormatUrl InputUrl="$(PackageServer)">
+      <Output PropertyName="PackageServer" TaskParameter="OutputUrl" />
+    </FormatUrl>
+
+    <FormatUrl InputUrl="$(SymbolPackageServer)">
+      <Output PropertyName="SymbolPackageServer" TaskParameter="OutputUrl" />
+    </FormatUrl>
+
     <NuGetPush ToolPath="$(NuGetToolPath)"
                Package="%(_NuGetPushPackage.FullPath)"
                Source="$(PackageServer)"
