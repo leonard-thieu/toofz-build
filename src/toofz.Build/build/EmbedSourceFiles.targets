@@ -12,7 +12,7 @@
                      '$(DebugType)' == 'embedded' OR
                      '$(_CanEmbedSourceFilesInWindowsPDBs)' == 'true'">
     <ItemGroup>
-      <EmbeddedFiles Include="%(Compile.FullPath)" />
+      <EmbeddedFiles Include="@(Compile)" />
     </ItemGroup>
   </Target>
 
