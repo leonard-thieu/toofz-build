@@ -33,4 +33,4 @@ test: off
 deploy_script:
   - ps: |
       $projectPath = Resolve-Path .\src\toofz.Build\toofz.Build.csproj
-      msbuild $projectPath /verbosity:quiet /target:PublishPackage /property:IsPackagePublishable=$env:APPVEYOR_REPO_TAG
+      msbuild $projectPath /verbosity:quiet /target:Pack /property:PublishPackage=$env:APPVEYOR_REPO_TAG

@@ -1,9 +1,9 @@
 ﻿<Project>
   <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.NuGetPush" />
 
-  <Target Name="PublishPackage"
-          DependsOnTargets="Pack"
-          Condition="'$(IsPackagePublishable)' == 'true'">
+  <Target Name="_PublishPackage"
+          AfterTargets="Pack"
+          Condition="'$(PublishPackage)' == 'true'">
     <ItemGroup>
       <_NuGetPushPackage Include="@(NuGetPackOutput)"
                          Condition="'%(Extension)' == '.nupkg' AND 
