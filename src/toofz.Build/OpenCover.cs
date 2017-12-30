@@ -36,25 +36,13 @@ using Microsoft.Build.Utilities;
 namespace toofz.Build
 {
     /// <summary>Executes the OpenCover tool with the specified arguments.</summary>
-    /// <example>
-    /// <code><![CDATA[
-    /// <Target Name="Test">
-    ///   <OpenCover
-    ///     Target="%(NUnitConsole.Identity)"
-    ///     TargetArgs="OpenCover.Test.dll /noshadow"
-    ///     Filter="+[Open*]*;-[OpenCover.T*]*"
-    ///     Output="opencovertests.xml"
-    ///   />
-    /// </Target>
-    /// ]]></code>
-    /// </example>
     public sealed class OpenCover : ToolTask
     {
         /// <summary>
         /// The target application.
         /// </summary>
         [Required]
-        public ITaskItem Target { get; set; }
+        public string Target { get; set; }
 
         /// <summary>
         /// Indicates whether default filters should be applied or not.
@@ -90,7 +78,7 @@ namespace toofz.Build
         /// <summary>
         /// The location and name of the output XML file.
         /// </summary>
-        public ITaskItem Output { get; set; }
+        public string Output { get; set; }
 
         /// <summary>
         /// Indicates whether the code coverage profiler should be registered or not.
@@ -110,7 +98,7 @@ namespace toofz.Build
         /// <summary>
         /// The working directory for the target process.
         /// </summary>
-        public ITaskItem TargetWorkingDir { get; set; }
+        public string TargetWorkingDir { get; set; }
 
         /// <summary>
         /// Arguments to be passed to the target process.
@@ -136,6 +124,12 @@ namespace toofz.Build
         /// then interferes with the instrumentation.
         /// </summary>
         public bool OldStyle { get; set; }
+
+        /// <summary>
+        /// The code coverage results XML file.
+        /// </summary>
+        [Output]
+        public ITaskItem Results { get; private set; }
 
         /// <summary>
         /// Gets the name of the OpenCover tool executable.
@@ -208,7 +202,7 @@ namespace toofz.Build
         {
             string ret = null;
             if (TargetWorkingDir != null)
-                ret = TargetWorkingDir.GetMetadata("FullPath");
+                ret = Path.GetFullPath(TargetWorkingDir);
 
             if (string.IsNullOrEmpty(ret))
                 ret = base.GetWorkingDirectory();
@@ -224,6 +218,20 @@ namespace toofz.Build
         protected override void LogEventsFromTextOutput(string singleLine, MessageImportance messageImportance)
         {
             base.LogEventsFromTextOutput(singleLine, MessageImportance.Normal);
+        }
+
+        /// <summary>
+        /// This method invokes the tool with the given parameters.
+        /// </summary>
+        /// <returns>true, if task executes successfully</returns>
+        public override bool Execute()
+        {
+            var success = base.Execute();
+
+            // TODO: Should this check success?
+            Results = new TaskItem(Output);
+
+            return success;
         }
     }
 }

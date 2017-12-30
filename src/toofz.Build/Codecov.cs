@@ -13,7 +13,7 @@ namespace toofz.Build
         /// <summary>
         /// Path to coverage report.
         /// </summary>
-        public ITaskItem File { get; set; }
+        public ITaskItem[] File { get; set; }
 
         /// <summary>
         /// Gets the name of the Codecov tool.
@@ -46,7 +46,7 @@ namespace toofz.Build
 
             builder.AppendSwitch("--required");
 
-            builder.AppendSwitchIfNotNull("--file=", File);
+            builder.AppendSwitchIfNotNull("--file=", File, " ");
 
             return builder.ToString();
         }

@@ -19,7 +19,7 @@
     </FormatUrl>
 
     <NuGetPush ToolPath="$(NuGetToolPath)"
-               Package="%(_NuGetPushPackage.FullPath)"
+               Package="%(_NuGetPushPackage.Identity)"
                Source="$(PackageServer)"
                ApiKey="$(PackageServerApiKey)"
                SymbolSource="$(SymbolPackageServer)"

@@ -1,11 +1,8 @@
 ﻿<Project>
   <PropertyGroup>
-    <VSTestPath>$([MSBuild]::NormalizeDirectory($(VSInstallRoot), 'Common7', 'IDE', 'Extensions', 'TestPlatform'))</VSTestPath>
+    <TestPlatformPath>$([MSBuild]::NormalizeDirectory($(VSInstallRoot), 'Common7', 'IDE', 'Extensions', 'TestPlatform'))</TestPlatformPath>
+    <VSTestToolExe>vstest.console.exe</VSTestToolExe>
   </PropertyGroup>
-
-  <ItemGroup>
-    <VSTestConsole Include="$(VSTestPath)vstest.console.exe" />
-  </ItemGroup>
 
   <PropertyGroup>
     <OpenCoverToolPath>$([MSBuild]::NormalizeDirectory($(BuildToolsPath), 'OpenCover', 'tools'))</OpenCoverToolPath>
