@@ -38,6 +38,8 @@ namespace toofz.Build
     /// <summary>Executes the OpenCover tool with the specified arguments.</summary>
     public sealed class OpenCover : ToolTask
     {
+        #region Target
+
         /// <summary>
         /// The target application.
         /// </summary>
@@ -45,65 +47,19 @@ namespace toofz.Build
         public string Target { get; set; }
 
         /// <summary>
-        /// Indicates whether default filters should be applied or not.
-        /// </summary>
-        public bool DefaultFilters { get; set; } = true;
-
-        /// <summary>
-        /// Gather coverage by test.
-        /// </summary>
-        public ITaskItem[] CoverByTest { get; set; }
-
-        /// <summary>
-        /// Exclude a class or method by filters that match attributes.
-        /// </summary>
-        public ITaskItem[] ExcludeByAttribute { get; set; }
-
-        /// <summary>
-        /// Exclude a class or method by filters that match filenames.
-        /// </summary>
-
-        public ITaskItem[] ExcludeByFile { get; set; }
-
-        /// <summary>
-        /// A list of filters to apply.
-        /// </summary>
-        public ITaskItem[] Filter { get; set; }
-
-        /// <summary>
-        /// Merge the result by assembly file-hash.
-        /// </summary>
-        public bool MergeByHash { get; set; }
-
-        /// <summary>
-        /// The location and name of the output XML file.
-        /// </summary>
-        public string Output { get; set; }
-
-        /// <summary>
-        /// Indicates whether the code coverage profiler should be registered or not.
-        /// </summary>
-        public bool Register { get; set; } = true;
-
-        /// <summary>
-        /// Indicates whether the list of unvisited methods and classes should be shown.
-        /// </summary>
-        public bool ShowUnvisited { get; set; }
-
-        /// <summary>
         /// Indicates whether target is a service rather than a regular executable.
         /// </summary>
         public bool Service { get; set; }
 
         /// <summary>
-        /// The working directory for the target process.
-        /// </summary>
-        public string TargetWorkingDir { get; set; }
-
-        /// <summary>
         /// Arguments to be passed to the target process.
         /// </summary>
         public string TargetArgs { get; set; }
+
+        /// <summary>
+        /// The working directory for the target process.
+        /// </summary>
+        public string TargetWorkingDir { get; set; }
 
         /// <summary>
         /// Return the target process return code instead of the OpenCover console return code.
@@ -115,6 +71,57 @@ namespace toofz.Build
         /// Valid only if ReturnTargetCode is set.
         /// </summary>
         public int TargetCodeOffset { get; set; }
+
+        #endregion
+
+        #region Filtering
+
+        /// <summary>
+        /// Exclude a class or method by filters that match attributes.
+        /// </summary>
+        public ITaskItem[] ExcludeByAttribute { get; set; }
+
+        /// <summary>
+        /// Exclude a class or method by filters that match filenames.
+        /// </summary>
+        public ITaskItem[] ExcludeByFile { get; set; }
+
+        /// <summary>
+        /// Indicates whether default filters should be applied or not.
+        /// </summary>
+        public bool DefaultFilters { get; set; } = true;
+
+        /// <summary>
+        /// A list of filters to apply.
+        /// </summary>
+        public ITaskItem[] Filter { get; set; }
+
+        #endregion
+
+        /// <summary>
+        /// Gather coverage by test.
+        /// </summary>
+        public ITaskItem[] CoverByTest { get; set; }
+
+        /// <summary>
+        /// The location and name of the output XML file.
+        /// </summary>
+        public string Output { get; set; }
+
+        /// <summary>
+        /// Merge the result by assembly file-hash.
+        /// </summary>
+        public bool MergeByHash { get; set; }
+
+        /// <summary>
+        /// Indicates whether the code coverage profiler should be registered or not.
+        /// </summary>
+        public bool Register { get; set; } = true;
+
+        /// <summary>
+        /// Indicates whether the list of unvisited methods and classes should be shown.
+        /// </summary>
+        public bool ShowUnvisited { get; set; }
 
         /// <summary>
         /// Use old style instrumentation.
@@ -229,7 +236,7 @@ namespace toofz.Build
             var success = base.Execute();
 
             // TODO: Should this check success?
-            Results = new TaskItem(Output);
+            Results = new TaskItem(Output ?? Path.Combine(Directory.GetCurrentDirectory(), "results.xml"));
 
             return success;
         }
