@@ -236,7 +236,7 @@ namespace toofz.Build
             var success = base.Execute();
 
             // TODO: Should this check success?
-            Results = new TaskItem(Output ?? Path.Combine(Directory.GetCurrentDirectory(), "results.xml"));
+            Results = new TaskItem(Output);
 
             return success;
         }
