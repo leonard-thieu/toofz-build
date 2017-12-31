@@ -45,11 +45,14 @@ namespace toofz.Build
             var builder = new CommandLineBuilder();
 
             builder.AppendSwitch("--required");
+            builder.AppendSwitch("--verbose");
 
             builder.AppendSwitchIfNotNull("--file=", File, " ");
 
             return builder.ToString();
         }
+
+        private MessageImportance lastMessageImportance;
 
         /// <summary>
         /// Adapts a line of output from the Codecov tool for the MSBuild log.
@@ -71,16 +74,18 @@ namespace toofz.Build
                 var logLevel = match.Groups[LogLevelName].Value;
                 switch (logLevel)
                 {
-                    case "Information": messageImportance = MessageImportance.Low; break;
-                    case "Warning": messageImportance = MessageImportance.Normal; break;
+                    case "Verbose": messageImportance = MessageImportance.Low; break;
+                    case "Information": messageImportance = MessageImportance.Normal; break;
+                    case "Warning":
                     case "Fatal": messageImportance = MessageImportance.High; break;
                 }
+                lastMessageImportance = messageImportance;
 
                 singleLine = match.Groups[MessageName].Value;
             }
-            else if (singleLine.StartsWith("   at "))
+            else
             {
-                messageImportance = MessageImportance.High;
+                messageImportance = lastMessageImportance;
             }
 
             base.LogEventsFromTextOutput(singleLine, messageImportance);
@@ -101,6 +106,18 @@ namespace toofz.Build
 
                 return false;
             }
+        }
+
+        /// <summary>
+        /// This method invokes the tool with the given parameters.
+        /// </summary>
+        /// <returns>true, if task executes successfully</returns>
+        public override bool Execute()
+        {
+            // This is only necessary if instances can be reused.
+            lastMessageImportance = MessageImportance.Low;
+
+            return base.Execute();
         }
     }
 }
