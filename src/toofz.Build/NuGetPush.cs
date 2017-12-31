@@ -61,7 +61,9 @@ namespace toofz.Build
         protected override string GenerateCommandLineCommands()
         {
             var builder = new CommandLineBuilder();
+
             builder.AppendSwitch("push");
+            builder.AppendSwitchIfNotNull("-Verbosity ", "detailed");
 
             builder.AppendFileNameIfNotNull(Package);
             builder.AppendSwitchIfNotNull("-Source ", Source);
