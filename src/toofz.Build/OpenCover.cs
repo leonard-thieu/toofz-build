@@ -1,7 +1,4 @@
-﻿//
-// This source code is released under the MIT License; see the accompanying license file.
-//
-// OpenCover is released under the following MIT compatible software licence
+﻿// OpenCover is released under the following MIT compatible software licence
 // this does not apply to any other software, be that source code, compiled 
 // libraries or tools, that OpenCover may rely on or use and that that software 
 // will continue to retain whatever licence they were released under.
@@ -28,14 +25,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-// 
+
 using System.IO;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
 namespace toofz.Build
 {
-    /// <summary>Executes the OpenCover tool with the specified arguments.</summary>
+    /// <summary>
+    /// Executes the OpenCover tool with the specified arguments.
+    /// </summary>
     public sealed class OpenCover : ToolTask
     {
         #region Target
@@ -68,7 +67,7 @@ namespace toofz.Build
 
         /// <summary>
         /// Use the offset to return the OpenCover console at a value outside the range returned by the target process.
-        /// Valid only if ReturnTargetCode is set.
+        /// Valid only if <see cref="ReturnTargetCode"/> is set.
         /// </summary>
         public int TargetCodeOffset { get; set; }
 
@@ -144,7 +143,7 @@ namespace toofz.Build
         protected override string ToolName => "OpenCover.Console.exe";
 
         /// <summary>
-        /// Returns the  path to the OpenCover tool.
+        /// Returns the path to the OpenCover tool.
         /// </summary>
         /// <returns>The full path to the OpenCover tool.</returns>
         protected override string GenerateFullPathToTool()
