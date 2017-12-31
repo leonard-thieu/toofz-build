@@ -201,22 +201,6 @@ namespace toofz.Build
         }
 
         /// <summary>
-        /// Gets the working directory for the OpenCover tool.
-        /// </summary>
-        /// <returns>The working directory for the OpenCover tool.</returns>
-        protected override string GetWorkingDirectory()
-        {
-            string ret = null;
-            if (TargetWorkingDir != null)
-                ret = Path.GetFullPath(TargetWorkingDir);
-
-            if (string.IsNullOrEmpty(ret))
-                ret = base.GetWorkingDirectory();
-
-            return ret;
-        }
-
-        /// <summary>
         /// Logs the OpenCover output.
         /// </summary>
         /// <param name="singleLine">A single line output by the OpenCover tool.</param>
