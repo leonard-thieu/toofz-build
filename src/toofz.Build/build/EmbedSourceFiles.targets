@@ -20,9 +20,14 @@
           DependsOnTargets="_GetRoslynCompilerVersion"
           Condition="'$(DebugType)' == 'full' OR
                      '$(DebugType)' == 'pdbonly'">
-    <CompareVersion Version="$(_RoslynCompilerVersion.Split(' ')[0])"
-                    CompareTo="2.6.0">
-      <Output TaskParameter="IsGreaterThanOrEqualTo" PropertyName="_CanEmbedSourceFilesInWindowsPDBs" />
+    <PropertyGroup>
+      <_RoslynCompilerVersionWithoutCommit>$(_RoslynCompilerVersion.Split(' ')[0])</_RoslynCompilerVersionWithoutCommit>
+    </PropertyGroup>
+    
+    <CompareVersion Version1="$(_RoslynCompilerVersionWithoutCommit)"
+                    Operator=">="
+                    Version2="2.6.0">
+      <Output TaskParameter="Result" PropertyName="_CanEmbedSourceFilesInWindowsPDBs" />
     </CompareVersion>
   </Target>
 
