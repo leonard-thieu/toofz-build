@@ -10,7 +10,8 @@
         +[$(TargetName.Replace('.Tests', ''))]*;
         -[$(TargetName)]*
       </OpenCoverFilter>
-      <CodeCoverageResultsPath>$(IntermediateOutputPath)$(TargetName).results.xml</CodeCoverageResultsPath>
+      <CodeCoverageResultsPath>$([MSBuild]::NormalizeDirectory($(ProjectDir), $(IntermediateOutputPath)))</CodeCoverageResultsPath>
+      <CodeCoverageResultsFileName>$(TargetName).results.xml</CodeCoverageResultsFileName>
     </PropertyGroup>
 
     <OpenCover ToolPath="$(OpenCoverToolPath)"
@@ -20,7 +21,7 @@
                ReturnTargetCode="true"
                Filter="$(OpenCoverFilter)"
                ExcludeByAttribute="$(OpenCoverExcludeByAttribute)"
-               Output="$(CodeCoverageResultsPath)"
+               Output="$(CodeCoverageResultsPath)$(CodeCoverageResultsFileName)"
                OldStyle="$(OpenCoverOldStyle)">
       <Output TaskParameter="Results" ItemName="CodeCoverageResults" />
     </OpenCover>
