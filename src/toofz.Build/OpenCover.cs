@@ -27,6 +27,7 @@
 // THE SOFTWARE.
 
 using System.IO;
+using System.Text.RegularExpressions;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
@@ -217,6 +218,28 @@ namespace toofz.Build
             Results = new TaskItem(Output);
 
             return success;
+        }
+
+        /// <summary>
+        /// Logs messages from the OpenCover tool.
+        /// </summary>
+        /// <param name="singleLine">The line of output to parse.</param>
+        /// <param name="messageImportance">The original importance of the message.</param>
+        /// <remarks>
+        /// This reduces <paramref name="messageImportance"/> to <see cref="MessageImportance.Low"/> for messages 
+        /// that begin with the xUnit.net leader.
+        /// </remarks>
+        protected override void LogEventsFromTextOutput(string singleLine, MessageImportance messageImportance)
+        {
+            const string xUnitMessagePattern = @"\[xUnit\.net \d{2}:\d{2}:\d{2}\.\d{7}\]";
+
+            var match = Regex.Match(singleLine, xUnitMessagePattern);
+            if (match.Success)
+            {
+                messageImportance = MessageImportance.Low;
+            }
+
+            base.LogEventsFromTextOutput(singleLine, messageImportance);
         }
     }
 }
