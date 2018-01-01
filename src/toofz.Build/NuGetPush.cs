@@ -34,6 +34,11 @@ namespace toofz.Build
         public string SymbolApiKey { get; set; }
 
         /// <summary>
+        /// Importance with which to log text from in the standard out stream.
+        /// </summary>
+        protected override MessageImportance StandardOutputLoggingImportance => MessageImportance.High;
+
+        /// <summary>
         /// The name of the NuGet tool.
         /// </summary>
         protected override string ToolName => "NuGet.exe";
@@ -63,13 +68,14 @@ namespace toofz.Build
             var builder = new CommandLineBuilder();
 
             builder.AppendSwitch("push");
-            builder.AppendSwitchIfNotNull("-Verbosity ", "detailed");
 
             builder.AppendFileNameIfNotNull(Package);
             builder.AppendSwitchIfNotNull("-Source ", Source);
             builder.AppendSwitchIfNotNull("-ApiKey ", ApiKey);
             builder.AppendSwitchIfNotNull("-SymbolSource ", SymbolSource);
             builder.AppendSwitchIfNotNull("-SymbolApiKey ", SymbolApiKey);
+
+            builder.AppendSwitchIfNotNull("-Verbosity ", "detailed");
 
             return builder.ToString();
         }
