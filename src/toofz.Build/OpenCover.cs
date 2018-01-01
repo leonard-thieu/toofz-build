@@ -138,6 +138,11 @@ namespace toofz.Build
         public ITaskItem Results { get; private set; }
 
         /// <summary>
+        /// Importance with which to log text from in the standard out stream.
+        /// </summary>
+        protected override MessageImportance StandardOutputLoggingImportance => MessageImportance.High;
+
+        /// <summary>
         /// Gets the name of the OpenCover tool executable.
         /// </summary>
         protected override string ToolName => "OpenCover.Console.exe";
@@ -198,16 +203,6 @@ namespace toofz.Build
             builder.AppendSwitchIfNotNull("-output:", Output);
 
             return builder.ToString();
-        }
-
-        /// <summary>
-        /// Logs the OpenCover output.
-        /// </summary>
-        /// <param name="singleLine">A single line output by the OpenCover tool.</param>
-        /// <param name="messageImportance">The importance of the message.</param>
-        protected override void LogEventsFromTextOutput(string singleLine, MessageImportance messageImportance)
-        {
-            base.LogEventsFromTextOutput(singleLine, MessageImportance.Normal);
         }
 
         /// <summary>
