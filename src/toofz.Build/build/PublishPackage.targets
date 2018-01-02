@@ -1,6 +1,19 @@
 ﻿<Project>
-  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.NuGetPush" />
   <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.AppVeyorPushArtifact" />
+  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.NuGetPush" />
+
+  <Target Name="_PublishPackageToAppVeyor"
+          DependsOnTargets="_GetNuGetPackages"
+          AfterTargets="Pack"
+          Condition="'$(APPVEYOR)' == 'true'">
+    <PropertyGroup>
+      <AppVeyorPushVerbosity Condition="'$(AppVeyorPushVerbosity)' == ''">Minimal</AppVeyorPushVerbosity>
+    </PropertyGroup>
+
+    <AppVeyorPushArtifact Path="%(_NuGetPackage.Identity)"
+                          Type="NuGetPackage"
+                          Verbosity="$(AppVeyorPushVerbosity)" />
+  </Target>
 
   <Target Name="_PublishPackage"
           DependsOnTargets="_GetNuGetPackages"
@@ -25,19 +38,6 @@
                ApiKey="$(PackageServerApiKey)"
                SymbolSource="$(SymbolPackageServer)"
                SymbolApiKey="$(SymbolPackageServerApiKey)" />
-  </Target>
-
-  <Target Name="_PublishPackageToAppVeyor"
-          DependsOnTargets="_GetNuGetPackages"
-          AfterTargets="Pack"
-          Condition="'$(APPVEYOR)' == 'true'">
-    <PropertyGroup>
-      <AppVeyorPushVerbosity Condition="'$(AppVeyorPushVerbosity)' == ''">Minimal</AppVeyorPushVerbosity>
-    </PropertyGroup>
-    
-    <AppVeyorPushArtifact Path="%(_NuGetPackage.Identity)"
-                          Type="NuGetPackage"
-                          Verbosity="$(AppVeyorPushVerbosity)" />
   </Target>
 
   <Target Name="_GetNuGetPackages"
