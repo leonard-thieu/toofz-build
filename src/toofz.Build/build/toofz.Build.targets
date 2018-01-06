@@ -8,10 +8,21 @@
     <TasksAssemblyFile Include="$(TargetPath)" Condition="!Exists('$(TasksAssemblyFilePath)')" />
   </ItemGroup>
 
-  <Target Name="BeforeGetAssemblyAttributes"
+  <Target Name="_BeforeGetAssemblyAttributes"
           BeforeTargets="GetAssemblyAttributes">
     <PropertyGroup>
       <AssemblyTitle Condition="'$(Title)' != ''">$(Title)</AssemblyTitle>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="_AfterGetAssemblyVersion"
+          AfterTargets="GetAssemblyVersion">
+    <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitShortCommitHash" />
+    </Exec>
+    
+    <PropertyGroup>
+      <InformationalVersion>$(Version)+$(_GitShortCommitHash)</InformationalVersion>
     </PropertyGroup>
   </Target>
 
