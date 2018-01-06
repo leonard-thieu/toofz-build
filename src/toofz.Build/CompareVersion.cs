@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using static System.Version;
 
 namespace toofz.Build
 {
@@ -16,36 +15,22 @@ namespace toofz.Build
         [Required]
         public string Version1
         {
-            get { return version1.ToString(); }
-            set { version1 = Parse(value); }
+            get => version1.ToString();
+            set => version1 = Version.Parse(value);
         }
         private Version version1;
 
         /// <summary>
-        /// The operator to use for comparison. Valid values are '==', '!=', '&lt;', '&gt;', '&lt;=', '&gt;='.
+        /// The operator to use for comparison. Valid values are 'Equal', 'NotEqual', 'LessThan', 
+        /// 'GreaterThan', 'LessThanOrEqual', 'GreaterThanOrEqual'.
         /// </summary>
         [Required]
         public string Operator
         {
-            get { return @operator; }
-            set
-            {
-                switch (value)
-                {
-                    case "==":
-                    case "!=":
-                    case "<":
-                    case ">":
-                    case "<=":
-                    case ">=":
-                        @operator = value;
-                        break;
-                    default:
-                        throw new ArgumentException($"'{value}' is not a valid operator. Valid values are '==', '!=', '<', '>', '<=', '>='.");
-                }
-            }
+            get => @operator.ToString();
+            set => @operator = (Operator)Enum.Parse(typeof(Operator), value, ignoreCase: true);
         }
-        private string @operator;
+        private Operator @operator;
 
         /// <summary>
         /// The second version number to compare.
@@ -53,8 +38,8 @@ namespace toofz.Build
         [Required]
         public string Version2
         {
-            get { return version2.ToString(); }
-            set { version2 = Parse(value); }
+            get => version2.ToString();
+            set => version2 = Version.Parse(value);
         }
         private Version version2;
 
@@ -73,17 +58,27 @@ namespace toofz.Build
         /// </returns>
         public override bool Execute()
         {
-            switch (Operator)
+            switch (@operator)
             {
-                case "==": Result = version1 == version2; break;
-                case "!=": Result = version1 != version2; break;
-                case "<": Result = version1 < version2; break;
-                case ">": Result = version1 > version2; break;
-                case "<=": Result = version1 <= version2; break;
-                case ">=": Result = version1 >= version2; break;
+                case Build.Operator.Equal: Result = version1 == version2; break;
+                case Build.Operator.NotEqual: Result = version1 != version2; break;
+                case Build.Operator.LessThan: Result = version1 < version2; break;
+                case Build.Operator.GreaterThan: Result = version1 > version2; break;
+                case Build.Operator.LessThanOrEqual: Result = version1 <= version2; break;
+                case Build.Operator.GreaterThanOrEqual: Result = version1 >= version2; break;
             }
 
             return true;
         }
+    }
+
+    internal enum Operator
+    {
+        Equal,
+        NotEqual,
+        LessThan,
+        GreaterThan,
+        LessThanOrEqual,
+        GreaterThanOrEqual,
     }
 }
