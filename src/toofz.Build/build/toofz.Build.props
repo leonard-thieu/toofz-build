@@ -9,6 +9,14 @@
     <VersionSuffix Condition="'$(VersionPrefix)' == '0.0.0' AND '$(VersionSuffix)' == ''">dev</VersionSuffix>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>
+      $(AllowedOutputExtensionsInPackageBuildOutputFolder);
+      .pdb;
+      .xml
+    </AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
   <Import Project="Test.props" />
   <Import Project="PublishPackage.props" />
 </Project>
