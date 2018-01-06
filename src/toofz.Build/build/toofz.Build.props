@@ -15,6 +15,7 @@
       .pdb;
       .xml
     </AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
 
   <Import Project="Test.props" />

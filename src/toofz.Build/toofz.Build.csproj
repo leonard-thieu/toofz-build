@@ -16,7 +16,6 @@
     <RepositoryUrl>https://github.com/leonard-thieu/toofz-build.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <IsTool>true</IsTool>
-    <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
