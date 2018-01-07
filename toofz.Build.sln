@@ -6,12 +6,17 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ADC63631-8C2B-47A2-A986-DBE72F339C88}"
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
+		NuGet.Config = NuGet.Config
 		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E9A620BB-9235-45ED-8FD4-86726EAD96FF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "toofz.Build", "src\toofz.Build\toofz.Build.csproj", "{B08668AB-1067-4D81-9EE9-91DA29C4254D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{6B71F8E2-A14E-41A1-8FB3-B3758DDF27C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "toofz.Build.Tests", "test\toofz.Build.Tests\toofz.Build.Tests.csproj", "{9CACBEF8-AAFC-447C-92E6-D9F021390648}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +28,17 @@ Global
 		{B08668AB-1067-4D81-9EE9-91DA29C4254D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B08668AB-1067-4D81-9EE9-91DA29C4254D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B08668AB-1067-4D81-9EE9-91DA29C4254D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CACBEF8-AAFC-447C-92E6-D9F021390648}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CACBEF8-AAFC-447C-92E6-D9F021390648}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CACBEF8-AAFC-447C-92E6-D9F021390648}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CACBEF8-AAFC-447C-92E6-D9F021390648}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B08668AB-1067-4D81-9EE9-91DA29C4254D} = {E9A620BB-9235-45ED-8FD4-86726EAD96FF}
+		{9CACBEF8-AAFC-447C-92E6-D9F021390648} = {6B71F8E2-A14E-41A1-8FB3-B3758DDF27C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {43424B19-9618-423D-A83E-E84B37D10D8A}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
@@ -13,35 +14,20 @@ namespace toofz.Build
         /// The first version number to compare.
         /// </summary>
         [Required]
-        public string Version1
-        {
-            get => version1.ToString();
-            set => version1 = Version.Parse(value);
-        }
-        private Version version1;
+        public string Version1 { get; set; }
 
         /// <summary>
         /// The operator to use for comparison. Valid values are 'Equal', 'NotEqual', 'LessThan', 
         /// 'GreaterThan', 'LessThanOrEqual', 'GreaterThanOrEqual'.
         /// </summary>
         [Required]
-        public string Operator
-        {
-            get => @operator.ToString();
-            set => @operator = (Operator)Enum.Parse(typeof(Operator), value, ignoreCase: true);
-        }
-        private Operator @operator;
+        public string Operator { get; set; }
 
         /// <summary>
         /// The second version number to compare.
         /// </summary>
         [Required]
-        public string Version2
-        {
-            get => version2.ToString();
-            set => version2 = Version.Parse(value);
-        }
-        private Version version2;
+        public string Version2 { get; set; }
 
         /// <summary>
         /// Returns true if the comparison is true; otherwise, false.
@@ -58,6 +44,32 @@ namespace toofz.Build
         /// </returns>
         public override bool Execute()
         {
+            if (!Version.TryParse(Version1, out var version1))
+            {
+                Log.LogError($"'{nameof(Version1)}' is not a valid version number.");
+
+                return false;
+            }
+
+            if (!Enum.TryParse(Operator, false, out Operator @operator))
+            {
+                var operatorValues = Enum
+                    .GetValues(typeof(Operator))
+                    .Cast<Operator>()
+                    .Select(o => $"'{o.ToString()}'");
+                var operators = string.Join(", ", operatorValues);
+                Log.LogError($"'{nameof(Operator)}' must be one of the following: {operators}.");
+
+                return false;
+            }
+
+            if (!Version.TryParse(Version2, out var version2))
+            {
+                Log.LogError($"'{nameof(Version2)}' is not a valid version number.");
+
+                return false;
+            }
+
             switch (@operator)
             {
                 case Build.Operator.Equal: Result = version1 == version2; break;

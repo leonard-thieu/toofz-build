@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
@@ -31,22 +32,12 @@ namespace toofz.Build
         /// <see cref="ArtifactType.AzureCloudService"/>, <see cref="ArtifactType.AzureCloudServiceConfig"/>, <see cref="ArtifactType.SsdtPackage"/>, 
         /// <see cref="ArtifactType.Zip"/>, <see cref="ArtifactType.File"/>
         /// </summary>
-        public string Type
-        {
-            get => type.ToString();
-            set => type = (ArtifactType)Enum.Parse(typeof(ArtifactType), value, ignoreCase: true);
-        }
-        private ArtifactType type;
+        public string Type { get; set; }
 
         /// <summary>
         /// Upload progress to display.
         /// </summary>
-        public string Verbosity
-        {
-            get => verbosity.ToString();
-            set => verbosity = (UploadVerbosity)Enum.Parse(typeof(UploadVerbosity), value, ignoreCase: true);
-        }
-        private UploadVerbosity verbosity;
+        public string Verbosity { get; set; }
 
         /// <summary>
         /// Importance with which to log text from in the standard out stream.
@@ -65,6 +56,35 @@ namespace toofz.Build
         /// The value of <see cref="ToolTask.ToolExe"/> which indicates to search for the AppVeyor tool in the system path.
         /// </returns>
         protected override string GenerateFullPathToTool() => ToolExe;
+
+        protected override bool ValidateParameters()
+        {
+            if (!string.IsNullOrEmpty(Type) && !Enum.TryParse(Type, true, out ArtifactType _))
+            {
+                var typeValues = Enum
+                    .GetValues(typeof(ArtifactType))
+                    .Cast<ArtifactType>()
+                    .Select(t => $"'{t.ToString()}'");
+                var types = string.Join(", ", typeValues);
+                Log.LogError($"'{nameof(Type)}' must be one of the following: {typeValues}.");
+
+                return false;
+            }
+
+            if (!string.IsNullOrEmpty(Verbosity) && !Enum.TryParse(Verbosity, true, out UploadVerbosity _))
+            {
+                var verbosityValues = Enum
+                    .GetValues(typeof(UploadVerbosity))
+                    .Cast<UploadVerbosity>()
+                    .Select(v => $"'{v.ToString()}'");
+                var verbosities = string.Join(", ", verbosityValues);
+                Log.LogError($"'{nameof(Verbosity)}' must be one of the following: {verbosityValues}.");
+
+                return false;
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Generates command line arguments for the AppVeyor tool's PushArtifact command.
