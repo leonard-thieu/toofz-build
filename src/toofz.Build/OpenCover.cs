@@ -178,12 +178,10 @@ namespace toofz.Build
                 builder.AppendSwitch("-mergebyhash");
             if (ShowUnvisited)
                 builder.AppendSwitch("-showunvisited");
-            if (ReturnTargetCode)
-            {
-                builder.AppendSwitch("-returntargetcode" + (TargetCodeOffset != 0 ? string.Format(":{0}", TargetCodeOffset) : null));
-            }
             if (OldStyle)
                 builder.AppendSwitch("-oldstyle");
+            if (ReturnTargetCode)
+                builder.AppendSwitch("-returntargetcode" + (TargetCodeOffset != 0 ? $":{TargetCodeOffset}" : ""));
 
             builder.AppendSwitchIfNotNull("-target:", Target);
             builder.AppendSwitchIfNotNull("-targetdir:", TargetWorkingDir);
