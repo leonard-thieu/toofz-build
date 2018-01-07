@@ -33,8 +33,8 @@ namespace toofz.Build
         /// </summary>
         public string Type
         {
-            get { return type.ToString(); }
-            set { type = (ArtifactType)Enum.Parse(typeof(ArtifactType), value, ignoreCase: true); }
+            get => type.ToString();
+            set => type = (ArtifactType)Enum.Parse(typeof(ArtifactType), value, ignoreCase: true);
         }
         private ArtifactType type;
 
@@ -43,8 +43,8 @@ namespace toofz.Build
         /// </summary>
         public string Verbosity
         {
-            get { return verbosity.ToString(); }
-            set { verbosity = (UploadVerbosity)Enum.Parse(typeof(UploadVerbosity), value, ignoreCase: true); }
+            get => verbosity.ToString();
+            set => verbosity = (UploadVerbosity)Enum.Parse(typeof(UploadVerbosity), value, ignoreCase: true);
         }
         private UploadVerbosity verbosity;
 
