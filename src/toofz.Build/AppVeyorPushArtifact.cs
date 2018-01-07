@@ -57,6 +57,10 @@ namespace toofz.Build
         /// </returns>
         protected override string GenerateFullPathToTool() => ToolExe;
 
+        /// <summary>
+        /// Ensures parameters are set to valid values.
+        /// </summary>
+        /// <returns>true, if parameters are valid; otherwise, false.</returns>
         protected override bool ValidateParameters()
         {
             if (!string.IsNullOrEmpty(Type) && !Enum.TryParse(Type, true, out ArtifactType _))
