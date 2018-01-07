@@ -17,7 +17,7 @@
 
   <Target Name="_AfterGetAssemblyVersion"
           AfterTargets="GetAssemblyVersion">
-    <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true">
+    <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true" StandardOutputImportance="Low">
       <Output TaskParameter="ConsoleOutput" PropertyName="_GitShortCommitHash" />
     </Exec>
     
