@@ -1,6 +1,6 @@
 ﻿<Project>
-  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.AppVeyorPushArtifact" />
-  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.NuGetPush" />
+  <UsingTask AssemblyFile="@(TasksAssembly)" TaskName="toofz.Build.AppVeyorPushArtifact" />
+  <UsingTask AssemblyFile="@(TasksAssembly)" TaskName="toofz.Build.NuGetPush" />
 
   <Target Name="_PublishPackageToAppVeyor"
           DependsOnTargets="_GetNuGetPackages"

@@ -1,6 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="build\$(AssemblyName).props" />
-
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
   </PropertyGroup>
@@ -41,6 +39,4 @@
       <PackagePath>tools\</PackagePath>
     </None>
   </ItemGroup>
-
-  <Import Project="build\$(AssemblyName).targets" />
 </Project>

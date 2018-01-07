@@ -1,6 +1,6 @@
 ﻿<Project>
-  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.OpenCover" />
-  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.Codecov" />
+  <UsingTask AssemblyFile="@(TasksAssembly)" TaskName="toofz.Build.OpenCover" />
+  <UsingTask AssemblyFile="@(TasksAssembly)" TaskName="toofz.Build.Codecov" />
 
   <Target Name="Test">
     <PropertyGroup>

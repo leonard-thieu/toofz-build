@@ -1,5 +1,5 @@
 ﻿<Project>
-  <UsingTask AssemblyFile="@(TasksAssemblyFile)" TaskName="toofz.Build.CompareVersion" />
+  <UsingTask AssemblyFile="@(TasksAssembly)" TaskName="toofz.Build.CompareVersion" />
 
   <!--
     BeforeTargets runs this target _after_ the specified target (???). Because of this, BeforeTargets is set to 

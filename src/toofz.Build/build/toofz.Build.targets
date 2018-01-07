@@ -1,11 +1,17 @@
 <Project>
   <PropertyGroup>
-    <TasksAssemblyFilePath>$(BuildToolsPath)$(MSBuildThisFileName).dll</TasksAssemblyFilePath>
+    <TasksAssemblyFile>$(MSBuildThisFileName).dll</TasksAssemblyFile>
+    <TasksAssemblyFileFullPath>$(BuildToolsPath)$(TasksAssemblyFile)</TasksAssemblyFileFullPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <TasksAssemblyFile Include="$(TasksAssemblyFilePath)" Condition="Exists('$(TasksAssemblyFilePath)')" />
-    <TasksAssemblyFile Include="$(TargetPath)" Condition="!Exists('$(TasksAssemblyFilePath)')" />
+    <TasksAssembly Include="$(TasksAssemblyFileFullPath)" Condition="Exists('$(TasksAssemblyFileFullPath)')" />
+    <!--
+      The tasks assembly is only present in the tools directory when this project is consumed as a NuGet package. 
+      Since it is not possible for a project to install a NuGet package of itself (leads to a cycle), the build output 
+      is referenced instead. This also allows the test project to make use of tasks from here.
+    -->
+    <TasksAssembly Include="$(TargetDir)$(TasksAssemblyFile)" Condition="!Exists('$(TasksAssemblyFileFullPath)')" />
   </ItemGroup>
 
   <Target Name="_BeforeGetAssemblyAttributes"
@@ -20,7 +26,7 @@
     <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true" StandardOutputImportance="Low">
       <Output TaskParameter="ConsoleOutput" PropertyName="_GitShortCommitHash" />
     </Exec>
-    
+
     <PropertyGroup>
       <InformationalVersion>$(Version)+$(_GitShortCommitHash)</InformationalVersion>
     </PropertyGroup>
