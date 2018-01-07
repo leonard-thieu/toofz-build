@@ -24,8 +24,16 @@ before_build:
 build:
   project: toofz.Build.sln
   verbosity: quiet
-
-test: off
+  
+test_script:
+  - ps: |
+      $projectPath = Resolve-Path .\test\toofz.Build.Tests\toofz.Build.Tests.csproj
+      msbuild $projectPath /nologo /verbosity:minimal `
+          /target:Rebuild `
+          /target:Test `
+          /property:Configuration=Coverage `
+          /property:DebugType=full `
+          /property:DebugSymbols=true
 
 deploy_script:
   - ps: |
