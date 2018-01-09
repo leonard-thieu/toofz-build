@@ -32,6 +32,15 @@
     </PropertyGroup>
   </Target>
 
+  <Target Name="_IncludeOtherReferenceOutputs"
+          AfterTargets="ResolveAssemblyReferences">
+    <ItemGroup>
+      <ReferenceCopyLocalPaths Include="@(_ReferenceRelatedPaths)" />
+      <ReferenceCopyLocalPaths Include="@(ReferenceSatellitePaths)" />
+      <ReferenceCopyLocalPaths Include="@(_ReferenceSerializationAssemblyPaths)" />
+    </ItemGroup>
+  </Target>
+
   <Import Project="Test.targets" />
   <Import Project="PublishPackage.targets" />
   <Import Project="EmbedSourceFiles.targets" />
