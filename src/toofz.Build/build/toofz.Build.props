@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <GenerateDocumentationFile Condition="'$(Configuration)' == 'Release'">true</GenerateDocumentationFile>
+    <GenerateDocumentationFile Condition="('$(Configuration)' == 'Release') AND ('$(IsTestProject)' != 'true')">true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
