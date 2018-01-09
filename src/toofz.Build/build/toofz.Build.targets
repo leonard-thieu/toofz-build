@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="('$(Configuration)' == 'Release') AND ('$(IsTestProject)' != 'true')">
-    <DocumentationFile Condition="'$(DocumentationFile)' == ''">$(IntermediateOutputPath)$(AssemblyName).xml</DocumentationFile>
+    <DocumentationFile Condition="'$(DocumentationFile)' == ''">$(OutDir)$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
