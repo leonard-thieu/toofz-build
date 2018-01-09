@@ -35,9 +35,12 @@
   <Target Name="_IncludeOtherReferenceOutputs"
           AfterTargets="ResolveAssemblyReferences">
     <ItemGroup>
-      <ReferenceCopyLocalPaths Include="@(_ReferenceRelatedPaths)" />
+      <ReferenceCopyLocalPaths Include="@(_ReferenceRelatedPaths)"
+                               Condition="('$(DebugSymbols)' != 'false' AND '%(Extension)' == '.pdb') OR
+                                          ('@(DocumentationFile)' != '' AND '%(Extension)' == '.xml')" />
       <ReferenceCopyLocalPaths Include="@(ReferenceSatellitePaths)" />
-      <ReferenceCopyLocalPaths Include="@(_ReferenceSerializationAssemblyPaths)" />
+      <ReferenceCopyLocalPaths Include="@(_ReferenceSerializationAssemblyPaths)"
+                               Condition="'%(Extension)' == '.dll'" />
     </ItemGroup>
   </Target>
 
