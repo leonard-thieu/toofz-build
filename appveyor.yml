@@ -32,8 +32,7 @@ test_script:
           /target:Rebuild `
           /target:Test `
           /property:Configuration=Coverage `
-          /property:DebugType=full `
-          /property:DebugSymbols=true
+          /property:DebugType=full
 
 deploy_script:
   - ps: |
