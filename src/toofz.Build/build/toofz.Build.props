@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <GenerateDocumentationFile Condition="'$(Configuration)' == 'Release'">true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>
       $(AllowedOutputExtensionsInPackageBuildOutputFolder);
       .pdb;

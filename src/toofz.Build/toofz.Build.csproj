@@ -16,10 +16,6 @@
     <IsTool>true</IsTool>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.3\toofz.Build.xml</DocumentationFile>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Framework" Version="15.5.180">
       <PrivateAssets>All</PrivateAssets>
