@@ -4,6 +4,10 @@
     <TasksAssemblyFileFullPath>$(BuildToolsPath)$(TasksAssemblyFile)</TasksAssemblyFileFullPath>
   </PropertyGroup>
 
+  <PropertyGroup Condition="('$(Configuration)' == 'Release') AND ('$(IsTestProject)' != 'true')">
+    <DocumentationFile Condition="'$(DocumentationFile)' == ''">$(IntermediateOutputPath)$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <TasksAssembly Include="$(TasksAssemblyFileFullPath)" Condition="Exists('$(TasksAssemblyFileFullPath)')" />
     <!--
