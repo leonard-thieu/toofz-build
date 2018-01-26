@@ -16,6 +16,11 @@ namespace toofz.Build
         public ITaskItem[] File { get; set; }
 
         /// <summary>
+        /// Gets or sets a value used when not in git/hg project to identify project root directory.
+        /// </summary>
+        public string RepoRoot { get; set; }
+
+        /// <summary>
         /// Gets the name of the Codecov tool.
         /// </summary>
         protected override string ToolName => "codecov.exe";
@@ -48,6 +53,7 @@ namespace toofz.Build
             builder.AppendSwitch("--verbose");
 
             builder.AppendSwitchIfNotNull("--file=", File, " ");
+            builder.AppendSwitchIfNotNull("--root=", RepoRoot);
 
             return builder.ToString();
         }
