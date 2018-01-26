@@ -30,7 +30,12 @@
   <Target Name="_PublishCoverage"
           AfterTargets="Test"
           Condition="'$(PublishCoverage)' == 'true'">
+    <Exec Command="git rev-parse --show-toplevel" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitRepoRoot" />
+    </Exec>
+
     <Codecov ToolPath="$(CodecovToolPath)"
+             RepoRoot="$(_GitRepoRoot)"
              File="@(CodeCoverageResults)" />
   </Target>
 </Project>
