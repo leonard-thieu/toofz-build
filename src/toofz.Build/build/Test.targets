@@ -35,7 +35,7 @@
     </Exec>
 
     <Codecov ToolPath="$(CodecovToolPath)"
-             RepoRoot="$(_GitRepoRoot)"
+             RepoRoot="$([MSBuild]::NormalizeDirectory($(_GitRepoRoot)))"
              File="@(CodeCoverageResults)" />
   </Target>
 </Project>
