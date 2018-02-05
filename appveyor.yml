@@ -9,7 +9,7 @@ skip_commits:
 configuration:
   - Release
 environment:
-  VersionPrefix: 2.4.1
+  VersionPrefix: 2.4.2
   VersionSuffix: 
   FileVersion: '%APPVEYOR_BUILD_VERSION%'
   PackageServerApiKey:
