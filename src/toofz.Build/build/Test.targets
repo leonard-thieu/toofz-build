@@ -30,12 +30,50 @@
   <Target Name="_PublishCoverage"
           AfterTargets="Test"
           Condition="'$(PublishCoverage)' == 'true'">
-    <Exec Command="git rev-parse --show-toplevel" ConsoleToMSBuild="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="_GitRepoRoot" />
+    <PropertyGroup>
+      <CodecovToken Condition="'$(CodecovToken)' == ''">$(CODECOV_TOKEN)</CodecovToken>
+      <CodecovService Condition="'$(APPVEYOR)' == 'True'">appveyor</CodecovService>
+    </PropertyGroup>
+
+    <!--
+      Uses https://github.com/codecov/codecov-exe/blob/50aa8452c9a92c6f303b238a4d55a166d2938c39/Source/Codecov/Services/ContinuousIntegrationServers/Appveyor.cs 
+      as a reference.
+    -->
+    <PropertyGroup Condition="'$(CodecovService)' == 'appveyor'">
+      <CodecovCommit>$(APPVEYOR_REPO_COMMIT)</CodecovCommit>
+      <CodecovBranch>$(APPVEYOR_REPO_BRANCH)</CodecovBranch>
+      <CodecovBuild>$(APPVEYOR_JOB_ID)</CodecovBuild>
+      <CodecovSlug>$(APPVEYOR_REPO_NAME)</CodecovSlug>
+      <CodecovJob>$(APPVEYOR_ACCOUNT_NAME)/$(APPVEYOR_PROJECT_SLUG)/$(APPVEYOR_BUILD_VERSION)</CodecovJob>
+      <CodecovPullRequest>$(APPVEYOR_PULL_REQUEST_NUMBER)</CodecovPullRequest>
+    </PropertyGroup>
+
+    <Exec Command="git rev-parse HEAD" ConsoleToMSBuild="true" Condition="'$(CodecovCommit)' == ''">
+      <Output TaskParameter="ConsoleOutput" PropertyName="CodecovCommit" />
     </Exec>
 
-    <Codecov ToolPath="$(CodecovToolPath)"
-             RepoRoot="$([MSBuild]::NormalizeDirectory($(_GitRepoRoot)))"
-             File="@(CodeCoverageResults)" />
+    <Exec Command="git rev-parse --abbrev-ref HEAD" ConsoleToMSBuild="true" Condition="'$(CodecovBranch)' == ''">
+      <Output TaskParameter="ConsoleOutput" PropertyName="CodecovBranch" />
+    </Exec>
+
+    <Exec Command="git config --get remote.origin.url" ConsoleToMSBuild="true" Condition="'$(CodecovSlug)' == ''">
+      <Output TaskParameter="ConsoleOutput" PropertyName="CodecovRemote" />
+    </Exec>
+
+    <Exec Command="git ls-tree --full-tree -r HEAD --name-only" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitRepositoryFiles" />
+    </Exec>
+
+    <Codecov Commit="$(CodecovCommit)"
+             Token="$(CodecovToken)"
+             Branch="$(CodecovBranch)"
+             Build="$(CodecovBuild)"
+             Job="$(CodecovJob)"
+             Slug="$(CodecovSlug)"
+             Remote="$(CodecovRemote)"
+             Service="$(CodecovService)"
+             PullRequest="$(CodecovPullRequest)"
+             RepositoryFiles="$(GitRepositoryFiles)"
+             Results="@(CodeCoverageResults)" />
   </Target>
 </Project>

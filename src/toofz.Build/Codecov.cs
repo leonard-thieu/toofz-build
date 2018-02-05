@@ -1,129 +1,180 @@
-﻿using System.IO;
-using System.Text.RegularExpressions;
+﻿using System;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
 
 namespace toofz.Build
 {
     /// <summary>
-    /// Executes the Codecov tool as a task.
+    /// 
     /// </summary>
-    public sealed class Codecov : ToolTask
+    public sealed class Codecov : Microsoft.Build.Utilities.Task
     {
-        /// <summary>
-        /// Path to coverage report.
-        /// </summary>
-        public ITaskItem[] File { get; set; }
+        private static readonly Encoding UTF8NoBOM = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true);
 
         /// <summary>
-        /// Gets or sets a value used when not in git/hg project to identify project root directory.
+        /// 
         /// </summary>
-        public string RepoRoot { get; set; }
+        [Required]
+        public string Commit { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Token { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Branch { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Build { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Job { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string BuildUrl { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Slug { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Remote { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ConfigurationPath { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Service { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string[] Flags { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string PullRequest { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        [Required]
+        public string[] RepositoryFiles { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        [Required]
+        public string[] Results { get; set; }
 
         /// <summary>
-        /// Gets the name of the Codecov tool.
+        /// 
         /// </summary>
-        protected override string ToolName => "codecov.exe";
-
-        /// <summary>
-        /// Generates the full path to the Codecov tool.
-        /// </summary>
-        /// <returns>
-        /// The full path to the Codecov tool.
-        /// </returns>
-        protected override string GenerateFullPathToTool()
+        /// <returns></returns>
+        public override bool Execute()
         {
-            var path = ToolPath;
-            var exe = Path.GetFileName(ToolExe);
-
-            return Path.GetFullPath(Path.Combine(path, exe));
-        }
-
-        /// <summary>
-        /// Generates command line arguments for the Codecov tool.
-        /// </summary>
-        /// <returns>
-        /// Command line arguments for the Codecov tool.
-        /// </returns>
-        protected override string GenerateCommandLineCommands()
-        {
-            var builder = new CommandLineBuilder();
-
-            builder.AppendSwitch("--required");
-            builder.AppendSwitch("--verbose");
-
-            builder.AppendSwitchIfNotNull("--file=", File, " ");
-            builder.AppendSwitchIfNotNull("--root=", RepoRoot);
-
-            return builder.ToString();
-        }
-
-        private MessageImportance lastMessageImportance;
-
-        /// <summary>
-        /// Adapts a line of output from the Codecov tool for the MSBuild log.
-        /// </summary>
-        /// <param name="singleLine">The line of output to parse.</param>
-        /// <param name="messageImportance">The original importance of the message.</param>
-        protected override void LogEventsFromTextOutput(string singleLine, MessageImportance messageImportance)
-        {
-            if (string.IsNullOrWhiteSpace(singleLine)) { return; }
-            if (IsLogoLine(singleLine)) { return; }
-
-            const string LogLevelName = "logLevel";
-            const string MessageName = "message";
-            var LogMessagePattern = $@"^\d{{4}}-\d{{2}}-\d{{2}} \d{{2}}:\d{{2}}:\d{{2}} \[(?<{LogLevelName}>\w+)\] (?<{MessageName}>.*)";
-
-            var match = Regex.Match(singleLine, LogMessagePattern);
-            if (match.Success)
+            try
             {
-                var logLevel = match.Groups[LogLevelName].Value;
-                switch (logLevel)
-                {
-                    case "Verbose": messageImportance = MessageImportance.Low; break;
-                    case "Information": messageImportance = MessageImportance.Normal; break;
-                    case "Warning":
-                    case "Fatal": messageImportance = MessageImportance.High; break;
-                }
-                lastMessageImportance = messageImportance;
+                ExecuteAsync().GetAwaiter().GetResult();
 
-                singleLine = match.Groups[MessageName].Value;
+                return !Log.HasLoggedErrors;
             }
-            else
+            catch (Exception ex)
             {
-                messageImportance = lastMessageImportance;
-            }
-
-            base.LogEventsFromTextOutput(singleLine, messageImportance);
-
-            bool IsLogoLine(string line)
-            {
-                switch (line)
-                {
-                    case @"              _____          _":
-                    case @"             / ____|        | |":
-                    case @"            | |     ___   __| | ___  ___ _____   __":
-                    case @"            | |    / _ \ / _  |/ _ \/ __/ _ \ \ / /":
-                    case @"            | |___| (_) | (_| |  __/ (_| (_) \ V /":
-                    case @"             \_____\___/ \____|\___|\___\___/ \_/":
-                    case @"                                         exe-1.0.3":
-                        return true;
-                }
+                Log.LogErrorFromException(ex, showStackTrace: true, showDetail: true, file: null);
 
                 return false;
             }
         }
 
-        /// <summary>
-        /// This method invokes the tool with the given parameters.
-        /// </summary>
-        /// <returns>true, if task executes successfully</returns>
-        public override bool Execute()
+        private async Task ExecuteAsync()
         {
-            // This is only necessary if instances can be reused.
-            lastMessageImportance = MessageImportance.Low;
+            using (var client = new CodecovClient())
+            {
+                if (Slug == null && Remote != null)
+                {
+                    var remoteUri = new Uri(Remote);
+                    if (remoteUri.Host == "github.com")
+                    {
+                        // LocalPath will be in format `/:owner/:repo.git` (e.g. `/leonard-thieu/toofz-build.git`).
+                        // Slug needs to be in format `:owner/:repo` so the leading `/` and `.git` is stripped off.
+                        Slug = remoteUri.LocalPath.Substring("/".Length, remoteUri.LocalPath.Length - 1 - ".git".Length);
+                    }
+                }
+                var @params = new AddNewReportParams
+                {
+                    RepositoryUploadToken = Token,
+                    Branch = Branch,
+                    Build = Build,
+                    Job = Job,
+                    BuildUrl = BuildUrl,
+                    Name = Name,
+                    Slug = Slug,
+                    ConfigurationPath = ConfigurationPath,
+                    Service = Service,
+                    PullRequest = PullRequest,
+                };
+                if (Flags != null) { @params.Flags.AddRange(Flags); }
 
-            return base.Execute();
+                var urls = await client.AddNewReportAsync(Commit, @params).ConfigureAwait(false);
+                Log.LogMessage(MessageImportance.High, $"View report at {urls.ReportUri}");
+                Log.LogMessage($"Uploading report to {urls.S3Uri}");
+
+                var codecovReport = WriteCodecovReport();
+
+                var uploadResponse = await client.UploadReportAsync(urls.S3Uri, codecovReport).ConfigureAwait(false);
+                if (!uploadResponse.IsSuccessStatusCode)
+                {
+                    Log.LogError($"Failed to upload report: HTTP {(int)uploadResponse.StatusCode} {uploadResponse.ReasonPhrase}.");
+                    var uploadContent = await uploadResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    Log.LogError(uploadContent);
+                }
+                else
+                {
+                    var builder = new UriBuilder(urls.S3Uri);
+                    builder.Query = null;
+                    Log.LogMessage(MessageImportance.High, $"Uploaded report to {builder.Uri}");
+                }
+            }
+        }
+
+        private string WriteCodecovReport()
+        {
+            using (var ms = new MemoryStream())
+            using (var sw = new StreamWriter(ms, UTF8NoBOM, bufferSize: 1024, leaveOpen: true))
+            {
+                foreach (var repoFilePath in RepositoryFiles)
+                {
+                    sw.WriteLine(repoFilePath);
+                }
+                sw.WriteLine("<<<<<< network");
+
+                foreach (var resultPath in Results)
+                {
+                    sw.WriteLine($"# path={resultPath}");
+                    sw.Flush();
+                    using (var fs = File.OpenRead(resultPath))
+                    {
+                        fs.CopyTo(ms);
+                        sw.WriteLine();
+                    }
+                    sw.WriteLine("<<<<<< EOF");
+                }
+
+                sw.Flush();
+
+                return Encoding.UTF8.GetString(ms.ToArray()).Replace("\r", "");
+            }
         }
     }
 }

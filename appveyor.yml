@@ -28,11 +28,7 @@ build:
 test_script:
   - ps: |
       $projectPath = Resolve-Path .\test\toofz.Build.Tests\toofz.Build.Tests.csproj
-      msbuild $projectPath /nologo /verbosity:minimal `
-          /target:Build `
-          /target:Test `
-          /property:Configuration=Coverage `
-          /property:DebugType=full
+      dotnet build /nologo /verbosity:minimal /target:Test /property:Configuration=Coverage /property:DebugType=full $projectPath
 
 deploy_script:
   - ps: |
