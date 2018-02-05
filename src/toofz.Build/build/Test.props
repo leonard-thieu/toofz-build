@@ -1,5 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
+    <!-- VSInstallRoot is not set when using `dotnet build`. -->
+    <VSInstallRoot Condition="'$(VSInstallRoot)' == ''">C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\</VSInstallRoot>
     <TestPlatformPath>$([MSBuild]::NormalizeDirectory($(VSInstallRoot), 'Common7', 'IDE', 'Extensions', 'TestPlatform'))</TestPlatformPath>
     <VSTestToolExe>vstest.console.exe</VSTestToolExe>
   </PropertyGroup>
@@ -12,9 +14,5 @@
 
   <PropertyGroup>
     <PublishCoverage Condition="'$(PublishCoverage)' == ''">$(CI)</PublishCoverage>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <CodecovToolPath>$([MSBuild]::NormalizeDirectory($(BuildToolsPath), 'Codecov', 'tools'))</CodecovToolPath>
   </PropertyGroup>
 </Project>
